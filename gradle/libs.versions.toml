@@ -47,7 +47,6 @@ core-ktx = "1.16.0"
 appcompat = "1.7.1"
 
 material = "1.12.0"
-jetbrainsKotlinJvm = "2.2.0"
 
 
 [libraries]
@@ -109,7 +108,7 @@ com-android-application = { id = "com.android.application", version.ref = "agp" 
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-juni5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 tuk-android-application = { id = "tuk.android.application", version = "unspecified" }
 tuk-android-application-compose = { id = "tuk.android.application.compose", version = "unspecified" }
