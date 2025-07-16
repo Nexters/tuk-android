@@ -13,5 +13,9 @@ gradlePlugin {
             id = "tuk.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidApplicationComposeConventionPlugin")  {
+            id = "tuk.android.application.compose"
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
     }
 }

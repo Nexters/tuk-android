@@ -3,6 +3,9 @@ package com.plottwist.tuk
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.kotlin.dsl.getByType
 
 fun ApplicationExtension.configureDefaultConfig() {
     defaultConfig {
@@ -32,13 +35,5 @@ fun CommonExtension<*, *, *, *, *, *>.configureJavaCompatibility() {
     }
 }
 
-fun CommonExtension<*, *, *, *, *, *>.configureBuildTypes() {
-    buildTypes {
-        getByName("release") {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-}
+val Project.libs
+    get() = extensions.getByType<VersionCatalogsExtension>().named("libs")

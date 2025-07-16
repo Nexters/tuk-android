@@ -21,7 +21,6 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
                 buildFeatures {
                     buildConfig = true
-                    compose = true
                 }
 
                 buildTypes {
@@ -36,9 +35,3 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
         }
     }
 }
-
-
-
-
-
-

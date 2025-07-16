@@ -25,7 +25,6 @@ internal fun Project.configureKotlinAndroid(
     }
 }
 
-
 private fun Project.configureKotlin() {
     tasks.withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
