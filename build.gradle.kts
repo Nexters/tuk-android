@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.kotlinx.serialization.plugin) apply false
     alias(libs.plugins.android.juni5) apply false
     alias(libs.plugins.jetpack.compose.compiler) apply false
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }

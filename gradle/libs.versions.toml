@@ -47,6 +47,7 @@ core-ktx = "1.16.0"
 appcompat = "1.7.1"
 
 material = "1.12.0"
+jetbrainsKotlinJvm = "2.2.0"
 
 
 [libraries]
@@ -92,9 +93,8 @@ junit-jupiter-param = { module = "org.junit.jupiter:junit-jupiter-params", versi
 junit-jupiter-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-annotation = { module = "androidx.annotation:annotation" }
-android-tools-build = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-runtime-ktx" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
@@ -109,3 +109,4 @@ com-android-application = { id = "com.android.application", version.ref = "agp" 
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-juni5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
