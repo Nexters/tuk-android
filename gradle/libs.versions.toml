@@ -110,3 +110,5 @@ com-android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-juni5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+
+tuk-android-application = { id = "tuk.android.application", version = "unspecified" }
