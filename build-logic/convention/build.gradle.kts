@@ -21,5 +21,9 @@ gradlePlugin {
             id = "tuk.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("FeatureConventionPlugin")  {
+            id = "tuk.feature"
+            implementationClass = "FeatureConventionPlugin"
+        }
     }
 }

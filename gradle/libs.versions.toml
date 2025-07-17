@@ -94,8 +94,8 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 androidx-annotation = { module = "androidx.annotation:annotation" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-runtime-ktx" }
-androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
+navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-runtime-ktx" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
 
 
@@ -113,3 +113,4 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"
 tuk-android-application = { id = "tuk.android.application", version = "unspecified" }
 tuk-android-application-compose = { id = "tuk.android.application.compose", version = "unspecified" }
 tuk-android-library = { id = "tuk.android.library", version = "unspecified" }
+tuk-feature = { id = "tuk.feature", version = "unspecified" }
