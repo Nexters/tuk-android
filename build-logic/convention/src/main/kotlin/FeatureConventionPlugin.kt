@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.LibraryExtension
 import com.plottwist.tuk.configureAndroidCompose
+import com.plottwist.tuk.configureHilt
 import com.plottwist.tuk.configureOrbit
 import com.plottwist.tuk.libs
 import org.gradle.api.Plugin
@@ -10,13 +11,14 @@ import org.gradle.kotlin.dsl.dependencies
 class FeatureConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
-            with(project.pluginManager) {
+            with(pluginManager) {
                 apply("tuk.android.library")
             }
 
             extensions.configure<LibraryExtension> {
                 configureAndroidCompose(this)
                 configureOrbit(this)
+                configureHilt(this)
             }
 
             dependencies {

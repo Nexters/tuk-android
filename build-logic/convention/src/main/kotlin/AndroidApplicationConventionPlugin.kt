@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.configure
 class AndroidApplicationConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
-            with(project.pluginManager) {
+            with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
             }
