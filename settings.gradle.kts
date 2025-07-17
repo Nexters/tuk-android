@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 rootProject.name = "tuk"
 include(":app")
 include(":core:network")
+include(":core:preference")
