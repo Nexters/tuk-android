@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.LibraryExtension
 import com.plottwist.tuk.configureAndroidCompose
 import com.plottwist.tuk.configureHilt
+import com.plottwist.tuk.configureUiNavigation
 import com.plottwist.tuk.configureOrbit
 import com.plottwist.tuk.libs
 import org.gradle.api.Plugin
@@ -19,6 +20,7 @@ class FeatureConventionPlugin: Plugin<Project> {
                 configureAndroidCompose(this)
                 configureOrbit(this)
                 configureHilt(this)
+                configureUiNavigation(this)
             }
 
             dependencies {
