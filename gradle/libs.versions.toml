@@ -112,3 +112,4 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"
 
 tuk-android-application = { id = "tuk.android.application", version = "unspecified" }
 tuk-android-application-compose = { id = "tuk.android.application.compose", version = "unspecified" }
+tuk-android-library = { id = "tuk.android.library", version = "unspecified" }
