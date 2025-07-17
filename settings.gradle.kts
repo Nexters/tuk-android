@@ -25,3 +25,4 @@ rootProject.name = "tuk"
 include(":app")
 include(":core:network")
 include(":core:preference")
+include(":core:data")
