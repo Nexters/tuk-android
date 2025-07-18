@@ -5,6 +5,7 @@ plugins {
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.ksp.gradle.plugin)
 }
 
 gradlePlugin {
@@ -16,6 +17,18 @@ gradlePlugin {
         register("androidApplicationComposeConventionPlugin")  {
             id = "tuk.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+        register("AndroidLibraryConventionPlugin")  {
+            id = "tuk.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("FeatureConventionPlugin")  {
+            id = "tuk.feature"
+            implementationClass = "FeatureConventionPlugin"
+        }
+        register("HiltConventionPlugin") {
+            id = "tuk.hilt"
+            implementationClass = "HiltConventionPlugin"
         }
     }
 }
