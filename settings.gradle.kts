@@ -23,3 +23,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "tuk"
 include(":app")
+include(":core:network")
+include(":core:preference")
+include(":core:data")
+include(":core:domain")
+include(":core:designsystem")
+include(":core:ui")
+include(":feature:home")
+include(":feature:login")
