@@ -1,4 +1,4 @@
-package com.plottwist.tuk.ui.theme
+package com.plottwist.feature.main.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
