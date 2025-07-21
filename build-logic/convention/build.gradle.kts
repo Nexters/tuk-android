@@ -34,5 +34,10 @@ gradlePlugin {
             id = "tuk.android.application.hilt"
             implementationClass = "AndroidApplicationHiltConventionPlugin"
         }
+        register("AndroidLibraryComposeConventionPlugin") {
+            id = "tuk.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+
     }
 }
