@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.tuk.android.library)
+    alias(libs.plugins.kotlinx.serialization.plugin)
 }
 
 android {
@@ -7,9 +8,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.kotlinx.serialization)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
