@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.tuk.android.application)
     alias(libs.plugins.tuk.android.application.compose)
+    alias(libs.plugins.tuk.android.application.hilt)
 }
 
 android {
