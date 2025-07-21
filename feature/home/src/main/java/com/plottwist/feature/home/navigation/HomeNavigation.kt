@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.home.HomeScreen
 
-fun NavGraphBuilder.homeNavGraph() {
+fun NavGraphBuilder.homeNavGraph(
+    navigateToLoginScreen: () -> Unit,
+) {
     composable<Route.Home> {
-        HomeScreen()
+        HomeScreen(
+            navigateToLoginScreen = navigateToLoginScreen
+        )
     }
 }
