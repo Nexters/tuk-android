@@ -8,5 +8,6 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:main"))
     testImplementation(libs.junit)
 }
