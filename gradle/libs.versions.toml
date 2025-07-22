@@ -119,4 +119,6 @@ tuk-android-application = { id = "tuk.android.application", version = "unspecifi
 tuk-android-application-compose = { id = "tuk.android.application.compose", version = "unspecified" }
 tuk-android-library = { id = "tuk.android.library", version = "unspecified" }
 tuk-feature = { id = "tuk.feature", version = "unspecified" }
-tuk-hilt = { id = "tuk.hilt", version = "unspecified" }
+tuk-android-application-hilt = { id = "tuk.android.application.hilt", version = "unspecified" }
+tuk-android-library-hilt = { id = "tuk.android.library.hilt", version = "unspecified" }
+tuk-android-library-compose = { id = "tuk.android.library.compose", version = "unspecified" }

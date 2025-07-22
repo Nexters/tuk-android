@@ -26,9 +26,18 @@ gradlePlugin {
             id = "tuk.feature"
             implementationClass = "FeatureConventionPlugin"
         }
-        register("HiltConventionPlugin") {
-            id = "tuk.hilt"
-            implementationClass = "HiltConventionPlugin"
+        register("AndroidLibraryHiltConventionPlugin") {
+            id = "tuk.android.library.hilt"
+            implementationClass = "AndroidLibraryHiltConventionPlugin"
         }
+        register("AndroidApplicationHiltConventionPlugin") {
+            id = "tuk.android.application.hilt"
+            implementationClass = "AndroidApplicationHiltConventionPlugin"
+        }
+        register("AndroidLibraryComposeConventionPlugin") {
+            id = "tuk.android.library.compose"
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+
     }
 }

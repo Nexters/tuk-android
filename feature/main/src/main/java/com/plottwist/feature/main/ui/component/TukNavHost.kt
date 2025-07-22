@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.home.navigation.homeNavGraph
+import com.plottwist.feature.login.navigation.loginNavGraph
+import com.plottwist.feature.login.navigation.navigateToLogin
 
 @Composable
 fun TukNavHost(
@@ -18,6 +20,11 @@ fun TukNavHost(
         navController = navController,
         startDestination = Route.Home
     ) {
-        homeNavGraph()
+        homeNavGraph(
+            navigateToLoginScreen = {
+                navController.navigateToLogin()
+            }
+        )
+        loginNavGraph()
     }
 }

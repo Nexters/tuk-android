@@ -4,7 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class HiltConventionPlugin: Plugin<Project> {
+class AndroidLibraryHiltConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             extensions.configure<LibraryExtension> { configureHilt(this) }
