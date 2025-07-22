@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.tuk.android.library)
+    alias(libs.plugins.tuk.android.library.hilt)
+    alias(libs.plugins.kotlinx.serialization.plugin)
 }
 
 android {
@@ -7,11 +9,15 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.serialization)
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
+    platform(libs.okhttp.bom).apply {
+        implementation(this)
+        implementation(libs.okhttp)
+        implementation(libs.okhttp.logging)
+    }
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 }
