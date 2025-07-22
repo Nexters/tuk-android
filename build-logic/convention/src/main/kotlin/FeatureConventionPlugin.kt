@@ -26,6 +26,7 @@ class FeatureConventionPlugin: Plugin<Project> {
             dependencies {
                 add("implementation", project(":core:domain"))
                 add("implementation", project(":core:ui"))
+                add("implementation", project(":core:ui-navigation"))
                 add("implementation", project(":core:designsystem"))
 
                 add("implementation", libs.findLibrary("core.ktx").get())
