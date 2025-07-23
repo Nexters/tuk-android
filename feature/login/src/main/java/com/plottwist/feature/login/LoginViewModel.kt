@@ -1,6 +1,7 @@
 package com.plottwist.feature.login
 
 import androidx.lifecycle.ViewModel
+import com.example.auth.usecase.LoginUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
