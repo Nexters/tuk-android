@@ -10,5 +10,6 @@ android {
 
 dependencies {
     implementation(project(":feature:main"))
+    implementation(project(":core:network"))
     testImplementation(libs.junit)
 }

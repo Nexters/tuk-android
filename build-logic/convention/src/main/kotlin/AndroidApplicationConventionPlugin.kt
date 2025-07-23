@@ -4,6 +4,9 @@ import com.plottwist.tuk.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import java.io.File
+import java.io.FileInputStream
+import java.util.Properties
 
 class AndroidApplicationConventionPlugin: Plugin<Project> {
     override fun apply(project: Project) {
@@ -22,6 +25,21 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                         proguardFiles(
                             getDefaultProguardFile("proguard-android-optimize.txt"),
                             "proguard-rules.pro"
+                        )
+                    }
+                }
+
+                flavorDimensions += "stage"
+                productFlavors {
+                    val localProperties = Properties().apply {
+                        load(FileInputStream(File(project.rootDir.absolutePath + File.separator + "local.properties")))
+                    }
+                    create("production") {
+                        dimension = "stage"
+                        buildConfigField(
+                            "String",
+                            "TUK_BASE_URL",
+                            "\"${localProperties.getProperty("TUK_BASE_URL")}\""
                         )
                     }
                 }
