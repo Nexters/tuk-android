@@ -1,14 +1,16 @@
 package com.plottwist.feature.home
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.StableImage
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -44,14 +46,44 @@ private fun HomeScreen(
     onMyPageClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Box(
         modifier = modifier
     ) {
+        Column (
+            modifier = Modifier.fillMaxSize()
+        ) {
+            TukTopAppBar(
+                actionButtons = {
+                    TopAppBarMyPageButton(
+                        onMyPageClicked = onMyPageClicked
+                    )
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun TopAppBarMyPageButton(
+    onMyPageClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = onMyPageClicked
+    ) {
         StableImage(
-            modifier = Modifier
-                .align(Alignment.End)
-                .clickable { onMyPageClicked() },
-            drawableResId = R.drawable.ic_user
+            drawableResId = R.drawable.ic_mypage
         )
     }
+}
+
+@Preview
+@Composable
+fun HomeScreenPreview(modifier: Modifier = Modifier) {
+    HomeScreen(
+        modifier = Modifier.fillMaxSize(),
+        isLoggedIn = false,
+        onMyPageClicked = {}
+    )
 }
