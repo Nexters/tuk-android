@@ -1,7 +1,7 @@
 package com.plottwist.feature.login
 
 import androidx.lifecycle.ViewModel
-import com.example.auth.usecase.LoginUseCase
+import com.plottwist.core.domain.auth.usecase.LoginUseCase
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -13,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
-
 ) : ContainerHost<LoginState, LoginSideEffect>, ViewModel() {
 
     override val container = container<LoginState, LoginSideEffect>(LoginState.Idle)

@@ -1,6 +1,6 @@
-package com.example.auth.usecase
+package com.plottwist.core.domain.auth.usecase
 
-import com.example.auth.repository.LoginRepository
+import com.plottwist.core.domain.auth.repository.LoginRepository
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(
