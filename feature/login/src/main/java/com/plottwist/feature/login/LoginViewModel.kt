@@ -14,7 +14,27 @@ class LoginViewModel @Inject constructor(
 
     override val container = container<LoginState, LoginSideEffect>(LoginState.Idle)
 
-    fun handleGoogleSignInRequest(idToken: String) = intent {
+    fun handleAction(action: LoginAction) {
+        when(action) {
+            LoginAction.ClickGoogleLogin -> {
+                clickGoogleLogin()
+            }
+
+            is LoginAction.OnGoogleLoginSuccess -> {
+                login(action.idToken)
+            }
+
+            is LoginAction.OnGoogleLoginError -> {
+                // TODO 에러처리
+            }
+        }
+    }
+
+    private fun clickGoogleLogin() = intent {
+        postSideEffect(LoginSideEffect.GoogleLogin)
+    }
+
+    private fun login(idToken: String) = intent {
         reduce { LoginState.Loading }
 
         try {
@@ -23,11 +43,8 @@ class LoginViewModel @Inject constructor(
             if (result.isSuccess) {
                 postSideEffect(LoginSideEffect.NavigateToHomeScreen)
             }
-
         } catch (e: Exception) {
             reduce { LoginState.Error}
         }
     }
-
-
 }

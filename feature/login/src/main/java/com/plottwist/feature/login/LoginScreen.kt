@@ -32,10 +32,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.auth.provider.di.AuthProviderEntryPoint
 import dagger.hilt.android.EntryPointAccessors
-import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun LoginScreen(
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -51,6 +52,28 @@ fun LoginScreen(
         ).googleAuthProvider()
     }
 
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            LoginSideEffect.GoogleLogin -> {
+                googleAuthProvider.login(
+                    context = context,
+                    onSuccess = {
+                        viewModel.handleAction(LoginAction.OnGoogleLoginSuccess(it.idToken))
+                    },
+                    onError = {
+                        viewModel.handleAction(LoginAction.OnGoogleLoginError(it.message))
+                    }
+                )
+            }
+            LoginSideEffect.NavigateToHomeScreen -> {
+                onBack()
+            }
+            LoginSideEffect.NavigateToMyPage -> {
+                // TODO
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,17 +81,7 @@ fun LoginScreen(
     ) {
         Button(
             onClick = {
-                coroutineScope.launch {
-                    googleAuthProvider.login(
-                        context = context,
-                        onSuccess = {
-                            viewModel.handleGoogleSignInRequest(it.idToken)
-                        },
-                        onError = {
-
-                        }
-                    )
-                }
+                viewModel.handleAction(LoginAction.ClickGoogleLogin)
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter)

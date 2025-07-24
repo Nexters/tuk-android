@@ -14,8 +14,10 @@ fun NavController.navigateToLogin(
     this.navigate(route = Route.Login, navOptions = navOptions)
 }
 
-fun NavGraphBuilder.loginNavGraph() {
+fun NavGraphBuilder.loginNavGraph(
+    onBack: () -> Unit
+) {
     composable<Route.Login> {
-        LoginScreen()
+        LoginScreen(onBack)
     }
 }
