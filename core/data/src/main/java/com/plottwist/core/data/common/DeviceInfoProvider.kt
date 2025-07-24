@@ -17,7 +17,7 @@ class DeviceInfoProvider @Inject constructor(
     }
 
     fun getDeviceType(): String {
-        return "Android"
+        return "android"
     }
 
     fun getAppVersion(): String {

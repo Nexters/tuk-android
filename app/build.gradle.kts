@@ -10,6 +10,8 @@ android {
 
 dependencies {
     implementation(project(":feature:main"))
+    implementation(project(":feature:login"))
     implementation(project(":core:network"))
+    implementation(project(":core:data"))
     testImplementation(libs.junit)
 }

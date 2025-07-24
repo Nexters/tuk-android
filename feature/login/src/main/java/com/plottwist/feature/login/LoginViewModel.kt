@@ -26,7 +26,8 @@ class LoginViewModel @Inject constructor(
 
         try {
             val account = task.getResult(ApiException::class.java)
-            val accountId = account?.id
+            val accountId = account?.idToken
+
 
             if (accountId.isNullOrBlank()) {
                 return@intent

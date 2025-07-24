@@ -2,13 +2,15 @@ package com.plottwist.core.data.auth.repository
 
 import com.plottwist.core.data.common.DeviceInfoProvider
 import com.plottwist.core.domain.auth.repository.LoginRepository
+import com.plottwist.core.network.model.auth.DeviceInfo
+import com.plottwist.core.network.model.auth.GoogleLoginRequest
+import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+
 class LoginRepositoryImpl @Inject constructor(
-    private val loginService: LoginService,
+    private val loginService: AuthApiService,
     private val authDataSource: AuthDataSource,
     private val deviceInfoProvider: DeviceInfoProvider
 ): LoginRepository {
@@ -18,8 +20,7 @@ class LoginRepositoryImpl @Inject constructor(
             val deviceInfo = DeviceInfo(
                 deviceId = deviceInfoProvider.getDeviceSSAID(),
                 deviceType = deviceInfoProvider.getDeviceType(),
-                appVersion = deviceInfoProvider.getAppVersion(),
-                osVersion = deviceInfoProvider.getOsVersion()
+
             )
 
             val request = GoogleLoginRequest(
@@ -27,26 +28,20 @@ class LoginRepositoryImpl @Inject constructor(
                 deviceInfo = deviceInfo
             )
 
+            val response = loginService.googleLogin(request)
 
-            val response = loginService.requestGoogleLogin(request)
+            if (response.success) {
+                val result = response.data
 
-            if (response.isSuccessful) {
-                val body = response.body()
-
-                if (body?.success == true && body.data != null) {
-                    val data = body.data
-
-                    if (data != null) {
-                        authDataSource.setAccessToken(data.accessToken)
-                        authDataSource.setRefreshToken(data.refreshToken)
-                    }
-
-                    Result.success(Unit)
-                } else {
-                    Result.failure(Exception("Login failed: ${body?.meta?.errorMessage ?: "Unknown error"}"))
+                if (result != null) {
+                    authDataSource.setAccessToken(result.accessToken)
+                    authDataSource.setRefreshToken(result.refreshToken)
                 }
+
+                Result.success(Unit)
+
             } else {
-                Result.failure(Exception("HTTP ${response.code()} - ${response.message()}"))
+                Result.failure(Exception("HTTP ${response.success}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

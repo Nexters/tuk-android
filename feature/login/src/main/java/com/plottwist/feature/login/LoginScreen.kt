@@ -1,5 +1,6 @@
 package com.plottwist.feature.login
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,12 +26,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     Text("로그인 화면")
+
+    val authResultLauncher = rememberLauncherForActivityResult(
+        contract = GoogleApiContract()
+    ) {
+            task -> viewModel.handleGoogleSignInRequest(task)
+    }
+
 
     Box(
         modifier = Modifier
@@ -38,7 +48,7 @@ fun LoginScreen(
             .background(Color.Gray)
     ) {
         Button(
-            onClick = {},
+            onClick = {authResultLauncher.launch(1)},
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(start = 16.dp, end = 16.dp, bottom = 32.dp)

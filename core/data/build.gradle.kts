@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.tuk.android.library)
-    alias(libs.plugins.tuk.feature)
-    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.tuk.android.library.hilt)
 }
 
 android {
@@ -11,6 +10,5 @@ android {
 dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:preference"))
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.android)
+    implementation(project(":core:domain"))
 }
