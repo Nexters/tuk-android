@@ -17,23 +17,11 @@ class LoginViewModel @Inject constructor(
 
     override val container = container<LoginState, LoginSideEffect>(LoginState.Idle)
 
-    fun handleGoogleSignInRequest(task: Task<GoogleSignInAccount>?) = intent {
+    fun handleGoogleSignInRequest(idToken: String) = intent {
         reduce { LoginState.Loading }
 
-        if (task == null) {
-            return@intent
-        }
-
         try {
-            val account = task.getResult(ApiException::class.java)
-            val accountId = account?.idToken
-
-
-            if (accountId.isNullOrBlank()) {
-                return@intent
-            }
-
-            val result = loginUseCase.loginWithGoogle(accountId)
+            val result = loginUseCase.loginWithGoogle(idToken)
 
             if (result.isSuccess) {
                 postSideEffect(LoginSideEffect.NavigateToHomeScreen)

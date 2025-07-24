@@ -1,5 +1,6 @@
 package com.plottwist.feature.login
 
+import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,14 +20,20 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.plottwist.core.auth.provider.di.AuthProviderEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -35,12 +42,15 @@ fun LoginScreen(
 ) {
     Text("로그인 화면")
 
-    val authResultLauncher = rememberLauncherForActivityResult(
-        contract = GoogleApiContract()
-    ) {
-            task -> viewModel.handleGoogleSignInRequest(task)
+    val context = LocalContext.current
+    val activity = context as Activity
+    val coroutineScope = rememberCoroutineScope()
+    val googleAuthProvider = remember {
+        EntryPointAccessors.fromActivity(
+            activity,
+            AuthProviderEntryPoint::class.java
+        ).googleAuthProvider()
     }
-
 
     Box(
         modifier = Modifier
@@ -48,7 +58,19 @@ fun LoginScreen(
             .background(Color.Gray)
     ) {
         Button(
-            onClick = {authResultLauncher.launch(1)},
+            onClick = {
+                coroutineScope.launch {
+                    googleAuthProvider.login(
+                        context = context,
+                        onSuccess = {
+                            viewModel.handleGoogleSignInRequest(it.idToken)
+                        },
+                        onError = {
+
+                        }
+                    )
+                }
+            },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(start = 16.dp, end = 16.dp, bottom = 32.dp)

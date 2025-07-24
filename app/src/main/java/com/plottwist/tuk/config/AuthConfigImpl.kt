@@ -1,6 +1,6 @@
 package com.plottwist.tuk.config
 
-import com.plottwist.feature.login.di.AuthConfig
+import com.plottwist.core.auth.provider.config.AuthConfig
 import com.plottwist.tuk.BuildConfig
 import javax.inject.Inject
 
