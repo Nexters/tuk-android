@@ -2,9 +2,6 @@ package com.plottwist.feature.login
 
 import androidx.lifecycle.ViewModel
 import com.plottwist.core.domain.auth.usecase.LoginUseCase
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -27,8 +24,6 @@ class LoginViewModel @Inject constructor(
                 postSideEffect(LoginSideEffect.NavigateToHomeScreen)
             }
 
-        } catch (e: ApiException) {
-            reduce { LoginState.Error }
         } catch (e: Exception) {
             reduce { LoginState.Error}
         }

@@ -1,7 +1,6 @@
 package com.plottwist.feature.login
 
 import android.app.Activity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -101,9 +100,7 @@ fun LoginScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
-
             }
         }
     }
-
 }
