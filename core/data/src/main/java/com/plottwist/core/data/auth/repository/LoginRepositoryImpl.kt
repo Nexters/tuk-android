@@ -20,7 +20,8 @@ class LoginRepositoryImpl @Inject constructor(
             val deviceInfo = DeviceInfo(
                 deviceId = deviceInfoProvider.getDeviceSSAID(),
                 deviceType = deviceInfoProvider.getDeviceType(),
-
+                appVersion = deviceInfoProvider.getAppVersion(),
+                osVersion = deviceInfoProvider.getOsVersion()
             )
 
             val request = GoogleLoginRequest(
