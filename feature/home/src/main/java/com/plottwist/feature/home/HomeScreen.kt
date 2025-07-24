@@ -41,6 +41,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun HomeScreen(
     navigateToLoginScreen: () -> Unit,
     navigateToMyPageScreen: () -> Unit,
+    navigateToCreateGathering: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
