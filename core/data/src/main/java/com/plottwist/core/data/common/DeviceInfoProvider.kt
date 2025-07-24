@@ -30,6 +30,6 @@ class DeviceInfoProvider @Inject constructor(
     }
 
     fun getOsVersion(): String {
-        return "Android ${Build.VERSION.RELEASE ?: "unknown_os"}"
+        return "android ${Build.VERSION.RELEASE ?: "unknown_os"}"
     }
 }

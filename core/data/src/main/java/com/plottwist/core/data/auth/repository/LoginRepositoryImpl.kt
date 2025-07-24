@@ -14,7 +14,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginService: AuthApiService,
     private val authDataSource: AuthDataSource,
     private val deviceInfoProvider: DeviceInfoProvider
-): LoginRepository {
+) : LoginRepository {
 
     override suspend fun googleLogin(accountId: String): Result<Unit> {
         return try {
@@ -34,11 +34,17 @@ class LoginRepositoryImpl @Inject constructor(
 
             if (response.success) {
                 val result = response.data
+<<<<<<< HEAD
 
                 if (result != null) {
                     authDataSource.setAccessToken(result.accessToken).collect()
                     authDataSource.setRefreshToken(result.refreshToken).collect()
                 }
+=======
+                
+                authDataSource.setAccessToken(result.accessToken)
+                authDataSource.setRefreshToken(result.refreshToken)
+>>>>>>> 2ee5d92 (REFACTOR: 구글 로그인 클라이언트 id 로직 수정)
 
                 Result.success(Unit)
 
