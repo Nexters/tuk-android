@@ -8,7 +8,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:auth-provider"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+

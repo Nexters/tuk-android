@@ -25,6 +25,10 @@ fun TukNavHost(
                 navController.navigateToLogin()
             }
         )
-        loginNavGraph()
+        loginNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
     }
 }

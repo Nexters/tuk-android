@@ -4,6 +4,8 @@
 agp = "8.11.1"
 
 ## Kotlin
+credentials = "1.5.0"
+googleid = "1.1.1"
 kotlin = "2.2.0"
 kotlin-serialization-lib = "1.9.0"
 
@@ -45,6 +47,7 @@ lifecycle-runtime-ktx = "2.9.1"
 navigation-runtime-ktx = "2.9.1"
 core-ktx = "1.16.0"
 appcompat = "1.7.1"
+datastore = "1.1.1"
 
 material = "1.12.0"
 
@@ -53,7 +56,10 @@ ksp = "2.2.0-2.0.2"
 
 
 [libraries]
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
@@ -78,6 +84,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "hilt" }
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
 coil-gif = { module = "io.coil-kt:coil3-gif", version.ref = "coil3" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
@@ -101,7 +108,7 @@ navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-run
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
 ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-
+androidx-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 

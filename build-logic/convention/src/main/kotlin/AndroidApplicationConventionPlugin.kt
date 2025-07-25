@@ -41,6 +41,11 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                             "TUK_BASE_URL",
                             "\"${localProperties.getProperty("TUK_BASE_URL")}\""
                         )
+                        buildConfigField(
+                            "String",
+                            "GOOGLE_CLIENT_ID",
+                            "\"${localProperties.getProperty("GOOGLE_CLIENT_ID")}\""
+                        )
                     }
                 }
             }
