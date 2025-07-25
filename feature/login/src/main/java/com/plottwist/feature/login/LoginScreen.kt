@@ -101,7 +101,7 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    painter = painterResource(id = com.plottwist.core.designsystem.R.drawable.ic_user),
+                    painter = painterResource(id = com.plottwist.core.designsystem.R.drawable.ic_mypage),
                     contentDescription = "Apple Login",
                     tint = Color.White,
                     modifier = Modifier.size(20.dp)
