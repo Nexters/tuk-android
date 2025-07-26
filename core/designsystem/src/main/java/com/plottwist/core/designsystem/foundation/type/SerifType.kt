@@ -34,9 +34,9 @@ val TukSerifTypography = SerifTypography(
         fontSize = 16.sp,
         lineHeight = 16.sp,
         letterSpacing = (-1).sp,
-        fontWeight = FontWeight.Normal
+        fontWeight = FontWeight.Medium
     ),
-    body14M = SerifStyle.copy(
+    body14R = SerifStyle.copy(
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = (-1).sp,
@@ -49,5 +49,5 @@ data class SerifTypography(
     val title24M: TextStyle,
     val title22M: TextStyle,
     val body16M: TextStyle,
-    val body14M: TextStyle,
+    val body14R: TextStyle,
 )
