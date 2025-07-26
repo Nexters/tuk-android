@@ -267,7 +267,7 @@ fun PostCard(
 }
 
 @Composable
-fun GoogleLoinButtonColumn(
+fun GoogleLoginButtonColumn(
     onGoogleLoginButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
