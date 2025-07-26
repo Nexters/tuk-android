@@ -1,4 +1,4 @@
-package com.plottwist.core.ui
+package com.plottwist.core.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

@@ -22,7 +22,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
-import com.plottwist.core.ui.StableImage
+import com.plottwist.core.ui.component.StableImage
+import com.plottwist.feature.home.component.HomeBottomSheet
+import com.plottwist.feature.home.component.HomeBottomSheetState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -47,6 +49,9 @@ fun HomeScreen(
         onMyPageClicked = {
             viewModel.handleAction(HomeAction.ClickMyPage)
         },
+        onChangedState = {
+            // 바텀 시트 펼쳐지거나 접혔을때 감지
+        },
         isLoggedIn = state.isLoggedIn
     )
 }
@@ -55,6 +60,7 @@ fun HomeScreen(
 private fun HomeScreen(
     isLoggedIn: Boolean,
     onMyPageClicked: () -> Unit,
+    onChangedState: (HomeBottomSheetState) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -67,17 +73,37 @@ private fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            TukTopAppBar(
-                actionButtons = {
-                    TopAppBarMyPageButton(
-                        onMyPageClicked = onMyPageClicked
-                    )
-                }
-            )
+            HomeAppBar(onMyPageClicked)
 
             HomeTitle()
+
+            HomeContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp)
+            )
         }
+        HomeBottomSheet(
+            sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
+            sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
+            onChangedState = onChangedState
+        )
     }
+}
+
+@Composable
+fun HomeAppBar(
+    onMyPageClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TukTopAppBar(
+        modifier = modifier,
+        actionButtons = {
+            TopAppBarMyPageButton(
+                onMyPageClicked = onMyPageClicked
+            )
+        }
+    )
 }
 
 @Composable
@@ -90,6 +116,18 @@ fun HomeTitle(
         style = TukSerifTypography.title24M,
         fontSize = 24.sp
     )
+}
+
+@Composable
+fun HomeContent(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+
+    }
 }
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -123,6 +161,8 @@ fun TopAppBarMyPageButton(
     }
 }
 
+private const val BOTTOM_SHEET_PEEK_HEIGHT = 120
+private const val BOTTOM_SHEET_FULL_HEIGHT = 570
 private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 2
 
 @Preview
@@ -131,6 +171,7 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
     HomeScreen(
         modifier = Modifier.fillMaxSize(),
         isLoggedIn = false,
-        onMyPageClicked = {}
+        onMyPageClicked = {},
+        onChangedState = {}
     )
 }
