@@ -6,6 +6,7 @@ import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 
@@ -35,8 +36,8 @@ class LoginRepositoryImpl @Inject constructor(
                 val result = response.data
 
                 if (result != null) {
-                    authDataSource.setAccessToken(result.accessToken)
-                    authDataSource.setRefreshToken(result.refreshToken)
+                    authDataSource.setAccessToken(result.accessToken).collect()
+                    authDataSource.setRefreshToken(result.refreshToken).collect()
                 }
 
                 Result.success(Unit)
