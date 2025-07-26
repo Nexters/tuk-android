@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class LoginResponse(
     val success: Boolean,
     val data: LoginData,
-    val meta: Meta
+    val meta: Meta?
 )
 
 @Serializable
@@ -19,5 +19,5 @@ data class LoginData(
 @Serializable
 data class Meta(
     val errorType: String,
-    val errorMessage: String
+    val errorMessage: String?
 )
