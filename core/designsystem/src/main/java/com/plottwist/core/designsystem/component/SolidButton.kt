@@ -34,13 +34,14 @@ fun SolidButton(
                 color = containerColor,
                 shape = RoundedCornerShape(100)
             )
+            .clickable {
+                onClick()
+            }
             .padding(
                 vertical = 8.dp,
                 horizontal = 10.dp
             )
-            .clickable {
-                onClick()
-            },
+           ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
