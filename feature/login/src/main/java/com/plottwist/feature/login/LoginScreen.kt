@@ -39,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.auth.provider.di.AuthProviderEntryPoint
@@ -147,7 +146,7 @@ private fun LoginScreen(
                 postCardPadding = postCardPadding
             )
 
-            GoogleLoinButtonColumn(
+            GoogleLoginButtonColumn(
                 modifier = Modifier.fillMaxWidth(),
                 onGoogleLoginButtonClick = onGoogleLoginButtonClick
             )
