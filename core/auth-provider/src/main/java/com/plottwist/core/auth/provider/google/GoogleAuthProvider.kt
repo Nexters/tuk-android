@@ -5,6 +5,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -30,10 +31,18 @@ class GoogleAuthProvider @Inject constructor(
             .addCredentialOption(signInWithGoogleOption)
             .build()
 
-        val result = credentialManager.getCredential(
-            context = context,
-            request = request
-        )
+        val result = try {
+            credentialManager.getCredential(
+                context = context,
+                request = request
+            )
+        } catch (e: GetCredentialCancellationException) {
+            onError(AuthError("Cancelled by User"))
+            return
+        } catch (e: Exception) {
+            onError(AuthError("Unknown Error"))
+            return
+        }
 
         handleSignInWithGoogleOption(
             result = result,
