@@ -2,6 +2,7 @@ package com.plottwist.core.designsystem.component
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -20,22 +21,26 @@ fun SolidButton(
     text: String,
     containerColor: Color,
     contentColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     trailingIcon: (@Composable () -> Unit)? = null
 ) {
     Row(
         modifier = modifier
-            .padding(
-                vertical = 8.dp,
-                horizontal = 10.dp
-            )
             .clip(
                 shape = RoundedCornerShape(100)
             )
             .background(
                 color = containerColor,
                 shape = RoundedCornerShape(100)
-            ),
+            )
+            .padding(
+                vertical = 8.dp,
+                horizontal = 10.dp
+            )
+            .clickable {
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -45,7 +50,7 @@ fun SolidButton(
             color = contentColor
         )
 
-        if(trailingIcon != null) {
+        if (trailingIcon != null) {
             trailingIcon()
         }
     }
