@@ -197,12 +197,12 @@ fun DragHandle(
     modifier: Modifier = Modifier
 ) {
     Spacer(modifier = modifier
-        .width(35.dp)
-        .height(4.dp)
         .background(
             color = Color(0xFFE0E0E0),
             shape = RoundedCornerShape(4.dp)
         )
+        .width(35.dp)
+        .height(4.dp)
     )
 }
 
