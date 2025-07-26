@@ -7,4 +7,7 @@
     
     <string name="login_description">간편하게 로그인하세요</string>
     <string name="login_google_button_text">Google로 로그인</string>
+
+    <string name="post_card_bottom_description_start">연락이</string>
+    <string name="post_card_bottom_description_end">뜸해진 우리</string>
 </resources>

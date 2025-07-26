@@ -1,6 +1,8 @@
 package com.plottwist.feature.login
 
 import android.app.Activity
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,8 +21,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,14 +38,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.auth.provider.di.AuthProviderEntryPoint
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
+import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
@@ -49,12 +61,22 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val activity = context as Activity
-    val coroutineScope = rememberCoroutineScope()
     val googleAuthProvider = remember {
         EntryPointAccessors.fromActivity(
             activity,
             AuthProviderEntryPoint::class.java
         ).googleAuthProvider()
+    }
+
+    var postCardAnimated by remember { mutableStateOf(false) }
+    val postCardPadding by animateDpAsState(
+        targetValue = if(postCardAnimated) 56.dp else 0.dp,
+        animationSpec = tween(700)
+    )
+
+    LaunchedEffect(Unit) {
+        delay(500)
+        postCardAnimated = true
     }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -70,11 +92,9 @@ fun LoginScreen(
                     }
                 )
             }
+
             LoginSideEffect.NavigateToHomeScreen -> {
                 onBack()
-            }
-            LoginSideEffect.NavigateToMyPage -> {
-                // TODO
             }
         }
     }
@@ -83,6 +103,7 @@ fun LoginScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White),
+        postCardPadding = postCardPadding,
         onCloseClicked = onBack,
         onGoogleLoginButtonClick = {
             viewModel.handleAction(LoginAction.ClickGoogleLogin)
@@ -92,11 +113,12 @@ fun LoginScreen(
 
 @Composable
 private fun LoginScreen(
+    postCardPadding : Dp,
     onCloseClicked: () -> Unit,
     onGoogleLoginButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box (
+    Box(
         modifier = modifier
     ) {
         StableImage(
@@ -107,7 +129,7 @@ private fun LoginScreen(
             contentScale = ContentScale.FillWidth
         )
 
-        Column (
+        Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -119,7 +141,11 @@ private fun LoginScreen(
             )
 
             LoginContent(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 60.dp)
+                    .weight(1f),
+                postCardPadding = postCardPadding
             )
 
             GoogleLoinButtonColumn(
@@ -163,12 +189,80 @@ fun TopAppBarCloseButton(
 
 @Composable
 fun LoginContent(
+    postCardPadding : Dp,
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
+        PostCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 18.dp + postCardPadding)
+                .padding(horizontal = 58.dp)
+                .aspectRatio(260f/334f)
+        )
 
+        StableImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+                .padding(top = 62.dp)
+                .aspectRatio(260f/364f),
+            drawableResId = R.drawable.image_post_cover,
+            contentScale = ContentScale.FillWidth
+        )
+    }
+}
+
+@Composable
+fun PostCard(
+    modifier: Modifier = Modifier,
+    shape: RoundedCornerShape = RoundedCornerShape(10.dp)
+) {
+    Column (
+        modifier = modifier
+            .clip(shape)
+            .border(
+                width = 1.dp,
+                color = Color(0xFF000000).copy(0.05f),
+                shape = shape
+            )
+            .background(
+                color = Color(0xFFFAFAFA),
+                shape = shape
+            )
+            .padding(top = 25.dp, bottom = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        StableImage(
+            drawableResId = R.drawable.image_double_quotation_marks
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.post_card_bottom_description_start),
+                style = TukSerifTypography.body14R.copy(
+                    fontSize = 12.sp
+                ),
+                color = Color(0xFF1F1F1F)
+            )
+
+            Text(
+                text = stringResource(R.string.post_card_bottom_description_end),
+                style = TukSerifTypography.body14R.copy(
+                    fontSize = 12.sp
+                ),
+                color = Color(0xFF1F1F1F)
+            )
+        }
     }
 }
 
@@ -177,7 +271,7 @@ fun GoogleLoinButtonColumn(
     onGoogleLoginButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column (
+    Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
