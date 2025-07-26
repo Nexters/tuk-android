@@ -4,6 +4,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.plottwist.core.ui.extension.popSlideInVertically
+import com.plottwist.core.ui.extension.popSlideOutVertically
+import com.plottwist.core.ui.extension.slideInVertically
+import com.plottwist.core.ui.extension.slideOutVertically
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.login.LoginScreen
 
@@ -17,7 +21,12 @@ fun NavController.navigateToLogin(
 fun NavGraphBuilder.loginNavGraph(
     onBack: () -> Unit
 ) {
-    composable<Route.Login> {
+    composable<Route.Login> (
+        enterTransition = { slideInVertically() },
+        exitTransition = { slideOutVertically() },
+        popEnterTransition = { popSlideInVertically() },
+        popExitTransition = { popSlideOutVertically() }
+    ) {
         LoginScreen(onBack)
     }
 }
