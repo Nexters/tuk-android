@@ -2,4 +2,6 @@
 <resources>
     <string name="home_title">누군가 나의 연락을\n기다리고 있을지도</string>
     <string name="home_bottom_sheet_nudging_text">툭, 찔러만봐</string>
+    <string name="home_bottom_create_gathering_description">모임을 생성하고\n넌지시 만남을 제안해 보세요</string>
+    <string name="home_bottom_create_gathering_button_text">모임 생성하기</string>
 </resources>
