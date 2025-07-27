@@ -40,6 +40,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun HomeScreen(
     navigateToLoginScreen: () -> Unit,
+    navigateToMyPageScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -57,8 +58,7 @@ fun HomeScreen(
                 Toast.makeText(context, "모임 생성 화면 이동", Toast.LENGTH_SHORT).show()
             }
             HomeSideEffect.NavigateToMyPageScreen -> {
-                // 임시 코드
-                Toast.makeText(context, "마이페이지 화면 이동", Toast.LENGTH_SHORT).show()
+                navigateToMyPageScreen()
             }
         }
     }
