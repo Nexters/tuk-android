@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.ui.StableImage
+import com.plottwist.core.ui.component.StableImage
 
 @Composable
 fun JoinGatheringScreen(
