@@ -7,7 +7,7 @@ data class CreateGatheringState(
     val gatheringName: String = "",
     val lastGathering: String = "",
     val frequencyGathering:String = "",
-    val tags: List<GatheringHashTag> = emptyList(),
+    val tags: List<String> = emptyList(),
     val description: String = ""
 )
 

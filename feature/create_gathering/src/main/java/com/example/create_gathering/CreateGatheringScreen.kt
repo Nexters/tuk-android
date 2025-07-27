@@ -13,10 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.create_gathering.page.CreateGatheringNameInput
+import com.example.create_gathering.page.CreateGatheringSelectChips
 import com.example.create_gathering.page.CreateGatheringSelectFrequency
-import com.example.create_gathering.page.CreateGatheringSelectOption
-import com.example.create_gathering.page.CreateGatheringSelectTags
-import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.component.StableImage
 
@@ -31,7 +29,7 @@ fun CreateGatheringScreen(
 
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
-        pageCount = {4}
+        pageCount = { 3 }
     )
 
     LaunchedEffect(state.currentPage) {
@@ -39,11 +37,12 @@ fun CreateGatheringScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.container.sideEffectFlow.collect {effect ->
-            when(effect) {
+        viewModel.container.sideEffectFlow.collect { effect ->
+            when (effect) {
                 CreateGatheringSideEffect.NavigateToHomeScreen -> {
 
                 }
+
                 CreateGatheringSideEffect.NavigateToBack -> {
 
                 }
@@ -70,25 +69,31 @@ fun CreateGatheringScreen(
                 .fillMaxSize(),
             userScrollEnabled = false
         ) { page ->
-//            when (page) {
-//                0 -> CreateGatheringNameInput(
-//                    gatheringName = state.gatheringName,
-//                    onNameChange = viewModel::updateGatheringName
-//                )
-//                1 -> CreateGatheringSelectOption(
-//                    selectedOption = state.lastGathering,
-//                    onOptionSelected = viewModel::updateLastGatheringType
-//                )
-//                2 -> CreateGatheringSelectFrequency(
-//                    selectedFrequency = state.frequencyGathering,
-//                    onFrequencySelected = viewModel::updateFrequency
-//                )
-//                3 -> CreateGatheringSelectTags(
-//                    selectedTags = state.tags,
-//                    onToggle = viewModel::toggleTag,
-//                    onAddTag = viewModel::onAddTag
-//                )
-//            }
+            when (page) {
+                0 -> CreateGatheringNameInput(
+                    value = state.gatheringName,
+                    onValueChange = viewModel::updateGatheringName,
+                    onNext = viewModel::onClickNext
+                )
+
+                1 -> CreateGatheringSelectFrequency(
+                    selectedOption = state.frequencyGathering,
+                    onOptionSelected = {
+                        viewModel.updateFrequencyGathering(it)
+                        viewModel.onClickNext()
+                    }
+                )
+
+                2 -> CreateGatheringSelectChips(
+                    selectedTags = state.tags,
+                    onToggle = { tag ->
+                        viewModel.updateTags(tag)
+                    },
+                    onClickPrev = viewModel::onClickPrev,
+                    onClickNext = viewModel::onClickNext,
+                    onClickSkip = viewModel::onClickSkip
+                )
+            }
 
         }
 
