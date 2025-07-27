@@ -31,6 +31,12 @@ val TukPretendardTypography = PretendardTypography(
         letterSpacing = (-1.5).sp,
         fontWeight = FontWeight.Medium
     ),
+    title22M = PretendardStyle.copy(
+        fontSize = 22.sp,
+        lineHeight = 30.sp,
+        letterSpacing = (-1.5).sp,
+        fontWeight = FontWeight.Medium
+    ),
     body16R = PretendardStyle.copy(
         fontSize = 16.sp,
         lineHeight = 20.sp,
@@ -55,6 +61,12 @@ val TukPretendardTypography = PretendardTypography(
         letterSpacing = (-0.5).sp,
         fontWeight = FontWeight.Bold
     ),
+    body16M = PretendardStyle.copy(
+        fontSize = 16.sp,
+        lineHeight = 18.sp,
+        letterSpacing = (-0.5).sp,
+        fontWeight = FontWeight.Medium
+    ),
     body12M = PretendardStyle.copy(
         fontSize = 12.sp,
         lineHeight = 18.sp,
@@ -66,6 +78,12 @@ val TukPretendardTypography = PretendardTypography(
         lineHeight = 18.sp,
         letterSpacing = (-0.5).sp,
         fontWeight = FontWeight.Normal
+    ),
+    body12L = PretendardStyle.copy(
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
+        letterSpacing = (-0.5).sp,
+        fontWeight = FontWeight.Light
     )
 )
 
@@ -73,10 +91,13 @@ val TukPretendardTypography = PretendardTypography(
 data class PretendardTypography(
     val title26M: TextStyle,
     val title24M: TextStyle,
+    val title22M: TextStyle,
     val body16R: TextStyle,
+    val body16M: TextStyle,
     val body14M: TextStyle,
     val body14R: TextStyle,
     val body12B: TextStyle,
     val body12M: TextStyle,
     val body12R: TextStyle,
+    val body12L: TextStyle
 )

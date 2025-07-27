@@ -18,7 +18,7 @@ import com.example.create_gathering.page.CreateGatheringSelectOption
 import com.example.create_gathering.page.CreateGatheringSelectTags
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.ui.StableImage
+import com.plottwist.core.ui.component.StableImage
 
 @Composable
 fun CreateGatheringScreen(

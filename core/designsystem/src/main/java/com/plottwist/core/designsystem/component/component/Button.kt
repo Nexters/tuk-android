@@ -18,7 +18,7 @@ enum class TukButtonType(
     val containerColor: Color,
     val contentColor: Color = Color.White
 ) {
-    ACTIVE(containerColor = Color(0xFF4B0000)),         // 버건디
+    ACTIVE(containerColor = Color(0xFF4B0000)),
     SECONDARY(containerColor = Color.White, contentColor = Color.Black),
     DISABLED(containerColor = Color(0xFFE0E0E0), contentColor = Color(0xFF9E9E9E))
 }
