@@ -6,7 +6,9 @@ import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
@@ -14,7 +16,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginService: AuthApiService,
     private val authDataSource: AuthDataSource,
     private val deviceInfoProvider: DeviceInfoProvider
-): LoginRepository {
+) : LoginRepository {
 
     override suspend fun googleLogin(accountId: String): Result<Unit> {
         return try {
@@ -49,4 +51,9 @@ class LoginRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override fun checkLoginStatue(): Flow<Boolean> =
+        authDataSource.getAccessToken().map { accessToken ->
+            accessToken?.isNotEmpty() ?: false
+        }
 }
