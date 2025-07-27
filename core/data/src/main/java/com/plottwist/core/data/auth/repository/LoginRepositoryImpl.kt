@@ -52,7 +52,7 @@ class LoginRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun checkLoginStatue(): Flow<Boolean> =
+    override fun checkLoginStatus(): Flow<Boolean> =
         authDataSource.getAccessToken().map { accessToken ->
             accessToken?.isNotEmpty() ?: false
         }

@@ -8,6 +8,6 @@ class CheckLoginStatusUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
     operator fun invoke(): Flow<Boolean> {
-        return loginRepository.checkLoginStatue()
+        return loginRepository.checkLoginStatus()
     }
 }

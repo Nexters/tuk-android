@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
     suspend fun googleLogin(accountId: String): Result<Unit>
-    fun checkLoginStatue(): Flow<Boolean>
+    fun checkLoginStatus(): Flow<Boolean>
 }
