@@ -44,6 +44,9 @@ fun CreateGatheringScreen(
                 CreateGatheringSideEffect.NavigateToHomeScreen -> {
 
                 }
+                CreateGatheringSideEffect.NavigateToBack -> {
+
+                }
             }
         }
     }
@@ -67,25 +70,25 @@ fun CreateGatheringScreen(
                 .fillMaxSize(),
             userScrollEnabled = false
         ) { page ->
-            when (page) {
-                0 -> CreateGatheringNameInput(
-                    gatheringName = state.gatheringName,
-                    onNameChange = viewModel::updateGatheringName
-                )
-                1 -> CreateGatheringSelectOption(
-                    selectedOption = state.lastGathering,
-                    onOptionSelected = viewModel::updateLastGatheringType
-                )
-                2 -> CreateGatheringSelectFrequency(
-                    selectedFrequency = state.frequencyGathering,
-                    onFrequencySelected = viewModel::updateFrequency
-                )
-                3 -> CreateGatheringSelectTags(
-                    selectedTags = state.tags,
-                    onToggle = viewModel::toggleTag,
-                    onAddTag = viewModel::onAddTag
-                )
-            }
+//            when (page) {
+//                0 -> CreateGatheringNameInput(
+//                    gatheringName = state.gatheringName,
+//                    onNameChange = viewModel::updateGatheringName
+//                )
+//                1 -> CreateGatheringSelectOption(
+//                    selectedOption = state.lastGathering,
+//                    onOptionSelected = viewModel::updateLastGatheringType
+//                )
+//                2 -> CreateGatheringSelectFrequency(
+//                    selectedFrequency = state.frequencyGathering,
+//                    onFrequencySelected = viewModel::updateFrequency
+//                )
+//                3 -> CreateGatheringSelectTags(
+//                    selectedTags = state.tags,
+//                    onToggle = viewModel::toggleTag,
+//                    onAddTag = viewModel::onAddTag
+//                )
+//            }
 
         }
 
