@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +20,9 @@ import androidx.compose.ui.unit.sp
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun TukTopAppBar(
@@ -30,6 +32,19 @@ fun TukTopAppBar(
     actionButtons: (@Composable RowScope.() -> Unit)? = null,
     onBack: (() -> Unit)? = null
 ) {
+    title?.let {
+        Text(
+            text = it,
+            modifier = Modifier
+                .padding(start = 20.dp),
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
+            )
+        )
+    }
+
     Row(
         modifier = modifier
             .statusBarsPadding()
