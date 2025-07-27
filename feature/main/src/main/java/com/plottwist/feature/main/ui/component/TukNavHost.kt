@@ -9,6 +9,8 @@ import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.home.navigation.homeNavGraph
 import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
+import com.plottwist.feature.mypage.navigation.myPageNavGraph
+import com.plottwist.feature.mypage.navigation.navigateToMyPage
 
 @Composable
 fun TukNavHost(
@@ -23,6 +25,9 @@ fun TukNavHost(
         homeNavGraph(
             navigateToLoginScreen = {
                 navController.navigateToLogin()
+            },
+            navigateToMyPageScreen = {
+                navController.navigateToMyPage()
             }
         )
         loginNavGraph(
@@ -30,5 +35,6 @@ fun TukNavHost(
                 navController.popBackStack()
             }
         )
+        myPageNavGraph()
     }
 }
