@@ -1,6 +1,7 @@
 package com.plottwist.feature.home
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -41,12 +43,22 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val state by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             HomeSideEffect.NavigateToLoginScreen -> {
                 navigateToLoginScreen()
+            }
+
+            HomeSideEffect.NavigateToCreateGatheringScreen -> {
+                // 임시 코드
+                Toast.makeText(context, "모임 생성 화면 이동", Toast.LENGTH_SHORT).show()
+            }
+            HomeSideEffect.NavigateToMyPageScreen -> {
+                // 임시 코드
+                Toast.makeText(context, "마이페이지 화면 이동", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -57,18 +69,18 @@ fun HomeScreen(
             viewModel.handleAction(HomeAction.ClickMyPage)
         },
         onAddGatheringClick = {
-            // 모임 생성하기 버튼 클릭 액션
+            viewModel.handleAction(HomeAction.ClickAddGathering)
         },
         onChangedState = {
             // 바텀 시트 펼쳐지거나 접혔을때 감지
         },
-        isLoggedIn = state.isLoggedIn
+        loginState = state.loginState
     )
 }
 
 @Composable
 private fun HomeScreen(
-    isLoggedIn: Boolean,
+    loginState: LoginState,
     onMyPageClick: () -> Unit,
     onAddGatheringClick: () -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
@@ -92,6 +104,7 @@ private fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp),
+                loginState = loginState,
                 onAddGatheringClick = onAddGatheringClick
             )
         }
@@ -131,9 +144,12 @@ fun HomeTitle(
 
 @Composable
 fun HomeContent(
+    loginState: LoginState,
     onAddGatheringClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if(loginState == LoginState.Loading) return
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
@@ -200,7 +216,7 @@ private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 2
 fun HomeScreenPreview(modifier: Modifier = Modifier) {
     HomeScreen(
         modifier = Modifier.fillMaxSize(),
-        isLoggedIn = false,
+        loginState = LoginState.LoggedIn,
         onMyPageClick = {},
         onAddGatheringClick = {},
         onChangedState = {}
