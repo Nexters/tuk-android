@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.tuk.android.library)
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.tuk.feature)
 }
 
