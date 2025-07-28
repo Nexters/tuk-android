@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.create_gathering.page.CreateGatheringNameInput
-import com.example.create_gathering.page.CreateGatheringSelectChips
+import com.example.create_gathering.page.CreateGatheringSelectTags
 import com.example.create_gathering.page.CreateGatheringSelectFrequency
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.component.StableImage
@@ -72,27 +72,31 @@ fun CreateGatheringScreen(
             when (page) {
                 0 -> CreateGatheringNameInput(
                     value = state.gatheringName,
-                    onValueChange = viewModel::updateGatheringName,
-                    onNext = viewModel::onClickNext
+                    onValueChange = {
+                        viewModel.onAction(CreateGatheringAction.UpdateGatheringName(it))
+                    },
+                    onNext = {
+                        viewModel.onAction(CreateGatheringAction.ClickNext)
+                    }
                 )
 
                 1 -> CreateGatheringSelectFrequency(
                     selectedOption = state.frequencyGathering,
                     onOptionSelected = {
-                        viewModel.updateFrequencyGathering(it)
-                        viewModel.onClickNext()
+                        viewModel.onAction(CreateGatheringAction.UpdateFrequency(it))
+                        viewModel.onAction(CreateGatheringAction.ClickNext)
                     }
                 )
 
-                2 -> CreateGatheringSelectChips(
-                    selectedTags = state.tags,
-                    onToggle = { tag ->
-                        viewModel.updateTags(tag)
-                    },
-                    onClickPrev = viewModel::onClickPrev,
-                    onClickNext = viewModel::onClickNext,
-                    onClickSkip = viewModel::onClickSkip
-                )
+                2 ->
+                    CreateGatheringSelectTags(
+                        categories = state.tagCategories,
+                        selectedTags = state.tags,
+                        onToggle = { viewModel.onAction(CreateGatheringAction.ToggleTag(it)) },
+                        onClickPrev = { viewModel.onAction(CreateGatheringAction.ClickPrev) },
+                        onClickNext = { viewModel.onAction(CreateGatheringAction.SubmitGathering) },
+                        onClickSkip = { viewModel.onAction(CreateGatheringAction.ClickSkip) }
+                    )
             }
 
         }

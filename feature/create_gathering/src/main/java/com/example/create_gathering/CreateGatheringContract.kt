@@ -1,13 +1,15 @@
 package com.example.create_gathering
 
-import com.example.create_gathering.model.GatheringHashTag
+import com.example.create_gathering.model.GatheringTag
+import com.example.create_gathering.model.TagCategory
 
 data class CreateGatheringState(
     val currentPage: Int = 0,
     val gatheringName: String = "",
     val lastGathering: String = "",
     val frequencyGathering:String = "",
-    val tags: List<String> = emptyList(),
+    val tags: List<GatheringTag> = emptyList(),
+    val tagCategories: List<TagCategory> = emptyList(),
     val description: String = ""
 )
 
@@ -20,8 +22,7 @@ sealed class CreateGatheringAction {
     data class UpdateGatheringName(val name: String) : CreateGatheringAction()
     data class UpdateLastGatheringType(val type: String) : CreateGatheringAction()
     data class UpdateFrequency(val frequency: String) : CreateGatheringAction()
-    data class ToggleTag(val tag: GatheringHashTag) : CreateGatheringAction()
-    data class AddTag(val tag: GatheringHashTag) : CreateGatheringAction()
+    data class ToggleTag(val tag: GatheringTag) : CreateGatheringAction()
 }
 
 sealed class CreateGatheringSideEffect {

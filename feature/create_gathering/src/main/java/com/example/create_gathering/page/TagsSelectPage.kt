@@ -30,13 +30,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.create_gathering.R
+import com.example.create_gathering.model.GatheringTag
+import com.example.create_gathering.model.TagCategory
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
 
 @Composable
-fun CreateGatheringSelectChips(
-    selectedTags: List<String>,
-    onToggle: (String) -> Unit,
+fun CreateGatheringSelectTags(
+    categories: List<TagCategory>,
+    selectedTags: List<GatheringTag>,
+    onToggle: (GatheringTag) -> Unit,
     onClickPrev: () -> Unit,
     onClickNext: () -> Unit,
     onClickSkip: () -> Unit
@@ -60,20 +63,20 @@ fun CreateGatheringSelectChips(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val activityTags = listOf("밥 먹기", "드라이브", "호캉스", "당일치기 여행", "보드게임", "연애 이야기")
-        val homeTags = listOf("디저트 투어", "영화 보기", "집콕 수다", "요리하기")
-        val travelTags = listOf("국내여행", "해외여행", "캠핑", "산책")
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
         ) {
-            CategoryItem("액티비티", activityTags, selectedTags, onToggle)
-            Spacer(modifier = Modifier.height(24.dp))
-            CategoryItem("집에서", homeTags, selectedTags, onToggle)
-            Spacer(modifier = Modifier.height(24.dp))
-            CategoryItem("여행/나들이", travelTags, selectedTags, onToggle)
+            categories.forEach { category ->
+                CategoryItem(
+                    title = category.categoryName,
+                    tags = category.tags,
+                    selectedTags = selectedTags,
+                    onToggle = onToggle
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -133,9 +136,9 @@ fun CreateGatheringSelectChips(
 @Composable
 fun CategoryItem(
     title: String,
-    tags: List<String>,
-    selectedTags: List<String>,
-    onToggle: (String) -> Unit
+    tags: List<GatheringTag>,
+    selectedTags: List<GatheringTag>,
+    onToggle: (GatheringTag) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
@@ -157,9 +160,9 @@ fun CategoryItem(
 
 @Composable
 fun SelectableTag(
-    tag: String,
-    selectedTags: List<String>,
-    onToggle: (String) -> Unit
+    tag: GatheringTag,
+    selectedTags: List<GatheringTag>,
+    onToggle: (GatheringTag) -> Unit
 ) {
     val isSelected = selectedTags.contains(tag)
 
@@ -178,16 +181,15 @@ fun SelectableTag(
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
-            text = tag,
+            text = tag.name, // 🔥 수정: text = tag → text = tag.name
             style = TukPretendardTypography.body14R,
             color = if (isSelected) Color.White else Color.Black
         )
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
 fun PreviewTagOption() {
-    CreateGatheringSelectChips(emptyList(), {}, {}, {}, {})
+    CreateGatheringSelectTags(emptyList(), emptyList(),{}, {}, {}, {})
 }

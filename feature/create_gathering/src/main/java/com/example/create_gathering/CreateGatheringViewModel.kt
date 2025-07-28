@@ -1,53 +1,83 @@
 package com.example.create_gathering
 
 import androidx.lifecycle.ViewModel
+import com.example.create_gathering.model.toPresentation
+import com.plottwist.core.domain.gathering.usecase.GetGatheringTagsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateGatheringViewModel @Inject constructor() :
-    ContainerHost<CreateGatheringState, CreateGatheringSideEffect>, ViewModel() {
+class CreateGatheringViewModel @Inject constructor(
+    private val getGatheringTagsUseCase: GetGatheringTagsUseCase
+) : ContainerHost<CreateGatheringState, CreateGatheringSideEffect>, ViewModel() {
 
     override val container = container<CreateGatheringState, CreateGatheringSideEffect>(
         CreateGatheringState()
     )
-
-    fun onClickNext() = intent {
-        if (state.currentPage < MAX_PAGE) {
-            reduce { state.copy(currentPage = state.currentPage + 1) }
-        } else {
-            postSideEffect(CreateGatheringSideEffect.NavigateToHomeScreen)
+    init {
+        fetchTags()
+    }
+    private fun fetchTags() = intent {
+        getGatheringTagsUseCase().collect { result ->
+            result
+                .onSuccess { categories ->
+                    val allTags = categories.flatMap { it.tags }
+                    val uiTags = allTags.map { it.toPresentation() }
+                    reduce { state.copy(tags = uiTags) }
+                }
+                .onFailure {
+                }
         }
     }
 
-    fun onClickPrev() = intent {
-        if (state.currentPage > 0) {
-            reduce { state.copy(currentPage = state.currentPage - 1) }
+    fun onAction(action: CreateGatheringAction) = intent {
+        when (action) {
+            is CreateGatheringAction.ClickNext -> {
+                if (state.currentPage < MAX_PAGE) {
+                    reduce { state.copy(currentPage = state.currentPage + 1) }
+                } else {
+                    postSideEffect(CreateGatheringSideEffect.NavigateToHomeScreen)
+                }
+            }
+
+            is CreateGatheringAction.ClickPrev -> {
+                if (state.currentPage > 0) {
+                    reduce { state.copy(currentPage = state.currentPage - 1) }
+                }
+            }
+
+            is CreateGatheringAction.ClickSkip -> {
+                reduce { state.copy(currentPage = MAX_PAGE) }
+            }
+
+            is CreateGatheringAction.ToggleTag -> {
+                val updated = if (state.tags.contains(action.tag)) {
+                    state.tags - action.tag
+                } else {
+                    state.tags + action.tag
+                }
+                reduce { state.copy(tags = updated) }
+            }
+
+            is CreateGatheringAction.UpdateGatheringName -> {
+                reduce { state.copy(gatheringName = action.name) }
+            }
+
+            is CreateGatheringAction.UpdateLastGatheringType -> {
+                reduce { state.copy(lastGathering = action.type) }
+            }
+
+            is CreateGatheringAction.UpdateFrequency -> {
+                reduce { state.copy(frequencyGathering = action.frequency) }
+            }
+
+            is CreateGatheringAction.SubmitGathering -> {
+
+                postSideEffect(CreateGatheringSideEffect.NavigateToHomeScreen)
+            }
         }
-    }
-
-    fun onClickSkip() = intent {
-        reduce { state.copy(currentPage = MAX_PAGE) }
-    }
-
-    fun updateGatheringName(name: String) = intent {
-        reduce { state.copy(gatheringName = name) }
-    }
-
-
-    fun updateFrequencyGathering(frequency: String) = intent {
-        reduce { state.copy(frequencyGathering = frequency) }
-    }
-
-    fun updateTags(tag: String) = intent {
-        val newTags = if (state.tags.contains(tag)) {
-            state.tags - tag
-        } else {
-            state.tags + tag
-        }
-        reduce { state.copy(tags = newTags) }
     }
 
     companion object {
