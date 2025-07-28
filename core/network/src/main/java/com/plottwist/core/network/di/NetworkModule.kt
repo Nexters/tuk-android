@@ -3,6 +3,9 @@ package com.plottwist.core.network.di
 import com.plottwist.core.network.config.ServerConfig
 import com.plottwist.core.network.di.qualifier.AuthOkHttpClient
 import com.plottwist.core.network.di.qualifier.AuthRetrofit
+import com.plottwist.core.network.di.qualifier.TukOkHttpClient
+import com.plottwist.core.network.di.qualifier.TukRetrofit
+import com.plottwist.core.network.interceptor.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +39,21 @@ class NetworkModule {
             .build()
     }
 
+    @TukRetrofit
+    @Provides
+    @Singleton
+    fun provideTukRetrofit(
+        @TukOkHttpClient okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
+        serverConfig: ServerConfig
+    ): Retrofit {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(serverConfig.baseUrl)
+            .addConverterFactory(converterFactory)
+            .build()
+    }
+
     @AuthOkHttpClient
     @Provides
     @Singleton
@@ -48,6 +66,22 @@ class NetworkModule {
             writeTimeout(timeout = 15, unit = TimeUnit.SECONDS)
         }.addInterceptor(httpLoggingInterceptor)
          .build()
+    }
+
+    @TukOkHttpClient
+    @Provides
+    @Singleton
+    fun providesTukOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        tokenInterceptor: TokenInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            readTimeout(timeout = 10, unit = TimeUnit.SECONDS)
+            connectTimeout(timeout = 10, unit = TimeUnit.SECONDS)
+            writeTimeout(timeout = 15, unit = TimeUnit.SECONDS)
+        }.addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(tokenInterceptor)
+            .build()
     }
 
     @Provides

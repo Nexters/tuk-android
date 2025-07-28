@@ -9,3 +9,11 @@ annotation class AuthOkHttpClient
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class AuthRetrofit
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class TukOkHttpClient
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class TukRetrofit

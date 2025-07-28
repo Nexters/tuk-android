@@ -2,6 +2,8 @@ package com.plottwist.feature.home
 
 import androidx.lifecycle.ViewModel
 import com.plottwist.core.domain.auth.usecase.CheckLoginStatusUseCase
+import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
+import com.plottwist.core.domain.model.Gatherings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
@@ -11,18 +13,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val checkLoginStatusUseCase: CheckLoginStatusUseCase
+    private val checkLoginStatusUseCase: CheckLoginStatusUseCase,
+    private val getGatheringsUseCase: GetGatheringsUseCase
 ) : ContainerHost<HomeState, HomeSideEffect>, ViewModel() {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         observeLoginState()
-    }
-
-    private fun observeLoginState() = intent {
-        checkLoginStatusUseCase().map { isLoggedIn ->
-            if(isLoggedIn) LoginState.LoggedIn else LoginState.LoggedOut
-        }.collectLatest {
-            reduce { state.copy(loginState = it) }
-        }
     }
 
     fun handleAction(action: HomeAction) {
@@ -34,6 +29,37 @@ class HomeViewModel @Inject constructor(
             HomeAction.ClickAddGathering -> {
                 handleAddGatheringClick()
             }
+        }
+    }
+
+    private fun observeLoginState() = intent {
+        checkLoginStatusUseCase().map { isLoggedIn ->
+            if(isLoggedIn) LoginState.LoggedIn else LoginState.LoggedOut
+        }.collectLatest { loginState ->
+            when(loginState) {
+                LoginState.LoggedIn -> {
+                    fetchGatherings(loginState)
+                }
+
+                else -> {
+                    reduce { state.copy(loginState = loginState) }
+                }
+            }
+        }
+    }
+
+    private fun fetchGatherings(loginState: LoginState) = intent {
+        val result = getGatheringsUseCase()
+
+        if(result.isSuccess) {
+            reduce {
+                state.copy(
+                    loginState = loginState,
+                    gatherings = result.getOrNull() ?: return@reduce state
+                )
+            }
+        } else {
+            reduce { state.copy(loginState = loginState) }
         }
     }
 
