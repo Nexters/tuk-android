@@ -55,8 +55,7 @@ fun HomeScreen(
             }
 
             HomeSideEffect.NavigateToCreateGatheringScreen -> {
-                // 임시 코드
-                Toast.makeText(context, "모임 생성 화면 이동", Toast.LENGTH_SHORT).show()
+                navigateToCreateGathering()
             }
             HomeSideEffect.NavigateToMyPageScreen -> {
                 navigateToMyPageScreen()
