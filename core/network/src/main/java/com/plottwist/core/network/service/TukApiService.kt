@@ -3,6 +3,7 @@ package com.plottwist.core.network.service
 import com.plottwist.core.network.model.gathering.CreateGatheringRequest
 import com.plottwist.core.network.model.gathering.CreateGatheringResponse
 import com.plottwist.core.network.model.gathering.GetTagsResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -10,11 +11,11 @@ import retrofit2.http.POST
 interface TukApiService {
 
     @POST("/api/v1/gatherings")
-    fun createGathering(
+    suspend fun createGathering(
         @Body body:CreateGatheringRequest
-    ): CreateGatheringResponse
+    ):  Response<CreateGatheringResponse>
 
     @GET("/api/v1/tags")
-    fun getGatheringTags():GetTagsResponse
+    suspend fun getGatheringTags():GetTagsResponse
 
 }

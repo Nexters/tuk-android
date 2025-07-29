@@ -2,6 +2,8 @@ package com.example.create_gathering
 
 import androidx.lifecycle.ViewModel
 import com.example.create_gathering.model.toPresentation
+import com.plottwist.core.domain.gathering.model.CreateGatheringModel
+import com.plottwist.core.domain.gathering.usecase.CreateGatheringUseCase
 import com.plottwist.core.domain.gathering.usecase.GetGatheringTagsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateGatheringViewModel @Inject constructor(
-    private val getGatheringTagsUseCase: GetGatheringTagsUseCase
+    private val getGatheringTagsUseCase: GetGatheringTagsUseCase,
+    private val createGatheringUseCase: CreateGatheringUseCase
 ) : ContainerHost<CreateGatheringState, CreateGatheringSideEffect>, ViewModel() {
 
     override val container = container<CreateGatheringState, CreateGatheringSideEffect>(
@@ -65,19 +68,29 @@ class CreateGatheringViewModel @Inject constructor(
                 reduce { state.copy(gatheringName = action.name) }
             }
 
-            is CreateGatheringAction.UpdateLastGatheringType -> {
-                reduce { state.copy(lastGathering = action.type) }
-            }
-
-            is CreateGatheringAction.UpdateFrequency -> {
-                reduce { state.copy(frequencyGathering = action.frequency) }
+            is CreateGatheringAction.UpdateIntervalDays -> {
+                reduce { state.copy(intervalDays = action.intervalDays) }
             }
 
             is CreateGatheringAction.SubmitGathering -> {
-
-                postSideEffect(CreateGatheringSideEffect.NavigateToHomeScreen)
+                createGathering()
             }
         }
+    }
+
+    private fun createGathering() = intent {
+        val model = CreateGatheringModel(
+            name = state.gatheringName,
+            intervalDays = state.intervalDays,
+            tagIds = state.tags.map { it.id }
+        )
+
+        createGatheringUseCase(model)
+            .onSuccess {
+                postSideEffect(CreateGatheringSideEffect.NavigateToHomeScreen)
+            }
+            .onFailure {
+            }
     }
 
     companion object {

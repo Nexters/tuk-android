@@ -1,7 +1,6 @@
 package com.plottwist.core.network.di
 
 import com.plottwist.core.network.di.qualifier.AuthRetrofit
-import com.plottwist.core.network.di.qualifier.TukRetrofit
 import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.network.service.TukApiService
 import dagger.Module

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.create_gathering.page.CreateGatheringNameInput
 import com.example.create_gathering.page.CreateGatheringSelectTags
-import com.example.create_gathering.page.CreateGatheringSelectFrequency
+import com.example.create_gathering.page.CreateGatheringSelectIntervalDays
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.component.StableImage
 
@@ -80,10 +80,10 @@ fun CreateGatheringScreen(
                     }
                 )
 
-                1 -> CreateGatheringSelectFrequency(
-                    selectedOption = state.frequencyGathering,
+                1 -> CreateGatheringSelectIntervalDays(
+                    selectedOption = state.intervalDays,
                     onOptionSelected = {
-                        viewModel.onAction(CreateGatheringAction.UpdateFrequency(it))
+                        viewModel.onAction(CreateGatheringAction.UpdateIntervalDays(it))
                         viewModel.onAction(CreateGatheringAction.ClickNext)
                     }
                 )

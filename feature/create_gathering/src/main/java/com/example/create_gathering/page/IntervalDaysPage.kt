@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,13 +33,15 @@ import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
 
 @Composable
-fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (String) -> Unit) {
-
+fun CreateGatheringSelectIntervalDays(
+    selectedOption: Int,
+    onOptionSelected: (Int) -> Unit
+) {
     val options = listOf(
-        "한달" to "매월 만남",
-        "2개월" to "2개월 마다 만남",
-        "3개월" to "분기별 만남",
-        "6개월" to "6개월 마다 만남"
+        Triple(30, "한달", "매월 만남"),
+        Triple(60, "2개월", "2개월 마다 만남"),
+        Triple(90, "3개월", "분기별 만남"),
+        Triple(180, "6개월", "6개월 마다 만남")
     )
 
     Column(
@@ -50,7 +51,7 @@ fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (St
     ) {
         Spacer(modifier = Modifier.height(10.dp))
 
-        StableImage(drawableResId = R.drawable.image_frequency_title)
+        StableImage(drawableResId = R.drawable.image_interval_days_title)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -61,8 +62,7 @@ fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (St
             modifier = Modifier.padding(bottom = 48.dp)
         )
 
-
-        options.forEachIndexed { index, (title, subtitle) ->
+        options.forEachIndexed { index, (days, title, subtitle) ->
             Column {
                 Row(
                     modifier = Modifier
@@ -70,9 +70,7 @@ fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (St
                         .padding(vertical = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = title,
                             style = TukPretendardTypography.body14M
@@ -86,8 +84,8 @@ fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (St
                     }
 
                     RadioButton(
-                        selected = selectedOption == title,
-                        onClick = { onOptionSelected(title) },
+                        selected = selectedOption == days,
+                        onClick = { onOptionSelected(days) },
                         colors = RadioButtonDefaults.colors(
                             selectedColor = Color.Black,
                             unselectedColor = Color(0xFFCCCCCC)
@@ -97,8 +95,7 @@ fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (St
 
                 if (index < options.lastIndex) {
                     HorizontalDivider(
-                        modifier = Modifier
-                            .padding(0.dp),
+                        modifier = Modifier.padding(0.dp),
                         thickness = 1.dp,
                         color = Color(0xFFEEEEEE)
                     )
@@ -169,6 +166,6 @@ fun CreateGatheringSelectFrequency(selectedOption: String, onOptionSelected: (St
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewFrequency() {
-    CreateGatheringSelectFrequency("") { }
+fun PreviewIntervalDays() {
+    CreateGatheringSelectIntervalDays(0) { }
 }

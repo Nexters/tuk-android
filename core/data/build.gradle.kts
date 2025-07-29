@@ -11,4 +11,6 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:preference"))
     implementation(project(":core:domain"))
+
+    implementation(libs.retrofit)
 }
