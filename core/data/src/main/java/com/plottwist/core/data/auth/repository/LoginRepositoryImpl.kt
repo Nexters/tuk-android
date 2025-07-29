@@ -6,7 +6,6 @@ import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 
@@ -40,8 +39,9 @@ class LoginRepositoryImpl @Inject constructor(
                 Result.success(Unit)
 
             } else {
-                Result.failure(Exception("HTTP ${response.success}"))
+                Result.failure(Exception("Fail Google Login"))
             }
+
         } catch (e: Exception) {
             Result.failure(e)
         }
