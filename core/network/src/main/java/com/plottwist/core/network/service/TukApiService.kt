@@ -12,7 +12,6 @@ import retrofit2.http.POST
 interface TukApiService {
     @GET("/api/v1/gatherings")
     suspend fun getGatherings(): GatheringsResponse
-}
 
     @POST("/api/v1/gatherings")
     suspend fun createGathering(
@@ -21,5 +20,4 @@ interface TukApiService {
 
     @GET("/api/v1/tags")
     suspend fun getGatheringTags():GetTagsResponse
-
 }

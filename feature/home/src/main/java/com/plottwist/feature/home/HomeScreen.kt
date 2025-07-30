@@ -73,6 +73,9 @@ fun HomeScreen(
         onAddGatheringClick = {
             viewModel.handleAction(HomeAction.ClickAddGathering)
         },
+        onGatheringClick = {
+            // TODO
+        },
         onChangedState = {
             // 바텀 시트 펼쳐지거나 접혔을때 감지
         },
@@ -87,6 +90,7 @@ private fun HomeScreen(
     gatherings: Gatherings,
     onMyPageClick: () -> Unit,
     onAddGatheringClick: () -> Unit,
+    onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -110,7 +114,8 @@ private fun HomeScreen(
                     .padding(bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp),
                 loginState = loginState,
                 gatherings = gatherings,
-                onAddGatheringClick = onAddGatheringClick
+                onAddGatheringClick = onAddGatheringClick,
+                onGatheringClick = onGatheringClick
             )
         }
         HomeBottomSheet(
@@ -191,6 +196,7 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         gatherings = Gatherings(),
         onMyPageClick = {},
         onAddGatheringClick = {},
+        onGatheringClick = {},
         onChangedState = {}
     )
 }
