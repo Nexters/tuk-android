@@ -16,4 +16,7 @@ sealed interface Route {
 
     @Serializable
     data object CreateGathering: Route
+
+    @Serializable
+    data object InviteGathering: Route
 }
