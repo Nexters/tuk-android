@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.create_gathering"
+    namespace = "com.plottwist.tuk.feature.create_gathering"
 }
 
 dependencies {
