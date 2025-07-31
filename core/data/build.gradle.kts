@@ -13,4 +13,6 @@ dependencies {
     implementation(project(":core:domain"))
 
     implementation(libs.retrofit)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.android)
 }
