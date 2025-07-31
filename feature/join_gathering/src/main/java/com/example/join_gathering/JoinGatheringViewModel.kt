@@ -21,9 +21,6 @@ class JoinGatheringViewModel @Inject constructor(
                 reduce { JoinGatheringState.Loading }
 
                 joinGatheringUseCase(action.gatheringId)
-                    .catch {
-                        postSideEffect(JoinGatheringSideEffect.ShowToast("ssss"))
-                    }
                     .collect { result ->
                         result.fold(
                             onSuccess = {
