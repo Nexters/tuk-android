@@ -21,6 +21,10 @@ dependencyResolutionManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version("1.0.0")
+}
+
 rootProject.name = "tuk"
 include(":app")
 include(":core:network")
@@ -34,3 +38,4 @@ include(":feature:login")
 include(":feature:main")
 include(":core:ui-navigation")
 include(":core:auth-provider")
+include(":feature:mypage")

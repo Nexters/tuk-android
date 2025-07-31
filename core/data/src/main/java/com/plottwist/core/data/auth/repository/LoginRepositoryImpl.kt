@@ -6,6 +6,9 @@ import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
@@ -46,4 +49,9 @@ class LoginRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override fun checkLoginStatus(): Flow<Boolean> =
+        authDataSource.getAccessToken().map { accessToken ->
+            accessToken?.isNotEmpty() ?: false
+        }
 }

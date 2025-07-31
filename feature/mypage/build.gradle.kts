@@ -4,13 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.plottwist.feature.main"
+    namespace = "com.plottwist.feature.mypage"
 }
 
 dependencies {
-    implementation(project(":feature:home"))
-    implementation(project(":feature:login"))
-    implementation(project(":feature:mypage"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
