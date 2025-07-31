@@ -18,6 +18,7 @@ import com.example.create_gathering.page.CreateGatheringSelectIntervalDays
 import com.example.create_gathering.page.CreateGatheringSelectTags
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.component.StableImage
+import com.plottwist.tuk.feature.create_gathering.R
 
 @Composable
 fun CreateGatheringScreen(
@@ -114,7 +115,7 @@ fun TopAppBarCloseButton(
         onClick = onCloseClicked
     ) {
         StableImage(
-            drawableResId = com.example.create_gathering.R.drawable.ic_close_button
+            drawableResId = R.drawable.ic_close_button
         )
     }
 }

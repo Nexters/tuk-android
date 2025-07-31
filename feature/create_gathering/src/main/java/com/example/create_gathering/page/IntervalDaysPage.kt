@@ -28,10 +28,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.create_gathering.CreateGatheringAction
-import com.example.create_gathering.R
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
+import com.plottwist.tuk.feature.create_gathering.R
 
 @Composable
 fun CreateGatheringSelectIntervalDays(
