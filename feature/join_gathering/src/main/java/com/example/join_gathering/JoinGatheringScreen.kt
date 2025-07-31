@@ -45,7 +45,12 @@ fun JoinGatheringScreen(
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.container.sideEffectFlow.collect {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when(sideEffect) {
+                is JoinGatheringSideEffect.NavigateToGatheringDetail ->{
+
+                }
+            }
 
         }
     }
