@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.create_gathering.CreateGatheringAction
 import com.example.create_gathering.R
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
@@ -35,7 +36,8 @@ import com.plottwist.core.ui.component.StableImage
 @Composable
 fun CreateGatheringSelectIntervalDays(
     selectedOption: Int,
-    onOptionSelected: (Int) -> Unit
+    onOptionSelected: (Int) -> Unit,
+    onNext: () -> Unit
 ) {
     val options = listOf(
         Triple(30, "한달", "매월 만남"),
@@ -130,7 +132,7 @@ fun CreateGatheringSelectIntervalDays(
             }
 
             Button(
-                onClick = { },
+                onClick = { onNext()},
                 modifier = Modifier
                     .weight(1f)
                     .height(53.dp),
@@ -167,5 +169,5 @@ fun CreateGatheringSelectIntervalDays(
 @Composable
 @Preview(showBackground = true)
 fun PreviewIntervalDays() {
-    CreateGatheringSelectIntervalDays(0) { }
+    CreateGatheringSelectIntervalDays(0,{}) { }
 }

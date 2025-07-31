@@ -1,20 +1,21 @@
 package com.example.create_gathering
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.create_gathering.page.CreateGatheringNameInput
-import com.example.create_gathering.page.CreateGatheringSelectTags
 import com.example.create_gathering.page.CreateGatheringSelectIntervalDays
+import com.example.create_gathering.page.CreateGatheringSelectTags
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.component.StableImage
 
@@ -50,23 +51,21 @@ fun CreateGatheringScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TukTopAppBar(
-                actionButtons = {
-                    TopAppBarCloseButton(
-                        onCloseClicked = {}
-                    )
-                }
-            )
-        },
-        bottomBar = {}
-    ) { innerPadding ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        TukTopAppBar(
+            actionButtons = {
+                TopAppBarCloseButton(onCloseClicked = { /* TODO */ })
+            }
+        )
+
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(top = 56.dp),
             userScrollEnabled = false
         ) { page ->
             when (page) {
@@ -84,23 +83,22 @@ fun CreateGatheringScreen(
                     selectedOption = state.intervalDays,
                     onOptionSelected = {
                         viewModel.onAction(CreateGatheringAction.UpdateIntervalDays(it))
+                    },
+                    onNext = {
                         viewModel.onAction(CreateGatheringAction.ClickNext)
                     }
                 )
 
-                2 ->
-                    CreateGatheringSelectTags(
-                        categories = state.tagCategories,
-                        selectedTags = state.tags,
-                        onToggle = { viewModel.onAction(CreateGatheringAction.ToggleTag(it)) },
-                        onClickPrev = { viewModel.onAction(CreateGatheringAction.ClickPrev) },
-                        onClickNext = { viewModel.onAction(CreateGatheringAction.SubmitGathering) },
-                        onClickSkip = { viewModel.onAction(CreateGatheringAction.ClickSkip) }
-                    )
+                2 -> CreateGatheringSelectTags(
+                    categories = state.tagCategories,
+                    selectedTags = state.tags,
+                    onToggle = { viewModel.onAction(CreateGatheringAction.ToggleTag(it)) },
+                    onClickPrev = { viewModel.onAction(CreateGatheringAction.ClickPrev) },
+                    onClickNext = { viewModel.onAction(CreateGatheringAction.SubmitGathering) },
+                    onClickSkip = { viewModel.onAction(CreateGatheringAction.ClickSkip) }
+                )
             }
-
         }
-
     }
 
 
