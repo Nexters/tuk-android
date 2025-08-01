@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -110,8 +111,8 @@ fun GatheringItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column (
-        modifier = modifier
+    Row(
+        modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .padding(vertical = 12.dp)
@@ -121,31 +122,41 @@ fun GatheringItem(
             ) {
                 onClick()
             },
-        verticalArrangement = Arrangement.spacedBy(2.dp)
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Absolute.SpaceBetween
     ) {
-        Text(
-            text = gatheringName,
-            style = TukPretendardTypography.body14M,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = Color(0xFF1f1f1f)
-        )
-
-        Row (
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        Column (
+            modifier = Modifier.padding(end = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = stringResource(R.string.home_last_alarm),
-                style = TukPretendardTypography.body14R,
-                color = Color(0xFF888888)
+                text = gatheringName,
+                style = TukPretendardTypography.body14M,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = Color(0xFF1f1f1f)
             )
 
-            Text(
-                text = lastAlarm,
-                style = TukPretendardTypography.body14R,
-                color = Color(0xFF888888)
-            )
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.home_last_alarm),
+                    style = TukPretendardTypography.body14R,
+                    color = Color(0xFF888888)
+                )
+
+                Text(
+                    text = lastAlarm,
+                    style = TukPretendardTypography.body14R,
+                    color = Color(0xFF888888)
+                )
+            }
         }
+        Icon(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_next_arrow),
+            contentDescription = "next arrow"
+        )
     }
 }
 
