@@ -1,10 +1,12 @@
 package com.plottwist.core.designsystem.foundation.type
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.plottwist.core.designsystem.R
 
@@ -15,7 +17,14 @@ private val pretendardFamily = FontFamily(
     Font(R.font.pretendard_regular, FontWeight.Normal),
 )
 private val PretendardStyle = TextStyle(
-    fontFamily = pretendardFamily
+    fontFamily = pretendardFamily,
+    platformStyle = PlatformTextStyle(
+        includeFontPadding = false
+    ),
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.None
+    )
 )
 
 val TukPretendardTypography = PretendardTypography(
