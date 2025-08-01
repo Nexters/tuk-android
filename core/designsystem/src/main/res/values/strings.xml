@@ -18,4 +18,5 @@
     <string name="gathering_detail_last_alarm_title">마지막 알림</string>
     <string name="gathering_detail_sent_invitation">보낸 초대장</string>
     <string name="gathering_detail_received_invitation">받은 초대장</string>
+    <string name="gathering_detail_member">멤버 %d</string>
 </resources>

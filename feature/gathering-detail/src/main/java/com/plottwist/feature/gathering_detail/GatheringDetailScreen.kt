@@ -27,6 +27,7 @@ import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.feature.gathering_detail.component.GatheringInfo
+import com.plottwist.feature.gathering_detail.component.GatheringMembers
 
 @Composable
 fun GatheringDetailScreen(
@@ -37,6 +38,7 @@ fun GatheringDetailScreen(
 
 @Composable
 private fun GatheringDetailScreen(
+    members: List<String>,
     gatheringTitle: String,
     lastAlarm: String,
     sentInvitationCount: Int,
@@ -45,11 +47,12 @@ private fun GatheringDetailScreen(
     onProposalClick: () -> Unit,
     onSentInvitationClick: () -> Unit,
     onReceivedInvitationClick: () -> Unit,
+    onInviteMemberClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 20.dp)
+        modifier = modifier.padding(horizontal = 20.dp),
+        contentPadding = PaddingValues(bottom = 40.dp)
     ) {
         item(key = Items.TITLE) {
             GatheringTitle(gatheringTitle)
@@ -77,7 +80,11 @@ private fun GatheringDetailScreen(
         }
 
         item(key = Items.MEMBERS) {
-
+            GatheringMembers(
+                modifier = Modifier.padding(top = 30.dp),
+                members = members,
+                onInviteMemberClick = onInviteMemberClick
+            )
         }
     }
 }
@@ -134,6 +141,7 @@ private enum class Items {
 private fun GatheringDetailScreenPreview() {
     GatheringDetailScreen(
         modifier = Modifier.fillMaxSize(),
+        members = listOf("정석준","이준우","김준식"),
         gatheringTitle = "다음 만남은 계획대로 되지 않아",
         lastAlarm = "3달 전",
         sentInvitationCount = 99,
@@ -141,6 +149,7 @@ private fun GatheringDetailScreenPreview() {
         onAlarmSettingClick = {},
         onProposalClick = {},
         onSentInvitationClick = {},
-        onReceivedInvitationClick = {}
+        onReceivedInvitationClick = {},
+        onInviteMemberClick = {}
     )
 }
