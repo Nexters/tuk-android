@@ -46,13 +46,25 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeBottomSheet(
+    whenLabel: String,
+    whereLabel: String,
+    whatLabel: String,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     onChangedState: (HomeBottomSheetState) -> Unit,
+    onWhenRefreshClick: () -> Unit,
+    onWhereRefreshClick: () -> Unit,
+    onWhatRefreshClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     DraggableBottomSheet(
         modifier = modifier,
+        whenLabel = whenLabel,
+        whereLabel = whereLabel,
+        whatLabel = whatLabel,
+        onWhenRefreshClick = onWhenRefreshClick,
+        onWhereRefreshClick = onWhereRefreshClick,
+        onWhatRefreshClick = onWhatRefreshClick,
         sheetPeekHeight = sheetPeekHeight,
         sheetFullHeight = sheetFullHeight,
         onChangedState = onChangedState
@@ -62,9 +74,15 @@ fun HomeBottomSheet(
 @Composable
 fun DraggableBottomSheet(
     modifier: Modifier = Modifier,
+    whenLabel: String,
+    whereLabel: String,
+    whatLabel: String,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     onChangedState: (HomeBottomSheetState) -> Unit,
+    onWhenRefreshClick: () -> Unit,
+    onWhereRefreshClick: () -> Unit,
+    onWhatRefreshClick: () -> Unit,
     thresholdHeight: Dp = 30.dp,
     shape: RoundedCornerShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
     borderColor: Color = Color(0xAAE1E1E1),
@@ -83,7 +101,7 @@ fun DraggableBottomSheet(
     LaunchedEffect(Unit) {
         snapshotFlow { offsetY.value }
             .map { offset ->
-                when(offset) {
+                when (offset) {
                     0f -> HomeBottomSheetState.EXPANDED
                     sheetFullPx - sheetPeekPx -> HomeBottomSheetState.COLLAPSED
                     else -> HomeBottomSheetState.CHANGING
@@ -173,19 +191,39 @@ fun DraggableBottomSheet(
             ) {
                 DragHandle()
 
+                Column (
+                    modifier = Modifier
+                        .padding(top = sheetPeekHeight / 2 - 20.dp)
+                        .height(20.dp)
+                )  {
+                    AnimatedVisibility(
+                        visible = offsetY.value > (sheetFullPx - sheetPeekPx) * 2 / 3,
+                        enter = fadeIn(tween(200)),
+                        exit = fadeOut(tween(200))
+                    ) {
+                        Text(
+                            text = stringResource(R.string.home_bottom_sheet_nudging_text),
+                            style = TukSerifTypography.body14R
+                        )
+                    }
+                }
+
                 AnimatedVisibility(
-                    visible = offsetY.value > (sheetFullPx - sheetPeekPx) / 2,
+                    visible = offsetY.value <= (sheetFullPx - sheetPeekPx) * 2 / 3,
                     enter = fadeIn(tween(200)),
                     exit = fadeOut(tween(200))
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(top = sheetPeekHeight / 2 - 20.dp)
-                            .height(20.dp),
-                        text = stringResource(R.string.home_bottom_sheet_nudging_text),
-                        style = TukSerifTypography.body14R
+                    RandomProposal(
+                        modifier = Modifier.padding(top = 4.dp),
+                        whenLabel = whenLabel,
+                        whereLabel = whereLabel,
+                        whatLabel = whatLabel,
+                        onWhenRefreshClick = onWhenRefreshClick,
+                        onWhereRefreshClick = onWhereRefreshClick,
+                        onWhatRefreshClick = onWhatRefreshClick
                     )
                 }
+
 
             }
         }
@@ -196,13 +234,14 @@ fun DraggableBottomSheet(
 fun DragHandle(
     modifier: Modifier = Modifier
 ) {
-    Spacer(modifier = modifier
-        .background(
-            color = Color(0xFFE0E0E0),
-            shape = RoundedCornerShape(4.dp)
-        )
-        .width(35.dp)
-        .height(4.dp)
+    Spacer(
+        modifier = modifier
+            .background(
+                color = Color(0xFFE0E0E0),
+                shape = RoundedCornerShape(4.dp)
+            )
+            .width(35.dp)
+            .height(4.dp)
     )
 }
 

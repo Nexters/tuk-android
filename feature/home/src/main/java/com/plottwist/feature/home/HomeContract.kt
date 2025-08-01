@@ -4,12 +4,18 @@ import com.plottwist.core.domain.model.Gatherings
 
 data class HomeState(
     val loginState: LoginState = LoginState.Loading,
-    val gatherings: Gatherings = Gatherings()
+    val gatherings: Gatherings = Gatherings(),
+    val whenLabel: String = HomeViewModel.whenLabels.firstOrNull() ?: "",
+    val whereLabel: String = HomeViewModel.whereLabels.firstOrNull() ?: "",
+    val whatLabel: String = HomeViewModel.whatLabels.firstOrNull() ?: "",
 )
 
 sealed class HomeAction {
     data object ClickMyPage : HomeAction()
     data object ClickAddGathering : HomeAction()
+    data object ClickRefreshWhere : HomeAction()
+    data object ClickRefreshWhen : HomeAction()
+    data object ClickRefreshWhat : HomeAction()
 }
 
 sealed class HomeSideEffect {
