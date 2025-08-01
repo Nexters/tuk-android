@@ -61,7 +61,7 @@ fun GatheringsCard(
         gatherings.gatheringOverviews.forEach { gathering ->
             GatheringItem(
                 gatheringName = gathering.gatheringName,
-                lastAlarm = gathering.monthsSinceLastGathering.toString(),
+                lastAlarm = gathering.lastNotificationRelativeTime.toString(),
                 onClick = {
                     onGatheringClick(gathering.gatheringId)
                 }

@@ -21,5 +21,5 @@ data class GatheringsData(
 data class GatheringOverviewsData(
     val gatheringId: Long,
     val gatheringName: String,
-    val monthsSinceLastGathering: Int
+    val lastNotificationRelativeTime: String
 )

@@ -4,7 +4,6 @@ import com.plottwist.core.domain.model.GatheringOverviews
 import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.core.network.model.gathering.GatheringOverviewsData
 import com.plottwist.core.network.model.gathering.GatheringsData
-import com.plottwist.core.network.model.gathering.GatheringsResponse
 
 fun GatheringsData.toDomainModel() : Gatherings {
     return Gatherings(
@@ -19,6 +18,6 @@ fun GatheringOverviewsData.toDomainModel() : GatheringOverviews {
     return GatheringOverviews(
         gatheringId = this.gatheringId,
         gatheringName = this.gatheringName,
-        monthsSinceLastGathering = this.monthsSinceLastGathering
+        lastNotificationRelativeTime = this.lastNotificationRelativeTime
     )
 }
