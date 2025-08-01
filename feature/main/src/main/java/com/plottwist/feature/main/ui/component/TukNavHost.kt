@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.create_gathering.navigation.createGatheringNavGraph
+import com.example.create_gathering.navigation.navigateToCreateGathering
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.home.navigation.homeNavGraph
 import com.plottwist.feature.login.navigation.loginNavGraph
@@ -28,6 +30,9 @@ fun TukNavHost(
             },
             navigateToMyPageScreen = {
                 navController.navigateToMyPage()
+            },
+            navigateToCreateGathering = {
+                navController.navigateToCreateGathering()
             }
         )
         loginNavGraph(
@@ -36,5 +41,10 @@ fun TukNavHost(
             }
         )
         myPageNavGraph()
+        createGatheringNavGraph(
+            onSubmit = {
+                navController.popBackStack(Route.Home, inclusive = false)
+            }
+        )
     }
 }

@@ -11,4 +11,8 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:preference"))
     implementation(project(":core:domain"))
+
+    implementation(libs.retrofit)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.android)
 }

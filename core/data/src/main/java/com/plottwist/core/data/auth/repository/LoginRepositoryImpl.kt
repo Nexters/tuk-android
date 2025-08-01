@@ -36,17 +36,15 @@ class LoginRepositoryImpl @Inject constructor(
 
             if (response.success) {
                 val result = response.data
-
-                if (result != null) {
-                    authDataSource.setAccessToken(result.accessToken).collect()
-                    authDataSource.setRefreshToken(result.refreshToken).collect()
-                }
+                authDataSource.setAccessToken(result.accessToken)
+                authDataSource.setRefreshToken(result.refreshToken)
 
                 Result.success(Unit)
 
             } else {
-                Result.failure(Exception("HTTP ${response.success}"))
+                Result.failure(Exception("Fail Google Login"))
             }
+
         } catch (e: Exception) {
             Result.failure(e)
         }
