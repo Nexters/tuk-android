@@ -1,5 +1,6 @@
 package com.plottwist.feature.gathering_detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,13 +34,23 @@ import com.plottwist.core.domain.model.GatheringMember
 import com.plottwist.feature.gathering_detail.component.GatheringInfo
 import com.plottwist.feature.gathering_detail.component.GatheringMembers
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun GatheringDetailScreen(
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GatheringDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            GatheringDetailSideEffect.NavigateBack -> {
+                onBack()
+            }
+        }
+    }
 
     GatheringDetailScreen(
         modifier = modifier,
@@ -54,6 +64,9 @@ fun GatheringDetailScreen(
         onSentInvitationClick = {},
         onReceivedInvitationClick = {},
         onInviteMemberClick = {},
+        onBackClick = {
+            viewModel.handleAction(GatheringDetailAction.ClickBack)
+        }
     )
 }
 
@@ -69,17 +82,20 @@ private fun GatheringDetailScreen(
     onSentInvitationClick: () -> Unit,
     onReceivedInvitationClick: () -> Unit,
     onInviteMemberClick: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column (
+    Column(
         modifier = modifier
+            .fillMaxSize()
+            .background(
+                color = Color(0xFFFAFAFA)
+            )
     ) {
         TukTopAppBar(
             type = TukTopAppBarType.DEPTH,
             title = "모임 상세",
-            onBack = {
-
-            }
+            onBack = onBackClick
         )
 
         LazyColumn(
@@ -197,6 +213,7 @@ private fun GatheringDetailScreenPreview() {
         onProposalClick = {},
         onSentInvitationClick = {},
         onReceivedInvitationClick = {},
-        onInviteMemberClick = {}
+        onInviteMemberClick = {},
+        onBackClick = {}
     )
 }

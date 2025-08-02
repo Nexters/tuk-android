@@ -22,6 +22,14 @@ class GatheringDetailViewModel @Inject constructor(
     }
     private val gatheringId = savedStateHandle.toRoute<Route.GatheringDetail>().gatheringId
 
+    fun handleAction(action: GatheringDetailAction) {
+        when(action) {
+            GatheringDetailAction.ClickBack -> {
+                navigateBack()
+            }
+        }
+    }
+
     private fun fetchGatheringDetail() = intent {
         val result = getGatheringDetailUseCase(gatheringId)
 
@@ -32,5 +40,9 @@ class GatheringDetailViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun navigateBack() = intent {
+        postSideEffect(GatheringDetailSideEffect.NavigateBack)
     }
 }

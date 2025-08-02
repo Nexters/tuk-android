@@ -6,10 +6,10 @@ data class GatheringDetailState(
     val gatheringDetail: GatheringDetail = GatheringDetail()
 )
 
-enum class GatheringDetailAction {
-
+sealed class GatheringDetailAction {
+    data object ClickBack: GatheringDetailAction()
 }
 
-enum class GatheringDetailSideEffect {
-
+sealed class GatheringDetailSideEffect {
+    data object NavigateBack: GatheringDetailSideEffect()
 }

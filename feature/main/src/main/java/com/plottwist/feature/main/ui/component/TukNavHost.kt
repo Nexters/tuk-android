@@ -51,6 +51,10 @@ fun TukNavHost(
                 navController.popBackStack(Route.Home, inclusive = false)
             }
         )
-        gatheringDetailNavGraph()
+        gatheringDetailNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
     }
 }
