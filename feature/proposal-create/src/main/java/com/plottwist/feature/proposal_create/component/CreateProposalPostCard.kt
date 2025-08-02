@@ -115,6 +115,7 @@ fun ProposalContent(
             style = TukSerifTypography.body16M
         )
         Text(
+            modifier = Modifier.padding(vertical = 5.dp),
             text = whenLabel,
             style = TukSerifTypography.body16M
         )
