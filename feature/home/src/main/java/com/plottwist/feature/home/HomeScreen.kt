@@ -44,6 +44,7 @@ fun HomeScreen(
     navigateToLoginScreen: () -> Unit,
     navigateToMyPageScreen: () -> Unit,
     navigateToCreateGathering: () -> Unit,
+    navigateToGatheringDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -62,6 +63,10 @@ fun HomeScreen(
             HomeSideEffect.NavigateToMyPageScreen -> {
                 navigateToMyPageScreen()
             }
+
+            is HomeSideEffect.NavigateToGatheringDetailScreen -> {
+                navigateToGatheringDetail(sideEffect.gatheringId)
+            }
         }
     }
 
@@ -78,8 +83,8 @@ fun HomeScreen(
         onAddGatheringClick = {
             viewModel.handleAction(HomeAction.ClickAddGathering)
         },
-        onGatheringClick = {
-            // TODO
+        onGatheringClick = { id ->
+            viewModel.handleAction(HomeAction.ClickGathering(id))
         },
         onChangedState = {
             // 바텀 시트 펼쳐지거나 접혔을때 감지

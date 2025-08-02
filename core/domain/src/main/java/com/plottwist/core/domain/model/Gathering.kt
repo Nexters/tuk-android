@@ -10,3 +10,17 @@ data class GatheringOverviews(
     val gatheringName: String,
     val lastNotificationRelativeTime: String
 )
+
+data class GatheringDetail(
+    val gatheringId: Long = 0,
+    val gatheringName: String = "",
+    val lastNotificationRelativeTime: String = "",
+    val sentInvitationCount: Int = 0,
+    val receivedInvitationCount: Int = 0,
+    val members: List<GatheringMember> = emptyList()
+)
+
+data class GatheringMember(
+    val memberId: Long = 0,
+    val memberName: String = ""
+)

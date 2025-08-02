@@ -16,12 +16,16 @@ sealed class HomeAction {
     data object ClickRefreshWhere : HomeAction()
     data object ClickRefreshWhen : HomeAction()
     data object ClickRefreshWhat : HomeAction()
+    data class ClickGathering(val gatheringId: Long): HomeAction()
 }
 
 sealed class HomeSideEffect {
     data object NavigateToLoginScreen : HomeSideEffect()
     data object NavigateToCreateGatheringScreen : HomeSideEffect()
     data object NavigateToMyPageScreen : HomeSideEffect()
+    data class NavigateToGatheringDetailScreen(
+        val gatheringId: Long
+    ) : HomeSideEffect()
 }
 
 enum class LoginState {

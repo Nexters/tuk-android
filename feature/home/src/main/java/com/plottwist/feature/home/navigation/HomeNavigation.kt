@@ -8,13 +8,15 @@ import com.plottwist.feature.home.HomeScreen
 fun NavGraphBuilder.homeNavGraph(
     navigateToLoginScreen: () -> Unit,
     navigateToMyPageScreen: () -> Unit,
-    navigateToCreateGathering: () -> Unit
+    navigateToCreateGathering: () -> Unit,
+    navigateToGatheringDetail: (Long) -> Unit
 ) {
     composable<Route.Home> {
         HomeScreen(
             navigateToLoginScreen = navigateToLoginScreen,
             navigateToMyPageScreen = navigateToMyPageScreen,
-            navigateToCreateGathering = navigateToCreateGathering
+            navigateToCreateGathering = navigateToCreateGathering,
+            navigateToGatheringDetail = navigateToGatheringDetail
         )
     }
 }
