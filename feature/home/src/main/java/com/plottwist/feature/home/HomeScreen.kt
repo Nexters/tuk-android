@@ -36,6 +36,7 @@ fun HomeScreen(
     navigateToMyPageScreen: () -> Unit,
     navigateToCreateGathering: () -> Unit,
     navigateToGatheringDetail: (Long) -> Unit,
+    navigateToCreateProposal: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -57,6 +58,14 @@ fun HomeScreen(
 
             is HomeSideEffect.NavigateToGatheringDetailScreen -> {
                 navigateToGatheringDetail(sideEffect.gatheringId)
+            }
+
+            is HomeSideEffect.NavigateToCreateProposalScreen -> {
+                navigateToCreateProposal(
+                    sideEffect.whereLabel,
+                    sideEffect.whenLabel,
+                    sideEffect.whatLabel
+                )
             }
         }
     }
@@ -88,6 +97,9 @@ fun HomeScreen(
         },
         onWhatRefreshClick = {
             viewModel.handleAction(HomeAction.ClickRefreshWhat)
+        },
+        onProposeClick = {
+            viewModel.handleAction(HomeAction.ClickPropose)
         }
     )
 }
@@ -106,6 +118,7 @@ private fun HomeScreen(
     onAddGatheringClick: () -> Unit,
     onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
+    onProposeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -136,12 +149,13 @@ private fun HomeScreen(
             whenLabel = whenLabel,
             whereLabel = whereLabel,
             whatLabel = whatLabel,
+            sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
+            sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
             onWhenRefreshClick = onWhenRefreshClick,
             onWhereRefreshClick = onWhereRefreshClick,
             onWhatRefreshClick = onWhatRefreshClick,
-            sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
-            sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
-            onChangedState = onChangedState
+            onChangedState = onChangedState,
+            onProposeClick = onProposeClick
         )
     }
 }
@@ -221,8 +235,9 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         whenLabel = "",
         whereLabel = "",
         whatLabel = "",
-        onWhenRefreshClick = {  },
-        onWhereRefreshClick = {  },
-        onWhatRefreshClick = { }
+        onWhenRefreshClick = { },
+        onWhereRefreshClick = { },
+        onWhatRefreshClick = { },
+        onProposeClick = {}
     )
 }

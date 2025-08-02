@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
             HomeAction.ClickAddGathering -> {
                 handleAddGatheringClick()
             }
+
             HomeAction.ClickRefreshWhen -> {
                 handleRefreshWhenClick()
             }
@@ -43,14 +44,18 @@ class HomeViewModel @Inject constructor(
             is HomeAction.ClickGathering -> {
                 handleGatheringClick(action.gatheringId)
             }
+
+            HomeAction.ClickPropose -> {
+                handleProposeClick()
+            }
         }
     }
 
     private fun observeLoginState() = intent {
         checkLoginStatusUseCase().map { isLoggedIn ->
-            if(isLoggedIn) LoginState.LoggedIn else LoginState.LoggedOut
+            if (isLoggedIn) LoginState.LoggedIn else LoginState.LoggedOut
         }.collectLatest { loginState ->
-            when(loginState) {
+            when (loginState) {
                 LoginState.LoggedIn -> {
                     fetchGatherings(loginState)
                 }
@@ -65,7 +70,7 @@ class HomeViewModel @Inject constructor(
     private fun fetchGatherings(loginState: LoginState) = intent {
         val result = getGatheringsUseCase()
 
-        if(result.isSuccess) {
+        if (result.isSuccess) {
             reduce {
                 state.copy(
                     loginState = loginState,
@@ -78,7 +83,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleMyPageClick() = intent {
-        when(state.loginState) {
+        when (state.loginState) {
             LoginState.LoggedIn -> {
                 postSideEffect(HomeSideEffect.NavigateToMyPageScreen)
             }
@@ -90,7 +95,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleAddGatheringClick() = intent {
-        when(state.loginState) {
+        when (state.loginState) {
             LoginState.LoggedIn -> {
                 postSideEffect(HomeSideEffect.NavigateToCreateGatheringScreen)
             }
@@ -103,6 +108,24 @@ class HomeViewModel @Inject constructor(
 
     private fun handleGatheringClick(gatheringId: Long) = intent {
         postSideEffect(HomeSideEffect.NavigateToGatheringDetailScreen(gatheringId))
+    }
+
+    private fun handleProposeClick() = intent {
+        when (state.loginState) {
+            LoginState.LoggedIn -> {
+                postSideEffect(
+                    HomeSideEffect.NavigateToCreateProposalScreen(
+                        whereLabel = state.whereLabel,
+                        whenLabel = state.whenLabel,
+                        whatLabel = state.whatLabel
+                    )
+                )
+            }
+
+            else -> {
+                postSideEffect(HomeSideEffect.NavigateToLoginScreen)
+            }
+        }
     }
 
     private fun handleRefreshWhenClick() = intent {

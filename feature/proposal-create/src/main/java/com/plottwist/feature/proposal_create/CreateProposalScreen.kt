@@ -34,13 +34,23 @@ import com.plottwist.core.ui.component.StableImage
 import com.plottwist.core.ui.component.TopAppBarCloseButton
 import com.plottwist.feature.proposal_create.component.CreateProposalPostCard
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CreateProposalScreen(
+    onBack : () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when(sideEffect) {
+            CreateProposalSideEffect.NavigateBack -> {
+                onBack()
+            }
+        }
+    }
 
     CreateProposalScreen(
         modifier = modifier,
@@ -64,7 +74,7 @@ private fun CreateProposalScreen(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier.fillMaxSize().background(color = Color(0xFFFAFAFA))
     ) {
         CreateProposalGradientBackgroundImage(
             modifier = Modifier.align(Alignment.Center)
