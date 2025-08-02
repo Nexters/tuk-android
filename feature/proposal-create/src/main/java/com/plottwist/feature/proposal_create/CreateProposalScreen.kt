@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -21,14 +24,21 @@ import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.core.ui.component.TopAppBarCloseButton
+import com.plottwist.feature.proposal_create.component.CreateProposalPostCard
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun CreateProposalScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
+    val state by viewModel.collectAsState()
+
     CreateProposalScreen(
         modifier = modifier,
+        whereLabel = state.whereLabel,
+        whenLabel = state.whenLabel,
+        whatLabel = state.whatLabel,
         onCloseClicked = {
             viewModel.handleAction(CreateProposalAction.ClickClose)
         }
@@ -37,6 +47,9 @@ fun CreateProposalScreen(
 
 @Composable
 private fun CreateProposalScreen(
+    whereLabel: String,
+    whenLabel: String,
+    whatLabel: String,
     onCloseClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -54,7 +67,16 @@ private fun CreateProposalScreen(
 
             CreateProposalTitle()
 
-
+            CreateProposalPostCard(
+                modifier = Modifier.padding(top = 66.dp)
+                    .width(260.dp)
+                    .height(370.dp)
+                    .align(Alignment.CenterHorizontally),
+                whereLabel = whereLabel,
+                whenLabel = whenLabel,
+                whatLabel = whatLabel,
+                onSelectGatheringClick = {}
+            )
         }
     }
 }
@@ -107,6 +129,9 @@ private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 3
 @Composable
 private fun CreateProposalScreenPreview() {
     CreateProposalScreen(
+        whereLabel = "where",
+        whenLabel = "when",
+        whatLabel = "what",
         onCloseClicked = {}
     )
 }

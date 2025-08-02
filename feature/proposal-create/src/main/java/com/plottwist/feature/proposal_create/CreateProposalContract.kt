@@ -1,8 +1,9 @@
 package com.plottwist.feature.proposal_create
 
 data class CreateProposalState(
-    val title: String = "",
-    val content: String = "",
+    val whereLabel: String = "",
+    val whenLabel: String = "",
+    val whatLabel: String = ""
 )
 
 sealed class CreateProposalAction {

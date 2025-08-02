@@ -22,4 +22,5 @@
     <string name="gathering_detail_member">멤버 %d</string>
     
     <string name="create_proposal_title">가볍게 제안하고\n만남을 이어가세요</string>
+    <string name="create_proposal_select_gathering">모임 선택</string>
 </resources>

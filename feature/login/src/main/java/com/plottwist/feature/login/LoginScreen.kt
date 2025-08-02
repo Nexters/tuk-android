@@ -198,7 +198,7 @@ fun LoginContent(
 }
 
 @Composable
-fun PostCard(
+private fun PostCard(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(10.dp)
 ) {
