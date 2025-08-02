@@ -26,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.component.TukTopAppBar
+import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.domain.model.GatheringMember
@@ -69,43 +71,65 @@ private fun GatheringDetailScreen(
     onInviteMemberClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier.padding(horizontal = 20.dp),
-        contentPadding = PaddingValues(bottom = 40.dp)
+    Column (
+        modifier = modifier
     ) {
-        item(key = Items.TITLE) {
-            GatheringTitle(gatheringTitle)
-        }
+        TukTopAppBar(
+            type = TukTopAppBarType.DEPTH,
+            title = "모임 상세",
+            onBack = {
 
-        item(key = Items.ALARM_SETTING) {
-            GatheringAlarmSetting(
-                modifier = Modifier.padding(top = 24.dp),
-                onClick = onAlarmSettingClick
-            )
-        }
+            }
+        )
 
-        item(key = Items.GATHERING_INFO) {
-            GatheringInfo(
-                modifier = Modifier
-                    .padding(top = 86.dp)
-                    .fillMaxWidth(),
-                lastAlarm = lastAlarm,
-                sentInvitationCount = sentInvitationCount,
-                receivedInvitationCount = receivedInvitationCount,
-                onProposalClick = onProposalClick,
-                onSentInvitationClick = onSentInvitationClick,
-                onReceivedInvitationClick = onReceivedInvitationClick
-            )
-        }
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            contentPadding = PaddingValues(bottom = 40.dp)
+        ) {
+            item(key = Items.TITLE) {
+                GatheringTitle(gatheringTitle)
+            }
 
-        item(key = Items.MEMBERS) {
-            GatheringMembers(
-                modifier = Modifier.padding(top = 30.dp),
-                members = members,
-                onInviteMemberClick = onInviteMemberClick
-            )
+            item(key = Items.ALARM_SETTING) {
+                GatheringAlarmSetting(
+                    modifier = Modifier.padding(top = 24.dp),
+                    onClick = onAlarmSettingClick
+                )
+            }
+
+            item(key = Items.GATHERING_INFO) {
+                GatheringInfo(
+                    modifier = Modifier
+                        .padding(top = 86.dp)
+                        .fillMaxWidth(),
+                    lastAlarm = lastAlarm,
+                    sentInvitationCount = sentInvitationCount,
+                    receivedInvitationCount = receivedInvitationCount,
+                    onProposalClick = onProposalClick,
+                    onSentInvitationClick = onSentInvitationClick,
+                    onReceivedInvitationClick = onReceivedInvitationClick
+                )
+            }
+
+            item(key = Items.MEMBERS) {
+                GatheringMembers(
+                    modifier = Modifier.padding(top = 30.dp),
+                    members = members,
+                    onInviteMemberClick = onInviteMemberClick
+                )
+            }
         }
     }
+}
+
+@Composable
+fun GatheringDetailAppBar(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TukTopAppBar(
+        modifier = modifier
+    )
 }
 
 @Composable
