@@ -25,10 +25,11 @@ import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
+import com.plottwist.core.domain.model.GatheringMember
 
 @Composable
 fun GatheringMembers(
-    members: List<String>,
+    members: List<GatheringMember>,
     onInviteMemberClick : () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -59,7 +60,7 @@ fun GatheringMembers(
 
         members.forEach { member ->
             Text(
-                text = member,
+                text = member.memberName,
                 style = TukPretendardTypography.body16R,
                 color = Color(0xFF1f1f1f)
             )

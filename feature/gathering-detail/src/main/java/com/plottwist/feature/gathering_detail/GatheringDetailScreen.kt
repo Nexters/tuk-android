@@ -14,6 +14,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,22 +24,40 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
+import com.plottwist.core.domain.model.GatheringMember
 import com.plottwist.feature.gathering_detail.component.GatheringInfo
 import com.plottwist.feature.gathering_detail.component.GatheringMembers
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun GatheringDetailScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: GatheringDetailViewModel = hiltViewModel()
 ) {
+    val state by viewModel.collectAsState()
 
+    GatheringDetailScreen(
+        modifier = modifier,
+        members = state.gatheringDetail.members,
+        gatheringTitle = state.gatheringDetail.gatheringName,
+        lastAlarm = state.gatheringDetail.lastNotificationRelativeTime,
+        sentInvitationCount = state.gatheringDetail.sentInvitationCount,
+        receivedInvitationCount = state.gatheringDetail.receivedInvitationCount,
+        onAlarmSettingClick = {},
+        onProposalClick = {},
+        onSentInvitationClick = {},
+        onReceivedInvitationClick = {},
+        onInviteMemberClick = {},
+    )
 }
 
 @Composable
 private fun GatheringDetailScreen(
-    members: List<String>,
+    members: List<GatheringMember>,
     gatheringTitle: String,
     lastAlarm: String,
     sentInvitationCount: Int,
@@ -141,7 +160,11 @@ private enum class Items {
 private fun GatheringDetailScreenPreview() {
     GatheringDetailScreen(
         modifier = Modifier.fillMaxSize(),
-        members = listOf("정석준","이준우","김준식"),
+        members = listOf(
+            GatheringMember(memberName = "정석준"),
+            GatheringMember(memberName = "이준우"),
+            GatheringMember(memberName = "김준식")
+        ),
         gatheringTitle = "다음 만남은 계획대로 되지 않아",
         lastAlarm = "3달 전",
         sentInvitationCount = 99,
