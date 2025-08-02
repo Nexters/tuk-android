@@ -21,7 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
-import com.plottwist.core.designsystem.component.SolidButton
+import com.plottwist.core.designsystem.component.RoundSolidButton
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 
@@ -71,7 +71,7 @@ fun RandomProposal(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        SolidButton(
+        RoundSolidButton(
             modifier = Modifier.padding(bottom = 30.dp),
             text = stringResource(R.string.home_bottom_sheet_nudging_text),
             containerColor = Color(0xFFFF3838),
