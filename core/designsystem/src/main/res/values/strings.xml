@@ -14,6 +14,7 @@
     <string name="post_card_bottom_description_start">연락이</string>
     <string name="post_card_bottom_description_end">뜸해진 우리</string>
 
+    <string name="gathering_detail_title">모임 상세</string>
     <string name="gathering_detail_alarm_setting">모임 주기 설정</string>
     <string name="gathering_detail_last_alarm_title">마지막 알림</string>
     <string name="gathering_detail_sent_invitation">보낸 초대장</string>

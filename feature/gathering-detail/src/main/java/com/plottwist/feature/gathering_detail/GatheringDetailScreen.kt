@@ -92,10 +92,8 @@ private fun GatheringDetailScreen(
                 color = Color(0xFFFAFAFA)
             )
     ) {
-        TukTopAppBar(
-            type = TukTopAppBarType.DEPTH,
-            title = "모임 상세",
-            onBack = onBackClick
+        GatheringDetailAppBar(
+            onBackClick = onBackClick
         )
 
         LazyColumn(
@@ -144,7 +142,10 @@ fun GatheringDetailAppBar(
     modifier: Modifier = Modifier
 ) {
     TukTopAppBar(
-        modifier = modifier
+        modifier = modifier,
+        type = TukTopAppBarType.DEPTH,
+        title = stringResource(R.string.gathering_detail_title),
+        onBack = onBackClick
     )
 }
 
