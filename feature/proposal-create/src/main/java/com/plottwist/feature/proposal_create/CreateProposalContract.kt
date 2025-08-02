@@ -3,7 +3,8 @@ package com.plottwist.feature.proposal_create
 data class CreateProposalState(
     val whereLabel: String = "",
     val whenLabel: String = "",
-    val whatLabel: String = ""
+    val whatLabel: String = "",
+    val isGatheringSelected : Boolean = false
 )
 
 sealed class CreateProposalAction {
