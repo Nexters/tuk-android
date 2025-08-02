@@ -67,6 +67,11 @@ fun HomeScreen(
 
     HomeScreen(
         modifier = modifier.fillMaxSize(),
+        whenLabel = state.whenLabel,
+        whereLabel = state.whereLabel,
+        whatLabel = state.whatLabel,
+        loginState = state.loginState,
+        gatherings = state.gatherings,
         onMyPageClick = {
             viewModel.handleAction(HomeAction.ClickMyPage)
         },
@@ -79,8 +84,15 @@ fun HomeScreen(
         onChangedState = {
             // 바텀 시트 펼쳐지거나 접혔을때 감지
         },
-        loginState = state.loginState,
-        gatherings = state.gatherings
+        onWhenRefreshClick = {
+            viewModel.handleAction(HomeAction.ClickRefreshWhen)
+        },
+        onWhereRefreshClick = {
+            viewModel.handleAction(HomeAction.ClickRefreshWhere)
+        },
+        onWhatRefreshClick = {
+            viewModel.handleAction(HomeAction.ClickRefreshWhat)
+        }
     )
 }
 
@@ -88,6 +100,12 @@ fun HomeScreen(
 private fun HomeScreen(
     loginState: LoginState,
     gatherings: Gatherings,
+    whenLabel: String,
+    whereLabel: String,
+    whatLabel: String,
+    onWhenRefreshClick: () -> Unit,
+    onWhereRefreshClick: () -> Unit,
+    onWhatRefreshClick: () -> Unit,
     onMyPageClick: () -> Unit,
     onAddGatheringClick: () -> Unit,
     onGatheringClick: (Long) -> Unit,
@@ -119,6 +137,12 @@ private fun HomeScreen(
             )
         }
         HomeBottomSheet(
+            whenLabel = whenLabel,
+            whereLabel = whereLabel,
+            whatLabel = whatLabel,
+            onWhenRefreshClick = onWhenRefreshClick,
+            onWhereRefreshClick = onWhereRefreshClick,
+            onWhatRefreshClick = onWhatRefreshClick,
             sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
             sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
             onChangedState = onChangedState
@@ -197,6 +221,12 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         onMyPageClick = {},
         onAddGatheringClick = {},
         onGatheringClick = {},
-        onChangedState = {}
+        onChangedState = {},
+        whenLabel = "",
+        whereLabel = "",
+        whatLabel = "",
+        onWhenRefreshClick = {  },
+        onWhereRefreshClick = {  },
+        onWhatRefreshClick = { }
     )
 }
