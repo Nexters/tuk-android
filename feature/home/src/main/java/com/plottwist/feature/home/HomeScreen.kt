@@ -31,9 +31,11 @@ import com.plottwist.core.designsystem.component.SolidButton
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
+import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.feature.home.component.HomeBottomSheet
 import com.plottwist.feature.home.component.HomeBottomSheetState
+import com.plottwist.feature.home.component.HomeContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -71,18 +73,24 @@ fun HomeScreen(
         onAddGatheringClick = {
             viewModel.handleAction(HomeAction.ClickAddGathering)
         },
+        onGatheringClick = {
+            // TODO
+        },
         onChangedState = {
             // 바텀 시트 펼쳐지거나 접혔을때 감지
         },
-        loginState = state.loginState
+        loginState = state.loginState,
+        gatherings = state.gatherings
     )
 }
 
 @Composable
 private fun HomeScreen(
     loginState: LoginState,
+    gatherings: Gatherings,
     onMyPageClick: () -> Unit,
     onAddGatheringClick: () -> Unit,
+    onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -105,7 +113,9 @@ private fun HomeScreen(
                     .fillMaxSize()
                     .padding(bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp),
                 loginState = loginState,
-                onAddGatheringClick = onAddGatheringClick
+                gatherings = gatherings,
+                onAddGatheringClick = onAddGatheringClick,
+                onGatheringClick = onGatheringClick
             )
         }
         HomeBottomSheet(
@@ -140,40 +150,6 @@ fun HomeTitle(
         text = stringResource(R.string.home_title),
         style = TukSerifTypography.title24M
     )
-}
-
-@Composable
-fun HomeContent(
-    loginState: LoginState,
-    onAddGatheringClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    if(loginState == LoginState.Loading) return
-
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(R.string.home_bottom_create_gathering_description),
-            style = TukPretendardTypography.body14R,
-            color = Color(0xFF888888),
-            textAlign = TextAlign.Center
-        )
-        SolidButton(
-            text = stringResource(R.string.home_bottom_create_gathering_button_text),
-            containerColor = Color(0xFFFF3838),
-            contentColor = Color(0xFFFFFFFF),
-            onClick = onAddGatheringClick
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_add),
-                contentDescription = stringResource(R.string.home_bottom_create_gathering_button_text),
-                tint = Color(0xFFFFFFFF)
-            )
-        }
-    }
 }
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -217,8 +193,10 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
     HomeScreen(
         modifier = Modifier.fillMaxSize(),
         loginState = LoginState.LoggedIn,
+        gatherings = Gatherings(),
         onMyPageClick = {},
         onAddGatheringClick = {},
+        onGatheringClick = {},
         onChangedState = {}
     )
 }

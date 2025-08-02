@@ -1,7 +1,10 @@
 package com.plottwist.feature.home
 
+import com.plottwist.core.domain.model.Gatherings
+
 data class HomeState(
-    val loginState: LoginState = LoginState.Loading
+    val loginState: LoginState = LoginState.Loading,
+    val gatherings: Gatherings = Gatherings()
 )
 
 sealed class HomeAction {
