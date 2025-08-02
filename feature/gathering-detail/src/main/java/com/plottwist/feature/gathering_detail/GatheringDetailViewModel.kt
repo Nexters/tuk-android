@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.plottwist.core.domain.gathering.usecase.GetGatheringDetailUseCase
+import com.plottwist.core.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -16,10 +17,12 @@ class GatheringDetailViewModel @Inject constructor(
 ) : ContainerHost<GatheringDetailState, GatheringDetailSideEffect>, ViewModel() {
     override val container = container<GatheringDetailState, GatheringDetailSideEffect>(
         GatheringDetailState()
-    )
-    private val gatheringId = 0L
+    ) {
+        fetchGatheringDetail()
+    }
+    private val gatheringId = savedStateHandle.toRoute<Route.GatheringDetail>().gatheringId
 
-    fun fetchGatheringDetail() = intent {
+    private fun fetchGatheringDetail() = intent {
         val result = getGatheringDetailUseCase(gatheringId)
 
         if(result.isSuccess) {

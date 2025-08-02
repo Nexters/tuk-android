@@ -39,6 +39,10 @@ class HomeViewModel @Inject constructor(
             HomeAction.ClickRefreshWhat -> {
                 handleRefreshWhatClick()
             }
+
+            is HomeAction.ClickGathering -> {
+                handleGatheringClick(action.gatheringId)
+            }
         }
     }
 
@@ -95,6 +99,10 @@ class HomeViewModel @Inject constructor(
                 postSideEffect(HomeSideEffect.NavigateToLoginScreen)
             }
         }
+    }
+
+    private fun handleGatheringClick(gatheringId: Long) = intent {
+        postSideEffect(HomeSideEffect.NavigateToGatheringDetailScreen(gatheringId))
     }
 
     private fun handleRefreshWhenClick() = intent {
