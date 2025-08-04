@@ -20,6 +20,7 @@ sealed interface Route {
     @Serializable
     data object InviteGathering: Route
 
+    @Serializable
     data class GatheringDetail(
         val gatheringId: Long
     ): Route
