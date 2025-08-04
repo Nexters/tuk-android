@@ -1,6 +1,5 @@
 package com.plottwist.core.designsystem.component
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 
 @Composable
-fun RoundSolidButton(
+fun TukRoundSolidButton(
     text: String,
     containerColor: Color,
     contentColor: Color,

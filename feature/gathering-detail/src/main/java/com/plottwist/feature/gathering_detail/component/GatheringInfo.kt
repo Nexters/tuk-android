@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
-import com.plottwist.core.designsystem.component.RoundSolidButton
+import com.plottwist.core.designsystem.component.TukRoundSolidButton
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 
@@ -71,7 +71,7 @@ fun GatheringInfoHeader(
     ) {
         LastAlarmInfo(lastAlarm)
 
-        RoundSolidButton(
+        TukRoundSolidButton(
             modifier = Modifier,
             text = stringResource(R.string.home_bottom_sheet_nudging_text),
             containerColor = Color(0xFFFF3838),
