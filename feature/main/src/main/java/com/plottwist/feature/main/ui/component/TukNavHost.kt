@@ -8,11 +8,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.create_gathering.navigation.createGatheringNavGraph
 import com.example.create_gathering.navigation.navigateToCreateGathering
 import com.plottwist.core.ui.navigation.Route
+import com.plottwist.feature.gathering_detail.navigation.gatheringDetailNavGraph
+import com.plottwist.feature.gathering_detail.navigation.navigateToGatheringDetail
 import com.plottwist.feature.home.navigation.homeNavGraph
 import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
 import com.plottwist.feature.mypage.navigation.navigateToMyPage
+import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
+import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 
 @Composable
 fun TukNavHost(
@@ -33,6 +37,16 @@ fun TukNavHost(
             },
             navigateToCreateGathering = {
                 navController.navigateToCreateGathering()
+            },
+            navigateToGatheringDetail = { id ->
+                navController.navigateToGatheringDetail(gatheringId = id)
+            },
+            navigateToCreateProposal = { whereLabel, whenLabel, whatLabel ->
+                navController.navigateToCreateProposal(
+                    whereLabel = whereLabel,
+                    whenLabel = whenLabel,
+                    whatLabel = whatLabel
+                )
             }
         )
         loginNavGraph(
@@ -44,6 +58,16 @@ fun TukNavHost(
         createGatheringNavGraph(
             onSubmit = {
                 navController.popBackStack(Route.Home, inclusive = false)
+            }
+        )
+        gatheringDetailNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
+        createProposalNavGraph(
+            onBack = {
+                navController.popBackStack()
             }
         )
     }

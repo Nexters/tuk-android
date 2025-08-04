@@ -19,4 +19,15 @@ sealed interface Route {
 
     @Serializable
     data object InviteGathering: Route
+
+    data class GatheringDetail(
+        val gatheringId: Long
+    ): Route
+
+    @Serializable
+    data class CreateProposal(
+        val whereLabel: String,
+        val whenLabel: String,
+        val whatLabel: String
+    )
 }

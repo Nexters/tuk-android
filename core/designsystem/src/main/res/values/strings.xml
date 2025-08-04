@@ -4,10 +4,24 @@
     <string name="home_bottom_sheet_nudging_text">툭, 찔러만봐</string>
     <string name="home_bottom_create_gathering_description">모임을 생성하고\n넌지시 만남을 제안해 보세요</string>
     <string name="home_bottom_create_gathering_button_text">모임 생성하기</string>
+    <string name="home_last_alarm">마지막 알람</string>
+    <string name="home_random_proposal_description_prefix">연락이 뜸해진 우리</string>
+    <string name="home_random_proposal_description_suffix">어때</string>
     
     <string name="login_description">간편하게 로그인하세요</string>
     <string name="login_google_button_text">Google로 로그인</string>
 
     <string name="post_card_bottom_description_start">연락이</string>
     <string name="post_card_bottom_description_end">뜸해진 우리</string>
+
+    <string name="gathering_detail_title">모임 상세</string>
+    <string name="gathering_detail_alarm_setting">모임 주기 설정</string>
+    <string name="gathering_detail_last_alarm_title">마지막 알림</string>
+    <string name="gathering_detail_sent_invitation">보낸 초대장</string>
+    <string name="gathering_detail_received_invitation">받은 초대장</string>
+    <string name="gathering_detail_member">멤버 %d</string>
+    
+    <string name="create_proposal_title">가볍게 제안하고\n만남을 이어가세요</string>
+    <string name="create_proposal_select_gathering">모임 선택</string>
+    <string name="create_proposal_propose">제안하기</string>
 </resources>

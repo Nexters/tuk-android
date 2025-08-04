@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,6 +44,7 @@ import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
+import com.plottwist.core.ui.component.TopAppBarCloseButton
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -169,21 +169,6 @@ fun LoginAppBar(
 }
 
 @Composable
-fun TopAppBarCloseButton(
-    onCloseClicked: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconButton(
-        modifier = modifier,
-        onClick = onCloseClicked
-    ) {
-        StableImage(
-            drawableResId = R.drawable.ic_close
-        )
-    }
-}
-
-@Composable
 fun LoginContent(
     postCardPadding : Dp,
     modifier: Modifier = Modifier
@@ -213,7 +198,7 @@ fun LoginContent(
 }
 
 @Composable
-fun PostCard(
+private fun PostCard(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(10.dp)
 ) {

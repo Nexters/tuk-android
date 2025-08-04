@@ -36,8 +36,8 @@ class LoginRepositoryImpl @Inject constructor(
 
             if (response.success) {
                 val result = response.data
-                authDataSource.setAccessToken(result.accessToken)
-                authDataSource.setRefreshToken(result.refreshToken)
+                authDataSource.setAccessToken(result.accessToken).collect()
+                authDataSource.setRefreshToken(result.refreshToken).collect()
 
                 Result.success(Unit)
 

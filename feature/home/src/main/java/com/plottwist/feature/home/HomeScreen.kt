@@ -1,39 +1,32 @@
 package com.plottwist.feature.home
 
 import android.annotation.SuppressLint
-import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
-import com.plottwist.core.designsystem.component.SolidButton
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
+import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.feature.home.component.HomeBottomSheet
 import com.plottwist.feature.home.component.HomeBottomSheetState
+import com.plottwist.feature.home.component.HomeContent
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -42,6 +35,8 @@ fun HomeScreen(
     navigateToLoginScreen: () -> Unit,
     navigateToMyPageScreen: () -> Unit,
     navigateToCreateGathering: () -> Unit,
+    navigateToGatheringDetail: (Long) -> Unit,
+    navigateToCreateProposal: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -60,30 +55,70 @@ fun HomeScreen(
             HomeSideEffect.NavigateToMyPageScreen -> {
                 navigateToMyPageScreen()
             }
+
+            is HomeSideEffect.NavigateToGatheringDetailScreen -> {
+                navigateToGatheringDetail(sideEffect.gatheringId)
+            }
+
+            is HomeSideEffect.NavigateToCreateProposalScreen -> {
+                navigateToCreateProposal(
+                    sideEffect.whereLabel,
+                    sideEffect.whenLabel,
+                    sideEffect.whatLabel
+                )
+            }
         }
     }
 
     HomeScreen(
         modifier = modifier.fillMaxSize(),
+        whenLabel = state.whenLabel,
+        whereLabel = state.whereLabel,
+        whatLabel = state.whatLabel,
+        loginState = state.loginState,
+        gatherings = state.gatherings,
         onMyPageClick = {
             viewModel.handleAction(HomeAction.ClickMyPage)
         },
         onAddGatheringClick = {
             viewModel.handleAction(HomeAction.ClickAddGathering)
         },
+        onGatheringClick = { id ->
+            viewModel.handleAction(HomeAction.ClickGathering(id))
+        },
         onChangedState = {
             // 바텀 시트 펼쳐지거나 접혔을때 감지
         },
-        loginState = state.loginState
+        onWhenRefreshClick = {
+            viewModel.handleAction(HomeAction.ClickRefreshWhen)
+        },
+        onWhereRefreshClick = {
+            viewModel.handleAction(HomeAction.ClickRefreshWhere)
+        },
+        onWhatRefreshClick = {
+            viewModel.handleAction(HomeAction.ClickRefreshWhat)
+        },
+        onProposeClick = {
+            viewModel.handleAction(HomeAction.ClickPropose)
+        }
     )
 }
 
 @Composable
 private fun HomeScreen(
     loginState: LoginState,
+    gatherings: Gatherings,
+    whenLabel: String,
+    whereLabel: String,
+    whatLabel: String,
+    onWhenRefreshClick: () -> Unit,
+    onWhereRefreshClick: () -> Unit,
+    onWhatRefreshClick: () -> Unit,
     onMyPageClick: () -> Unit,
     onAddGatheringClick: () -> Unit,
+    onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
+    onProposeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -105,13 +140,22 @@ private fun HomeScreen(
                     .fillMaxSize()
                     .padding(bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp),
                 loginState = loginState,
-                onAddGatheringClick = onAddGatheringClick
+                gatherings = gatherings,
+                onAddGatheringClick = onAddGatheringClick,
+                onGatheringClick = onGatheringClick
             )
         }
         HomeBottomSheet(
+            whenLabel = whenLabel,
+            whereLabel = whereLabel,
+            whatLabel = whatLabel,
             sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
             sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
-            onChangedState = onChangedState
+            onWhenRefreshClick = onWhenRefreshClick,
+            onWhereRefreshClick = onWhereRefreshClick,
+            onWhatRefreshClick = onWhatRefreshClick,
+            onChangedState = onChangedState,
+            onProposeClick = onProposeClick
         )
     }
 }
@@ -140,40 +184,6 @@ fun HomeTitle(
         text = stringResource(R.string.home_title),
         style = TukSerifTypography.title24M
     )
-}
-
-@Composable
-fun HomeContent(
-    loginState: LoginState,
-    onAddGatheringClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    if(loginState == LoginState.Loading) return
-
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(R.string.home_bottom_create_gathering_description),
-            style = TukPretendardTypography.body14R,
-            color = Color(0xFF888888),
-            textAlign = TextAlign.Center
-        )
-        SolidButton(
-            text = stringResource(R.string.home_bottom_create_gathering_button_text),
-            containerColor = Color(0xFFFF3838),
-            contentColor = Color(0xFFFFFFFF),
-            onClick = onAddGatheringClick
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_add),
-                contentDescription = stringResource(R.string.home_bottom_create_gathering_button_text),
-                tint = Color(0xFFFFFFFF)
-            )
-        }
-    }
 }
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -217,8 +227,17 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
     HomeScreen(
         modifier = Modifier.fillMaxSize(),
         loginState = LoginState.LoggedIn,
+        gatherings = Gatherings(),
         onMyPageClick = {},
         onAddGatheringClick = {},
-        onChangedState = {}
+        onGatheringClick = {},
+        onChangedState = {},
+        whenLabel = "",
+        whereLabel = "",
+        whatLabel = "",
+        onWhenRefreshClick = { },
+        onWhereRefreshClick = { },
+        onWhatRefreshClick = { },
+        onProposeClick = {}
     )
 }
