@@ -7,10 +7,12 @@ import com.example.invite_gathering.InviteGatheringScreen
 import com.plottwist.core.ui.navigation.Route
 
 fun NavGraphBuilder.inviteGatheringNavGraph(
-
+    onCloseClicked: () -> Unit
 ) {
     composable<Route.InviteGathering>{
-        InviteGatheringScreen()
+        InviteGatheringScreen(
+            onCloseClicked = onCloseClicked
+        )
     }
 }
 
