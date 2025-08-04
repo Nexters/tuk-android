@@ -18,6 +18,8 @@ sealed interface Route {
     data object CreateGathering: Route
 
     @Serializable
+    data object InviteGathering: Route
+
     data class GatheringDetail(
         val gatheringId: Long
     ): Route

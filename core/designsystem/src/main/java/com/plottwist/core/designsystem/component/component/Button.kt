@@ -13,14 +13,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 
 enum class TukButtonType(
     val containerColor: Color,
     val contentColor: Color = Color.White
 ) {
-    ACTIVE(containerColor = Color(0xFF4B0000)),
+    ACTIVE(containerColor = Color(0xFFFF3838)),
     SECONDARY(containerColor = Color.White, contentColor = Color.Black),
-    DISABLED(containerColor = Color(0xFFE0E0E0), contentColor = Color(0xFF9E9E9E))
+    DISABLED(containerColor = Color(0xFFE0E0E0), contentColor = Color(0xFFFFFFFF))
 }
 
 
@@ -31,7 +32,7 @@ fun TukTextButton(
     onClick: () ->Unit,
     buttonType: TukButtonType = TukButtonType.ACTIVE,
     textColor: Color = Color(0xFFFFFFFF),
-    textStyle: TextStyle = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold),
+    textStyle: TextStyle = TukPretendardTypography.body16M,
 ) {
 
     TukButton(
@@ -53,7 +54,7 @@ fun TukButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     buttonType: TukButtonType=TukButtonType.ACTIVE,
-    shape:Shape = RoundedCornerShape(30.dp),
+    shape:Shape = RoundedCornerShape(15.dp),
     contentPadding: PaddingValues = PaddingValues(vertical = 18.dp, horizontal =30.dp ),
     content: @Composable () -> Unit
 ) {
