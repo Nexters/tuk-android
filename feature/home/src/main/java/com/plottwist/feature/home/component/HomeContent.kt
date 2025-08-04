@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
-import com.plottwist.core.designsystem.component.SolidButton
+import com.plottwist.core.designsystem.component.RoundSolidButton
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.feature.home.LoginState
@@ -75,7 +75,7 @@ fun HomeCreateGatheringPreview(
             color = Color(0xFF888888),
             textAlign = TextAlign.Center
         )
-        SolidButton(
+        RoundSolidButton(
             text = stringResource(R.string.home_bottom_create_gathering_button_text),
             containerColor = Color(0xFFFF3838),
             contentColor = Color(0xFFFFFFFF),

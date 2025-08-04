@@ -17,7 +17,9 @@ fun TukApp(
         containerColor = Color.White
     ) { innerPadding ->
         TukNavHost(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(
+                bottom = innerPadding.calculateBottomPadding()
+            )
         )
     }
 }

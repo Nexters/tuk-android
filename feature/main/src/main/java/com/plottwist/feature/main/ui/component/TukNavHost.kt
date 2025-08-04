@@ -15,6 +15,8 @@ import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
 import com.plottwist.feature.mypage.navigation.navigateToMyPage
+import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
+import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 
 @Composable
 fun TukNavHost(
@@ -38,6 +40,13 @@ fun TukNavHost(
             },
             navigateToGatheringDetail = { id ->
                 navController.navigateToGatheringDetail(gatheringId = id)
+            },
+            navigateToCreateProposal = { whereLabel, whenLabel, whatLabel ->
+                navController.navigateToCreateProposal(
+                    whereLabel = whereLabel,
+                    whenLabel = whenLabel,
+                    whatLabel = whatLabel
+                )
             }
         )
         loginNavGraph(
@@ -52,6 +61,11 @@ fun TukNavHost(
             }
         )
         gatheringDetailNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
+        createProposalNavGraph(
             onBack = {
                 navController.popBackStack()
             }

@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":feature:mypage"))
     implementation(project(":feature:create_gathering"))
     implementation(project(":feature:gathering-detail"))
+    implementation(project(":feature:proposal-create"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

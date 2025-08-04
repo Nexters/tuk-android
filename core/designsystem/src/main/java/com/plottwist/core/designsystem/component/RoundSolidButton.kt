@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 
 @Composable
-fun SolidButton(
+fun RoundSolidButton(
     text: String,
     containerColor: Color,
     contentColor: Color,

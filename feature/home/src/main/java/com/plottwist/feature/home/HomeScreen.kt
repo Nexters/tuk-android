@@ -1,35 +1,26 @@
 package com.plottwist.feature.home
 
 import android.annotation.SuppressLint
-import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
-import com.plottwist.core.designsystem.component.SolidButton
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.core.ui.component.StableImage
@@ -45,6 +36,7 @@ fun HomeScreen(
     navigateToMyPageScreen: () -> Unit,
     navigateToCreateGathering: () -> Unit,
     navigateToGatheringDetail: (Long) -> Unit,
+    navigateToCreateProposal: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -66,6 +58,14 @@ fun HomeScreen(
 
             is HomeSideEffect.NavigateToGatheringDetailScreen -> {
                 navigateToGatheringDetail(sideEffect.gatheringId)
+            }
+
+            is HomeSideEffect.NavigateToCreateProposalScreen -> {
+                navigateToCreateProposal(
+                    sideEffect.whereLabel,
+                    sideEffect.whenLabel,
+                    sideEffect.whatLabel
+                )
             }
         }
     }
@@ -97,6 +97,9 @@ fun HomeScreen(
         },
         onWhatRefreshClick = {
             viewModel.handleAction(HomeAction.ClickRefreshWhat)
+        },
+        onProposeClick = {
+            viewModel.handleAction(HomeAction.ClickPropose)
         }
     )
 }
@@ -115,6 +118,7 @@ private fun HomeScreen(
     onAddGatheringClick: () -> Unit,
     onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
+    onProposeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -145,12 +149,13 @@ private fun HomeScreen(
             whenLabel = whenLabel,
             whereLabel = whereLabel,
             whatLabel = whatLabel,
+            sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
+            sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
             onWhenRefreshClick = onWhenRefreshClick,
             onWhereRefreshClick = onWhereRefreshClick,
             onWhatRefreshClick = onWhatRefreshClick,
-            sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
-            sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
-            onChangedState = onChangedState
+            onChangedState = onChangedState,
+            onProposeClick = onProposeClick
         )
     }
 }
@@ -230,8 +235,9 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         whenLabel = "",
         whereLabel = "",
         whatLabel = "",
-        onWhenRefreshClick = {  },
-        onWhereRefreshClick = {  },
-        onWhatRefreshClick = { }
+        onWhenRefreshClick = { },
+        onWhereRefreshClick = { },
+        onWhatRefreshClick = { },
+        onProposeClick = {}
     )
 }

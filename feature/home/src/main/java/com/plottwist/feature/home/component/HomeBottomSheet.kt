@@ -55,6 +55,7 @@ fun HomeBottomSheet(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
+    onProposeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     DraggableBottomSheet(
@@ -67,7 +68,8 @@ fun HomeBottomSheet(
         onWhatRefreshClick = onWhatRefreshClick,
         sheetPeekHeight = sheetPeekHeight,
         sheetFullHeight = sheetFullHeight,
-        onChangedState = onChangedState
+        onChangedState = onChangedState,
+        onProposeClick = onProposeClick
     )
 }
 
@@ -83,6 +85,7 @@ fun DraggableBottomSheet(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
+    onProposeClick: () -> Unit,
     thresholdHeight: Dp = 30.dp,
     shape: RoundedCornerShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
     borderColor: Color = Color(0xAAE1E1E1),
@@ -220,11 +223,10 @@ fun DraggableBottomSheet(
                         whatLabel = whatLabel,
                         onWhenRefreshClick = onWhenRefreshClick,
                         onWhereRefreshClick = onWhereRefreshClick,
-                        onWhatRefreshClick = onWhatRefreshClick
+                        onWhatRefreshClick = onWhatRefreshClick,
+                        onProposeClick = onProposeClick
                     )
                 }
-
-
             }
         }
     }
