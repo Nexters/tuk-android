@@ -1,9 +1,9 @@
 package com.plottwist.core.designsystem.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,17 +15,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,8 +42,9 @@ fun TukTextField(
     hint: String,
     label: String,
     isFocus: Boolean,
+    onClear: () -> Unit,
     modifier: Modifier = Modifier,
-    onFocus: (Boolean) -> Unit = {},
+    onFocus: (Boolean) -> Unit = {}
 ) {
     BasicTextField(
         modifier = modifier
@@ -61,10 +61,12 @@ fun TukTextField(
                     .background(
                         color = if(isFocus) Gray000 else Gray100,
                         shape = RoundedCornerShape(15.dp)
-                    ).border(
-                        width = if(isFocus) 1.dp else 0.dp,
-                        color = Gray900,
-                        shape = RoundedCornerShape(15.dp)
+                    ).then(
+                        if(isFocus) Modifier.border(
+                            width = 1.dp,
+                            color = Gray900,
+                            shape = RoundedCornerShape(15.dp)
+                        ) else Modifier
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -99,7 +101,7 @@ fun TukTextField(
                 if (state.text.isNotEmpty()) {
                     ClearButton(
                         modifier = Modifier.padding(end = 10.dp),
-                        onClick = {}
+                        onClick = onClear
                     )
                 }
             }
@@ -118,17 +120,11 @@ fun ClearButton(
             .clip(CircleShape)
             .clickable {
                 onClick()
-            }
-            .padding(10.dp)
-            .background(
-                color = Gray100,
-                shape = CircleShape
-            ),
+            },
         contentAlignment = Alignment.Center
     ) {
-        Icon(
-            modifier = Modifier.size(8.85.dp),
-            imageVector = ImageVector.vectorResource(R.drawable.ic_close),
+        Image(
+            imageVector = ImageVector.vectorResource(R.drawable.ic_delete_circle),
             contentDescription = null
         )
     }
@@ -141,7 +137,8 @@ private fun TukTextFieldPreview() {
         state = TextFieldState(),
         hint = "",
         label = "모임명",
-        isFocus = false
+        isFocus = false,
+        onClear = {}
     )
 }
 
@@ -152,7 +149,8 @@ private fun TukTextFieldPreview1() {
         state = TextFieldState(),
         hint = "가이드 텍스트 노출 영역",
         label = "모임명",
-        isFocus = false
+        isFocus = false,
+        onClear = {}
     )
 }
 
@@ -163,6 +161,7 @@ private fun TukTextFieldPreview2() {
         state = TextFieldState("안녕"),
         hint = "가이드 텍스트 노출 영역",
         label = "모임명",
-        isFocus = true
+        isFocus = true,
+        onClear = {}
     )
 }
