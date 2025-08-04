@@ -31,6 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
  import com.example.create_gathering.model.GatheringTag
 import com.example.create_gathering.model.TagCategory
+import com.plottwist.core.designsystem.component.TukOutlinedButton
+import com.plottwist.core.designsystem.component.TukSolidButton
+import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.tuk.feature.create_gathering.R
@@ -84,37 +87,18 @@ fun CreateGatheringSelectTags(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedButton(
-                    onClick = onClickPrev,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(53.dp),
-                    shape = RoundedCornerShape(15.dp),
-                    border = BorderStroke(1.dp, Color(0xFFCCCCCC)),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = Color.White,
-                        contentColor = Color.Black
-                    ),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text("이전", style = TukPretendardTypography.body16M)
-                }
+                TukOutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    text = "이전",
+                    onClick = onClickPrev
+                )
 
-                Button(
-                    onClick = onClickNext,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(53.dp),
-                    shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF4B0404),
-                        contentColor = Color.White
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text("생성하기", style = TukPretendardTypography.body16M)
-                }
+                TukSolidButton(
+                    modifier = Modifier.weight(1f),
+                    text = "생성하기",
+                    buttonType = TukSolidButtonType.from(selectedTags.isNotEmpty()),
+                    onClick = onClickNext
+                )
             }
 
             Text(

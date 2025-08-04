@@ -28,6 +28,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.plottwist.core.designsystem.component.TukOutlinedButton
+import com.plottwist.core.designsystem.component.TukSolidButton
+import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.tuk.feature.create_gathering.R
@@ -111,44 +114,20 @@ fun CreateGatheringSelectIntervalDays(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedButton(
-                onClick = { },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(53.dp),
-                shape = RoundedCornerShape(15.dp),
-                border = BorderStroke(1.dp, Color(0xFFCCCCCC)),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = Color.White,
-                    contentColor = Color.Black
-                ),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text(
-                    text = "이전",
-                    style = TukPretendardTypography.body16M
-                )
-            }
+            TukOutlinedButton(
+                modifier = Modifier.weight(1f),
+                text = "이전",
+                onClick = {
+                    // TODO 이전 화면
+                }
+            )
 
-            Button(
-                onClick = { onNext()},
-                modifier = Modifier
-                    .weight(1f)
-                    .height(53.dp),
-                shape = RoundedCornerShape(15.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFCCCCCC),
-                    contentColor = Color.White
-                ),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text(
-                    text = "다음",
-                    style = TukPretendardTypography.body16M
-                )
-            }
-
+            TukSolidButton(
+                modifier = Modifier.weight(1f),
+                text = "다음",
+                buttonType = TukSolidButtonType.from(selectedOption != 0),
+                onClick = onNext
+            )
         }
         Text(
             text = "건너뛰기",

@@ -27,7 +27,13 @@ enum class TukSolidButtonType(
     val contentColor: Color
 ) {
     ACTIVE(containerColor = TukPrimitivesColor.Primary500, contentColor = Grey000),
-    DISABLED(containerColor = Grey200, contentColor = Grey000 )
+    DISABLED(containerColor = Grey200, contentColor = Grey000 );
+
+    companion object {
+        fun from(isActive: Boolean): TukSolidButtonType {
+            return if(isActive) ACTIVE else DISABLED
+        }
+    }
 }
 
 

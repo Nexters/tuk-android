@@ -20,6 +20,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.plottwist.core.designsystem.component.TukSolidButton
+import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.tuk.feature.create_gathering.R
@@ -107,23 +109,12 @@ fun CreateGatheringNameInput(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Button(
+        TukSolidButton(
+            modifier = Modifier.fillMaxWidth(),
+            text = "다음",
             onClick = onNext,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(53.dp),
-            shape = RoundedCornerShape(15.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFCCCCCC) // 버튼 배경색
-            )
-        ) {
-            Text(
-                text = "다음",
-                style = TukPretendardTypography.body16R
-            )
-        }
-
-
+            buttonType = TukSolidButtonType.from(value.isNotBlank())
+        )
     }
 }
 
