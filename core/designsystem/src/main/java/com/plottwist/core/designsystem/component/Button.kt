@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Grey000
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Grey200
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Grey500
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Grey900
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray200
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray500
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.TukPrimitivesColor
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 
@@ -26,8 +26,8 @@ enum class TukSolidButtonType(
     val containerColor: Color,
     val contentColor: Color
 ) {
-    ACTIVE(containerColor = TukPrimitivesColor.Primary500, contentColor = Grey000),
-    DISABLED(containerColor = Grey200, contentColor = Grey000 );
+    ACTIVE(containerColor = TukPrimitivesColor.Primary500, contentColor = Gray000),
+    DISABLED(containerColor = Gray200, contentColor = Gray000 );
 
     companion object {
         fun from(isActive: Boolean): TukSolidButtonType {
@@ -70,11 +70,11 @@ fun TukOutlinedButton(
 ) {
     TukButton(
         modifier = modifier,
-        containerColor = Grey000,
-        disabledContainerColor = Grey000,
-        contentColor = Grey900,
-        disabledContentColor = Grey900,
-        border = BorderStroke(1.dp, Grey500),
+        containerColor = Gray000,
+        disabledContainerColor = Gray000,
+        contentColor = Gray900,
+        disabledContentColor = Gray900,
+        border = BorderStroke(1.dp, Gray500),
         onClick = onClick
     ) {
         Text(

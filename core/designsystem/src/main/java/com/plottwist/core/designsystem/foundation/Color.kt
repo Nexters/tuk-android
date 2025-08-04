@@ -3,15 +3,15 @@ package com.plottwist.core.designsystem.foundation
 import androidx.compose.ui.graphics.Color
 
 object TukColorTokens {
-    val Grey000 = Color(0xFFFFFFFF)
-    val Grey050 = Color(0xFFFAFAFA)
-    val Grey100 = Color(0xFFF5F5F5)
-    val Grey200 = Color(0xFFEAEAEA)
-    val Grey300 = Color(0xFFE1E1E1)
-    val Grey500 = Color(0xFFCCCCCC)
-    val Grey700 = Color(0xFFA0A0A0)
-    val Grey800 = Color(0xFF888888)
-    val Grey900 = Color(0xFF1F1F1F)
+    val Gray000 = Color(0xFFFFFFFF)
+    val Gray050 = Color(0xFFFAFAFA)
+    val Gray100 = Color(0xFFF5F5F5)
+    val Gray200 = Color(0xFFEAEAEA)
+    val Gray300 = Color(0xFFE1E1E1)
+    val Gray500 = Color(0xFFCCCCCC)
+    val Gray700 = Color(0xFFA0A0A0)
+    val Gray800 = Color(0xFF888888)
+    val Gray900 = Color(0xFF1F1F1F)
 
     val CoralRed050 = Color(0xFFFFF1F1)
     val CoralRed100 = Color(0xFFFFDFDF)
@@ -34,9 +34,9 @@ object TukPrimitivesColor {
 }
 
 object TukTextColor {
-    val Primary = TukColorTokens.Grey900
-    val Secondary = TukColorTokens.Grey700
-    val Tertiary = TukColorTokens.Grey500
-    val Disabled = TukColorTokens.Grey000
+    val Primary = TukColorTokens.Gray900
+    val Secondary = TukColorTokens.Gray700
+    val Tertiary = TukColorTokens.Gray500
+    val Disabled = TukColorTokens.Gray000
     val Error = TukColorTokens.CoralRed600
 }
