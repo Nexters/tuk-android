@@ -15,8 +15,8 @@ data class GatheringDetail(
     val gatheringId: Long = 0,
     val gatheringName: String = "",
     val lastNotificationRelativeTime: String = "",
-    val sentInvitationCount: Int = 0,
-    val receivedInvitationCount: Int = 0,
+    val sentProposalCount: Int = 0,
+    val receivedProposalCount: Int = 0,
     val members: List<GatheringMember> = emptyList()
 )
 
