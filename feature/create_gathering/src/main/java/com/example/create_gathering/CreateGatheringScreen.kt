@@ -71,12 +71,12 @@ fun CreateGatheringScreen(
         ) { page ->
             when (page) {
                 0 -> CreateGatheringNameInput(
-                    value = state.gatheringName,
-                    onValueChange = {
-                        viewModel.onAction(CreateGatheringAction.UpdateGatheringName(it))
-                    },
+                    state = state.gatheringName,
                     onNext = {
                         viewModel.onAction(CreateGatheringAction.ClickNext)
+                    },
+                    onClear = {
+                        viewModel.onAction(CreateGatheringAction.ClearGatheringName)
                     }
                 )
 

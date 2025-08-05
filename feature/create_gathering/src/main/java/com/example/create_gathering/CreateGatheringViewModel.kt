@@ -1,5 +1,6 @@
 package com.example.create_gathering
 
+import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import com.example.create_gathering.model.toPresentation
 import com.plottwist.core.domain.gathering.model.CreateGatheringModel
@@ -64,10 +65,6 @@ class CreateGatheringViewModel @Inject constructor(
                 reduce { state.copy(tags = updated) }
             }
 
-            is CreateGatheringAction.UpdateGatheringName -> {
-                reduce { state.copy(gatheringName = action.name) }
-            }
-
             is CreateGatheringAction.UpdateIntervalDays -> {
                 reduce { state.copy(intervalDays = action.intervalDays) }
             }
@@ -75,12 +72,16 @@ class CreateGatheringViewModel @Inject constructor(
             is CreateGatheringAction.SubmitGathering -> {
                 createGathering()
             }
+
+            CreateGatheringAction.ClearGatheringName -> {
+                state.gatheringName.clearText()
+            }
         }
     }
 
     private fun createGathering() = intent {
         val model = CreateGatheringModel(
-            name = state.gatheringName,
+            name = state.gatheringName.text.toString(),
             intervalDays = state.intervalDays,
             tagIds = state.tags.map { it.id }
         )

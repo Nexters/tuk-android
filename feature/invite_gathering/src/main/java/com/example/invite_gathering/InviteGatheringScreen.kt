@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.designsystem.component.component.TukTextButton
+import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.tuk.feature.invite_gathering.R
@@ -147,7 +147,7 @@ fun InviteGatheringContent(
 fun InviteGatheringButton(
     onClick: () -> Unit
 ) {
-    TukTextButton(
+    TukSolidButton(
         text = "넌지시 제안하기",
         modifier = Modifier
             .fillMaxWidth()
