@@ -8,8 +8,9 @@ data class OnboardingNameState(
 
 sealed class OnboardingNameAction {
     data object ClickClose : OnboardingNameAction()
+    data object ClickSubmit : OnboardingNameAction()
 }
 
 sealed class OnboardingNameSideEffect {
-
+    data object NavigateToHomeScreen : OnboardingNameSideEffect()
 }

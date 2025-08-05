@@ -22,7 +22,8 @@ fun NavController.navigateToOnboardingName(
 }
 
 fun NavGraphBuilder.onboardingNameNavGraph(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    navigateToHomeScreen: () -> Unit
 ) {
     composable<Route.OnboardingName> (
         enterTransition = { slideInVertically() },
@@ -31,7 +32,8 @@ fun NavGraphBuilder.onboardingNameNavGraph(
         popExitTransition = { popSlideOutVertically() }
     ) {
         OnboardingNameScreen(
-            onBack = onBack
+            onBack = onBack,
+            navigateToHomeScreen = navigateToHomeScreen
         )
     }
 }

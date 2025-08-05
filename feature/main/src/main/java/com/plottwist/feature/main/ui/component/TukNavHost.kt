@@ -78,6 +78,9 @@ fun TukNavHost(
         onboardingNameNavGraph(
             onBack = {
 
+            },
+            navigateToHomeScreen = {
+                navController.popBackStack(Route.Home, inclusive = false)
             }
         )
     }

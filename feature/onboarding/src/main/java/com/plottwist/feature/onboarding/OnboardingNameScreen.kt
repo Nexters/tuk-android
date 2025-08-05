@@ -27,13 +27,19 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun OnboardingNameScreen(
     onBack: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnboardingNameViewModel = hiltViewModel(),
 ) {
     val state by viewModel.collectAsState()
 
 
-    viewModel.collectSideEffect {
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            OnboardingNameSideEffect.NavigateToHomeScreen -> {
+                navigateToHomeScreen()
+            }
+        }
 
     }
 
@@ -43,6 +49,9 @@ fun OnboardingNameScreen(
         onCloseClick = {
             viewModel.handleAction(OnboardingNameAction.ClickClose)
         },
+        onSubmitClick = {
+            viewModel.handleAction(OnboardingNameAction.ClickSubmit)
+        }
     )
 }
 
@@ -50,6 +59,7 @@ fun OnboardingNameScreen(
 private fun OnboardingNameScreen(
     name: TextFieldState,
     onCloseClick: () -> Unit,
+    onSubmitClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isNameFocused by remember { mutableStateOf(false) }
@@ -62,7 +72,7 @@ private fun OnboardingNameScreen(
         bottomBar = {
             OnboardingSubmitButton(
                 isEnabled = name.text.isNotBlank(),
-                onClick = { }
+                onClick = onSubmitClick
             )
         },
         title = stringResource(R.string.onboarding_name_title),
@@ -71,8 +81,8 @@ private fun OnboardingNameScreen(
         item {
             TukTextField(
                 state = name,
-                label = "이름",
-                hint = "이름을 입력해 주세요",
+                label = stringResource(R.string.onboarding_name_text_field_label),
+                hint = stringResource(R.string.onboarding_name_text_field_hint),
                 isFocus = isNameFocused,
                 onFocus = {
                     isNameFocused = it
@@ -120,5 +130,6 @@ private fun OnboardingNameScreenPreview() {
     OnboardingNameScreen(
         name = TextFieldState(),
         onCloseClick = {},
+        onSubmitClick = {}
     )
 }
