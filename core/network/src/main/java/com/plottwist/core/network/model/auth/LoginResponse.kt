@@ -13,7 +13,8 @@ data class LoginResponse(
 data class LoginData(
     val memberId: Long,
     val accessToken: String,
-    val refreshToken: String
+    val refreshToken: String,
+    val isFirstLogin: Boolean
 )
 
 @Serializable

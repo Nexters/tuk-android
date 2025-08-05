@@ -31,4 +31,7 @@ sealed interface Route {
         val whenLabel: String,
         val whatLabel: String
     )
+
+    @Serializable
+    data object OnboardingName : Route
 }

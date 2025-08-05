@@ -52,6 +52,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun LoginScreen(
     onBack: () -> Unit,
+    navigateToOnboarding: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -91,6 +92,10 @@ fun LoginScreen(
 
             LoginSideEffect.NavigateToHomeScreen -> {
                 onBack()
+            }
+
+            LoginSideEffect.NavigateToOnboardingScreen -> {
+                navigateToOnboarding()
             }
         }
     }

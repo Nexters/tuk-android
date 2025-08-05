@@ -5,6 +5,7 @@ import com.plottwist.core.domain.auth.usecase.CheckLoginStatusUseCase
 import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -54,7 +55,7 @@ class HomeViewModel @Inject constructor(
     private fun observeLoginState() = intent {
         checkLoginStatusUseCase().map { isLoggedIn ->
             if (isLoggedIn) LoginState.LoggedIn else LoginState.LoggedOut
-        }.collectLatest { loginState ->
+        }.distinctUntilChanged().collectLatest { loginState ->
             when (loginState) {
                 LoginState.LoggedIn -> {
                     fetchGatherings(loginState)

@@ -18,7 +18,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val deviceInfoProvider: DeviceInfoProvider
 ) : LoginRepository {
 
-    override suspend fun googleLogin(accountId: String): Result<Unit> {
+    override suspend fun googleLogin(accountId: String): Result<Boolean> {
         return try {
             val deviceInfo = DeviceInfo(
                 deviceId = deviceInfoProvider.getDeviceSSAID(),
@@ -38,8 +38,9 @@ class LoginRepositoryImpl @Inject constructor(
                 val result = response.data
                 authDataSource.setAccessToken(result.accessToken).collect()
                 authDataSource.setRefreshToken(result.refreshToken).collect()
+                authDataSource.setOnboardingCompleted(!result.isFirstLogin).collect()
 
-                Result.success(Unit)
+                Result.success(!result.isFirstLogin)
 
             } else {
                 Result.failure(Exception("Fail Google Login"))
