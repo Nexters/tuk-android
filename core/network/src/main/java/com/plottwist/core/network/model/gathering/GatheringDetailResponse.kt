@@ -16,8 +16,8 @@ data class GatheringDetailData(
     val gatheringId: Long,
     val gatheringName: String,
     val lastNotificationRelativeTime: String,
-    val sentInvitationCount: Int,
-    val receivedInvitationCount: Int,
+    val sentProposalCount: Int,
+    val receivedProposalCount: Int,
     val members: List<GatheringMemberData>
 )
 

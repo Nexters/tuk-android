@@ -25,8 +25,8 @@ import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 @Composable
 fun GatheringInfo(
     lastAlarm: String,
-    sentInvitationCount: Int,
-    receivedInvitationCount: Int,
+    sentProposalCount: Int,
+    receivedProposalCount: Int,
     onProposalClick: () -> Unit,
     onSentInvitationClick: () -> Unit,
     onReceivedInvitationClick: () -> Unit,
@@ -45,13 +45,13 @@ fun GatheringInfo(
 
         InvitationItem(
             label = stringResource(R.string.gathering_detail_sent_invitation),
-            count = sentInvitationCount,
+            count = sentProposalCount,
             onInvitationClick = onSentInvitationClick
         )
 
         InvitationItem(
             label = stringResource(R.string.gathering_detail_received_invitation),
-            count = receivedInvitationCount,
+            count = receivedProposalCount,
             onInvitationClick = onReceivedInvitationClick
         )
 
