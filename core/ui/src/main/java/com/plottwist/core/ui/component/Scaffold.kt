@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -26,7 +27,6 @@ import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TukScaffold(
     modifier: Modifier = Modifier,
@@ -39,7 +39,7 @@ fun TukScaffold(
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     containerColor: Color = Gray000,
     contentColor: Color = contentColorFor(containerColor),
-    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    contentWindowInsets: WindowInsets = WindowInsets.navigationBars,
     contentPaddingValues: PaddingValues = PaddingValues(
         horizontal = 20.dp,
         vertical = 10.dp
@@ -59,13 +59,11 @@ fun TukScaffold(
         containerColor = containerColor,
         contentColor = contentColor,
         contentWindowInsets = contentWindowInsets,
-    ) {
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-
-                ),
+                .padding(innerPadding),
             contentPadding = contentPaddingValues,
             state = listState
         ) {
