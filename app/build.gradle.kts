@@ -15,5 +15,6 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:data"))
     implementation(project(":core:auth-provider"))
+    implementation(project(":core:weburl"))
     testImplementation(libs.junit)
 }

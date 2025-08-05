@@ -28,8 +28,8 @@ fun GatheringInfo(
     sentProposalCount: Int,
     receivedProposalCount: Int,
     onProposalClick: () -> Unit,
-    onSentInvitationClick: () -> Unit,
-    onReceivedInvitationClick: () -> Unit,
+    onSentProposalClick: () -> Unit,
+    onReceivedProposalClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column (
@@ -43,16 +43,16 @@ fun GatheringInfo(
 
         HorizontalDivider(color = Color(0xFFEFEFEF))
 
-        InvitationItem(
+        ProposalItem(
             label = stringResource(R.string.gathering_detail_sent_invitation),
             count = sentProposalCount,
-            onInvitationClick = onSentInvitationClick
+            onProposalClick = onSentProposalClick
         )
 
-        InvitationItem(
+        ProposalItem(
             label = stringResource(R.string.gathering_detail_received_invitation),
             count = receivedProposalCount,
-            onInvitationClick = onReceivedInvitationClick
+            onProposalClick = onReceivedProposalClick
         )
 
     }
@@ -113,10 +113,10 @@ fun LastAlarmInfo(
 }
 
 @Composable
-fun InvitationItem(
+fun ProposalItem(
     label: String,
     count: Int,
-    onInvitationClick: () -> Unit,
+    onProposalClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -124,7 +124,7 @@ fun InvitationItem(
             interactionSource = null,
             indication = null
         ) {
-            onInvitationClick()
+            onProposalClick()
         },
         verticalAlignment = Alignment.CenterVertically
     ) {

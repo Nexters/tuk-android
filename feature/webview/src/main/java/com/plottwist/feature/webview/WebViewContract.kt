@@ -6,7 +6,6 @@ data class WebViewState(
 
 sealed class WebViewAction {
     data object ClickBack : WebViewAction()
-    data class LoadUrl(val url: String) : WebViewAction()
 }
 
 sealed class WebViewSideEffect {
