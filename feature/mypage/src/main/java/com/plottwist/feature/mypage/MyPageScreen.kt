@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,13 +24,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
-import kotlinx.coroutines.flow.collectLatest
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun MyPageScreen(
     viewModel: MyPageViewModel = hiltViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    navigateToNotificationSetting: () -> Unit,
+    navigateToTerms: () -> Unit,
+    navigateToPrivacyPolicy: () -> Unit
 ) {
 
     val state by viewModel.container.stateFlow.collectAsState()
@@ -41,19 +42,24 @@ fun MyPageScreen(
             MyPageSideEffect.NavigateToEditName -> {
 
             }
-            MyPageSideEffect.NavigateToNotificationSetting-> {
+
+            MyPageSideEffect.NavigateToNotificationSetting -> {
+                navigateToNotificationSetting()
+            }
+
+            MyPageSideEffect.NavigateToUpdateApp -> {
 
             }
-            MyPageSideEffect.NavigateToUpdateApp-> {
 
+            MyPageSideEffect.NavigateToTerms -> {
+                navigateToTerms()
             }
-            MyPageSideEffect.NavigateToTerms-> {
 
+            MyPageSideEffect.NavigateToPrivacyPolicy -> {
+                navigateToPrivacyPolicy()
             }
-            MyPageSideEffect.NavigateToPrivacyPolicy-> {
 
-            }
-            MyPageSideEffect.NavigateToLogout->{
+            MyPageSideEffect.NavigateToLogout -> {
 
             }
         }
@@ -73,12 +79,12 @@ fun MyPageScreen(
 
 @Composable
 fun MyPageContent(
-    onEditNameClick: () ->Unit,
-    onNotificationClick: () ->Unit,
+    onEditNameClick: () -> Unit,
+    onNotificationClick: () -> Unit,
     onUpdateClick: () -> Unit,
-    onTermsClick:() ->Unit,
-    onPrivacyPolicyClick:() ->Unit,
-    onLogoutClick:() ->Unit,
+    onTermsClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
 
@@ -97,8 +103,8 @@ fun MyPageContent(
             ) {
                 item {
                     SectionTitle("내 정보관리")
-                    MyPageItem("이름 설정",onEditNameClick)
-                    MyPageItem("알림 설정",onNotificationClick)
+                    MyPageItem("이름 설정", onEditNameClick)
+                    MyPageItem("알림 설정", onNotificationClick)
                 }
 
                 item {
@@ -106,26 +112,34 @@ fun MyPageContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable(onClick =onUpdateClick )
+                            .clickable(onClick = onUpdateClick)
                             .padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "앱 버전", style = TukPretendardTypography.body16R )
+                        Text(text = "앱 버전", style = TukPretendardTypography.body16R)
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "1.2.0", color = Color(0xFFCCCCCC), style = TukPretendardTypography.body16R)
+                            Text(
+                                text = "1.2.0",
+                                color = Color(0xFFCCCCCC),
+                                style = TukPretendardTypography.body16R
+                            )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "업데이트하기", color = Color(0xFF888888), style = TukPretendardTypography.body14R )
+                            Text(
+                                text = "업데이트하기",
+                                color = Color(0xFF888888),
+                                style = TukPretendardTypography.body14R
+                            )
                         }
 
                     }
-                    MyPageItem("서비스 이용약관",onTermsClick)
-                    MyPageItem("개인정보 처리방침",onPrivacyPolicyClick)
+                    MyPageItem("서비스 이용약관", onTermsClick)
+                    MyPageItem("개인정보 처리방침", onPrivacyPolicyClick)
                 }
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
-                    MyPageItem("로그아웃",onLogoutClick)
+                    MyPageItem("로그아웃", onLogoutClick)
                 }
 
 
@@ -136,20 +150,20 @@ fun MyPageContent(
 }
 
 @Composable
-fun SectionTitle(text:String) {
+fun SectionTitle(text: String) {
     Text(
         text = text,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, top= 20.dp, bottom = 8.dp),
+            .padding(start = 20.dp, top = 20.dp, bottom = 8.dp),
         style = TukPretendardTypography.body14R
     )
 }
 
 @Composable
 fun MyPageItem(
-    title:String,
-    onClick: () ->Unit
+    title: String,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
