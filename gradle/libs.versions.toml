@@ -55,6 +55,9 @@ material = "1.12.0"
 ## KSP
 ksp = "2.2.0-2.0.2"
 
+## GOOGLE
+google-service = "4.4.3"
+firebase-bom = "34.0.0"
 
 [libraries]
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
@@ -113,6 +116,8 @@ androidx-datastore = { module = "androidx.datastore:datastore-preferences", vers
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 
 [plugins]
 
@@ -126,6 +131,7 @@ android-juni5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp" , version.ref = "ksp"}
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlin"  }
+google-service = { id = "com.google.gms.google-services", version.ref = "google-service" }
 
 tuk-android-application = { id = "tuk.android.application", version = "unspecified" }
 tuk-android-application-compose = { id = "tuk.android.application.compose", version = "unspecified" }
