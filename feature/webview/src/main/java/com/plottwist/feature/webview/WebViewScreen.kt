@@ -56,9 +56,7 @@ private fun WebViewScreen(
         addBridge = {
             it.addJavascriptInterface(
                 DefaultBridge(
-                    onNavigateDetail = {
-                        // TODO
-                    }
+                    onNavigateHome = onBackClick
                 ),
                 BRIDGE_NAME
             )
@@ -80,10 +78,10 @@ fun WebViewAppBar(
 
 internal const val BRIDGE_NAME = "AndroidBridge"
 
-private class DefaultBridge(val onNavigateDetail: () -> Unit) {
+private class DefaultBridge(val onNavigateHome: () -> Unit) {
     @JavascriptInterface
-    fun navigateDetail() {
-        onNavigateDetail()
+    fun navigateHome() {
+        onNavigateHome()
     }
 }
 
