@@ -9,34 +9,29 @@ import com.plottwist.core.ui.extension.popSlideOutVertically
 import com.plottwist.core.ui.extension.slideInVertically
 import com.plottwist.core.ui.extension.slideOutVertically
 import com.plottwist.core.ui.navigation.Route
-import com.plottwist.feature.proposal_create.CreateProposalScreen
+import com.plottwist.feature.proposal_create.gathering_select.SelectGatheringScreen
 
-
-fun NavController.navigateToCreateProposal(
-    whereLabel: String,
-    whenLabel: String,
-    whatLabel: String,
+fun NavController.navigateToSelectGathering(
+    gatheringId: Long?,
     navOptions: NavOptions? = null
 ) {
     this.navigate(
-        route = Route.CreateProposal(whereLabel, whenLabel, whatLabel),
+        route = Route.SelectGathering(gatheringId),
         navOptions = navOptions
     )
 }
 
-fun NavGraphBuilder.createProposalNavGraph(
-    onBack: () -> Unit,
-    navigateToSelectGatheringScreen: (Long?) -> Unit
+fun NavGraphBuilder.selectGatheringNavGraph(
+    onBack: () -> Unit
 ) {
-    composable<Route.CreateProposal> (
+    composable<Route.SelectGathering> (
         enterTransition = { slideInVertically() },
         exitTransition = { slideOutVertically() },
         popEnterTransition = { popSlideInVertically() },
         popExitTransition = { popSlideOutVertically() }
     ) {
-        CreateProposalScreen(
-            onBack = onBack,
-            navigateToSelectGatheringScreen = navigateToSelectGatheringScreen
+        SelectGatheringScreen(
+            onBack = onBack
         )
     }
 }

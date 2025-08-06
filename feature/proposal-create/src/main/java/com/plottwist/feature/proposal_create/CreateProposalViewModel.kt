@@ -29,10 +29,18 @@ class CreateProposalViewModel @Inject constructor(
             CreateProposalAction.ClickClose -> {
                 navigateBack()
             }
+
+            CreateProposalAction.ClickSelectGathering -> {
+                handleSelectGatheringClick()
+            }
         }
     }
 
     private fun navigateBack() = intent {
         postSideEffect(CreateProposalSideEffect.NavigateBack)
+    }
+
+    private fun handleSelectGatheringClick() = intent {
+        postSideEffect(CreateProposalSideEffect.NavigateToSelectGathering(state.selectedGatheringId))
     }
 }

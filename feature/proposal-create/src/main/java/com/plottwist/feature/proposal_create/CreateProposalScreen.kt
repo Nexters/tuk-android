@@ -36,6 +36,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun CreateProposalScreen(
     onBack : () -> Unit,
+    navigateToSelectGatheringScreen: (Long?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
@@ -46,6 +47,10 @@ fun CreateProposalScreen(
             CreateProposalSideEffect.NavigateBack -> {
                 onBack()
             }
+
+            is CreateProposalSideEffect.NavigateToSelectGathering -> {
+                navigateToSelectGatheringScreen(sideEffect.selectedGatheringId)
+            }
         }
     }
 
@@ -54,9 +59,12 @@ fun CreateProposalScreen(
         whereLabel = state.whereLabel,
         whenLabel = state.whenLabel,
         whatLabel = state.whatLabel,
-        isGatheringSelected = state.isGatheringSelected,
+        isGatheringSelected = state.selectedGatheringId != null,
         onCloseClicked = {
             viewModel.handleAction(CreateProposalAction.ClickClose)
+        },
+        onSelectGatheringClick = {
+            viewModel.handleAction(CreateProposalAction.ClickSelectGathering)
         }
     )
 }
@@ -68,6 +76,7 @@ private fun CreateProposalScreen(
     whatLabel: String,
     isGatheringSelected: Boolean,
     onCloseClicked: () -> Unit,
+    onSelectGatheringClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -98,9 +107,7 @@ private fun CreateProposalScreen(
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
                     whatLabel = whatLabel,
-                    onSelectGatheringClick = {
-                        // TODO
-                    }
+                    onSelectGatheringClick = onSelectGatheringClick
                 )
             }
 
@@ -170,6 +177,7 @@ private fun CreateProposalScreenPreview() {
         whenLabel = "when",
         whatLabel = "what",
         isGatheringSelected = false,
-        onCloseClicked = {}
+        onCloseClicked = {},
+        onSelectGatheringClick = {}
     )
 }

@@ -1,7 +1,10 @@
 package com.plottwist.feature.proposal_create.gathering_select
 
+import com.plottwist.feature.proposal_create.model.GatheringUiModel
+
 data class SelectGatheringState(
-    val selectedGatheringId: Long? = null
+    val selectedGatheringId: Long? = null,
+    val gatherings: List<GatheringUiModel> = emptyList()
 )
 
 sealed class SelectGatheringAction {

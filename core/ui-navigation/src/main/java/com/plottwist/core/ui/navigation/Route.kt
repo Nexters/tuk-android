@@ -53,4 +53,9 @@ sealed interface Route {
     data class WebView(
         val url: String
     ) : Route
+
+    @Serializable
+    data class SelectGathering(
+        val gatheringId: Long?
+    ) : Route
 }

@@ -23,6 +23,8 @@ import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
+import com.plottwist.feature.proposal_create.navigation.navigateToSelectGathering
+import com.plottwist.feature.proposal_create.navigation.selectGatheringNavGraph
 import com.plottwist.feature.webview.navigation.navigateToWebView
 import com.plottwist.feature.webview.navigation.webViewNavGraph
 
@@ -96,6 +98,9 @@ fun TukNavHost(
         createProposalNavGraph(
             onBack = {
                 navController.popBackStack()
+            },
+            navigateToSelectGatheringScreen = {
+                navController.navigateToSelectGathering(it)
             }
         )
         onboardingNameNavGraph(
@@ -107,6 +112,11 @@ fun TukNavHost(
             }
         )
         webViewNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
+        selectGatheringNavGraph(
             onBack = {
                 navController.popBackStack()
             }
