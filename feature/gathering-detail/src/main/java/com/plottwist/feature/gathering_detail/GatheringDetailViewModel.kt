@@ -58,12 +58,12 @@ class GatheringDetailViewModel @Inject constructor(
     }
 
     private fun handleReceivedProposalClick() = intent {
-        val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalUrl,"UTF-8")
+        val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalsUrl,"UTF-8")
         postSideEffect(GatheringDetailSideEffect.NavigateToWebView(encodedUrl))
     }
 
     private fun handleSentProposalClick() = intent {
-        val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalUrl,"UTF-8")
+        val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalsUrl,"UTF-8")
         postSideEffect(GatheringDetailSideEffect.NavigateToWebView(encodedUrl))
     }
 }

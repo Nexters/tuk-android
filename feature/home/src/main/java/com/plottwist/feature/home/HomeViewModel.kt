@@ -3,18 +3,21 @@ package com.plottwist.feature.home
 import androidx.lifecycle.ViewModel
 import com.plottwist.core.domain.auth.usecase.CheckLoginStatusUseCase
 import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
+import com.plottwist.core.weburl.WebUrlConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val checkLoginStatusUseCase: CheckLoginStatusUseCase,
-    private val getGatheringsUseCase: GetGatheringsUseCase
+    private val getGatheringsUseCase: GetGatheringsUseCase,
+    private val webViewConfig: WebUrlConfig,
 ) : ContainerHost<HomeState, HomeSideEffect>, ViewModel() {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         observeLoginState()
@@ -48,6 +51,10 @@ class HomeViewModel @Inject constructor(
 
             HomeAction.ClickPropose -> {
                 handleProposeClick()
+            }
+
+            HomeAction.ClickProposals -> {
+                handleProposalsClick()
             }
         }
     }
@@ -157,6 +164,11 @@ class HomeViewModel @Inject constructor(
                 }.random()
             )
         }
+    }
+
+    private fun handleProposalsClick() = intent {
+        val encodedUrl = URLEncoder.encode(webViewConfig.proposalsUrl,"UTF-8")
+        postSideEffect(HomeSideEffect.NavigateToWebViewScreen(encodedUrl))
     }
 
     companion object {

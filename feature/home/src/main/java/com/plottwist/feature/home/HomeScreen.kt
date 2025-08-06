@@ -1,26 +1,34 @@
 package com.plottwist.feature.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.core.ui.component.StableImage
@@ -37,6 +45,7 @@ fun HomeScreen(
     navigateToCreateGathering: () -> Unit,
     navigateToGatheringDetail: (Long) -> Unit,
     navigateToCreateProposal: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
+    navigateToWebView: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -66,6 +75,10 @@ fun HomeScreen(
                     sideEffect.whenLabel,
                     sideEffect.whatLabel
                 )
+            }
+
+            is HomeSideEffect.NavigateToWebViewScreen -> {
+                navigateToWebView(sideEffect.encodedUrl)
             }
         }
     }
@@ -100,6 +113,9 @@ fun HomeScreen(
         },
         onProposeClick = {
             viewModel.handleAction(HomeAction.ClickPropose)
+        },
+        onProposalsClick = {
+            viewModel.handleAction(HomeAction.ClickProposals)
         }
     )
 }
@@ -119,6 +135,7 @@ private fun HomeScreen(
     onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
     onProposeClick: () -> Unit,
+    onProposalsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -134,6 +151,11 @@ private fun HomeScreen(
             HomeAppBar(onMyPageClick)
 
             HomeTitle()
+
+            HomeProposals(
+                modifier = Modifier.padding(start = 20.dp, top= 24.dp),
+                onClick = onProposalsClick
+            )
 
             HomeContent(
                 modifier = Modifier
@@ -184,6 +206,33 @@ fun HomeTitle(
         text = stringResource(R.string.home_title),
         style = TukSerifTypography.title24M
     )
+}
+
+@Composable
+fun HomeProposals(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.clickable {
+            onClick()
+        },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.home_proposals),
+            style = TukSerifTypography.body14R.copy(
+                color = Gray800
+            )
+        )
+        Icon(
+            modifier = Modifier.size(18.dp),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_next_arrow),
+            contentDescription = "",
+            tint = Gray800
+        )
+    }
 }
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -238,6 +287,7 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         onWhenRefreshClick = { },
         onWhereRefreshClick = { },
         onWhatRefreshClick = { },
-        onProposeClick = {}
+        onProposeClick = {},
+        onProposalsClick = {}
     )
 }
