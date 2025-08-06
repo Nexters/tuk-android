@@ -1,5 +1,6 @@
 package com.plottwist.feature.webview
 
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
@@ -49,9 +50,19 @@ private fun WebViewScreen(
     modifier: Modifier = Modifier,
 ) {
     TukWebView(
-        modifier = Modifier.statusBarsPadding(),
+        modifier = modifier.statusBarsPadding(),
         url = url,
-        onWebViewCreated = onWebViewCreated
+        onWebViewCreated = onWebViewCreated,
+        addBridge = {
+            it.addJavascriptInterface(
+                DefaultBridge(
+                    onNavigateDetail = {
+                        // TODO
+                    }
+                ),
+                BRIDGE_NAME
+            )
+        }
     )
 }
 
@@ -65,6 +76,15 @@ fun WebViewAppBar(
         type = TukTopAppBarType.DEPTH,
         onBack = onBackClick
     )
+}
+
+internal const val BRIDGE_NAME = "AndroidBridge"
+
+private class DefaultBridge(val onNavigateDetail: () -> Unit) {
+    @JavascriptInterface
+    fun navigateDetail() {
+        onNavigateDetail()
+    }
 }
 
 @Preview
