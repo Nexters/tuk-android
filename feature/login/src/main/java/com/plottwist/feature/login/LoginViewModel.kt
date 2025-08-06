@@ -38,10 +38,12 @@ class LoginViewModel @Inject constructor(
         reduce { LoginState.Loading }
 
         try {
-            val result = loginUseCase.loginWithGoogle(idToken)
+            val completedOnboarding = loginUseCase.loginWithGoogle(idToken).getOrDefault(false)
 
-            if (result.isSuccess) {
+            if (completedOnboarding) {
                 postSideEffect(LoginSideEffect.NavigateToHomeScreen)
+            } else {
+                postSideEffect(LoginSideEffect.NavigateToOnboardingScreen)
             }
         } catch (e: Exception) {
             reduce { LoginState.Error}

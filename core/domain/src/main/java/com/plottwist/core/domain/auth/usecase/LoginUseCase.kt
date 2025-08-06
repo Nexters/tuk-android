@@ -7,7 +7,7 @@ class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
 
-    suspend fun loginWithGoogle(accountId: String): Result<Unit> {
+    suspend fun loginWithGoogle(accountId: String): Result<Boolean> {
         return loginRepository.googleLogin(accountId)
     }
 }

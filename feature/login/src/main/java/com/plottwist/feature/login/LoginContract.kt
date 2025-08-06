@@ -16,4 +16,5 @@ sealed class LoginAction {
 sealed class LoginSideEffect {
     data object NavigateToHomeScreen : LoginSideEffect()
     data object GoogleLogin : LoginSideEffect()
+    data object NavigateToOnboardingScreen: LoginSideEffect()
 }

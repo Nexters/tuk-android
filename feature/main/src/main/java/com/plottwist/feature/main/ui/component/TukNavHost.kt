@@ -15,6 +15,8 @@ import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
 import com.plottwist.feature.mypage.navigation.navigateToMyPage
+import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
+import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 
@@ -52,6 +54,9 @@ fun TukNavHost(
         loginNavGraph(
             onBack = {
                 navController.popBackStack()
+            },
+            navigateToOnboarding = {
+                navController.navigateToOnboardingName()
             }
         )
         myPageNavGraph()
@@ -68,6 +73,14 @@ fun TukNavHost(
         createProposalNavGraph(
             onBack = {
                 navController.popBackStack()
+            }
+        )
+        onboardingNameNavGraph(
+            onBack = {
+
+            },
+            navigateToHomeScreen = {
+                navController.popBackStack(Route.Home, inclusive = false)
             }
         )
     }

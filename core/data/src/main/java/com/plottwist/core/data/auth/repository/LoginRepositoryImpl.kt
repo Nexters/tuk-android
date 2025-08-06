@@ -8,7 +8,7 @@ import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 
@@ -18,7 +18,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val deviceInfoProvider: DeviceInfoProvider
 ) : LoginRepository {
 
-    override suspend fun googleLogin(accountId: String): Result<Unit> {
+    override suspend fun googleLogin(accountId: String): Result<Boolean> {
         return try {
             val deviceInfo = DeviceInfo(
                 deviceId = deviceInfoProvider.getDeviceSSAID(),
@@ -38,8 +38,9 @@ class LoginRepositoryImpl @Inject constructor(
                 val result = response.data
                 authDataSource.setAccessToken(result.accessToken).collect()
                 authDataSource.setRefreshToken(result.refreshToken).collect()
+                authDataSource.setOnboardingCompleted(!result.isFirstLogin).collect()
 
-                Result.success(Unit)
+                Result.success(!result.isFirstLogin)
 
             } else {
                 Result.failure(Exception("Fail Google Login"))
@@ -50,8 +51,12 @@ class LoginRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun checkLoginStatus(): Flow<Boolean> =
-        authDataSource.getAccessToken().map { accessToken ->
-            accessToken?.isNotEmpty() ?: false
+    override fun checkLoginStatus(): Flow<Boolean> {
+        return combine(
+            authDataSource.getAccessToken(),
+            authDataSource.getOnboardingCompleted()
+        ) { accessToken, onboardingCompleted ->
+            accessToken?.isNotEmpty() ?: false && onboardingCompleted ?: false
         }
+    }
 }
