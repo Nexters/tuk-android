@@ -13,8 +13,10 @@ fun NavController.navigateToMyPage(
     this.navigate(route = Route.MyPage, navOptions = navOptions)
 }
 
-fun NavGraphBuilder.myPageNavGraph() {
+fun NavGraphBuilder.myPageNavGraph(
+    onBack: () -> Unit
+) {
     composable<Route.MyPage> {
-        MyPageScreen()
+        MyPageScreen(onBackClick = onBack)
     }
 }
