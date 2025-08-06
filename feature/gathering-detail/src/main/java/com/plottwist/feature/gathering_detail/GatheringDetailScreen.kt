@@ -39,6 +39,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun GatheringDetailScreen(
     onBack: () -> Unit,
+    navigateToWebViewScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GatheringDetailViewModel = hiltViewModel()
 ) {
@@ -48,6 +49,10 @@ fun GatheringDetailScreen(
         when (sideEffect) {
             GatheringDetailSideEffect.NavigateBack -> {
                 onBack()
+            }
+
+            is GatheringDetailSideEffect.NavigateToWebView -> {
+                navigateToWebViewScreen(sideEffect.encodedUrl)
             }
         }
     }
@@ -61,8 +66,12 @@ fun GatheringDetailScreen(
         receivedProposalCount = state.gatheringDetail.receivedProposalCount,
         onAlarmSettingClick = {},
         onProposalClick = {},
-        onSentInvitationClick = {},
-        onReceivedInvitationClick = {},
+        onSentProposalClick = {
+            viewModel.handleAction(GatheringDetailAction.ClickSentProposal)
+        },
+        onReceivedProposalClick = {
+            viewModel.handleAction(GatheringDetailAction.ClickReceivedProposal)
+        },
         onInviteMemberClick = {},
         onBackClick = {
             viewModel.handleAction(GatheringDetailAction.ClickBack)
@@ -79,8 +88,8 @@ private fun GatheringDetailScreen(
     receivedProposalCount: Int,
     onAlarmSettingClick: () -> Unit,
     onProposalClick: () -> Unit,
-    onSentInvitationClick: () -> Unit,
-    onReceivedInvitationClick: () -> Unit,
+    onSentProposalClick: () -> Unit,
+    onReceivedProposalClick: () -> Unit,
     onInviteMemberClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -120,8 +129,8 @@ private fun GatheringDetailScreen(
                     sentProposalCount = sentProposalCount,
                     receivedProposalCount = receivedProposalCount,
                     onProposalClick = onProposalClick,
-                    onSentInvitationClick = onSentInvitationClick,
-                    onReceivedInvitationClick = onReceivedInvitationClick
+                    onSentProposalClick = onSentProposalClick,
+                    onReceivedProposalClick = onReceivedProposalClick
                 )
             }
 
@@ -212,8 +221,8 @@ private fun GatheringDetailScreenPreview() {
         receivedProposalCount = 99,
         onAlarmSettingClick = {},
         onProposalClick = {},
-        onSentInvitationClick = {},
-        onReceivedInvitationClick = {},
+        onSentProposalClick = {},
+        onReceivedProposalClick = {},
         onInviteMemberClick = {},
         onBackClick = {}
     )

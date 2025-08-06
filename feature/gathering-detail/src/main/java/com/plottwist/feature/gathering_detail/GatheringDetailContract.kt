@@ -8,8 +8,11 @@ data class GatheringDetailState(
 
 sealed class GatheringDetailAction {
     data object ClickBack: GatheringDetailAction()
+    data object ClickSentProposal: GatheringDetailAction()
+    data object ClickReceivedProposal: GatheringDetailAction()
 }
 
 sealed class GatheringDetailSideEffect {
     data object NavigateBack: GatheringDetailSideEffect()
+    data class NavigateToWebView(val encodedUrl: String): GatheringDetailSideEffect()
 }

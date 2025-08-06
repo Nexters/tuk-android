@@ -19,6 +19,8 @@ import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
+import com.plottwist.feature.webview.navigation.navigateToWebView
+import com.plottwist.feature.webview.navigation.webViewNavGraph
 
 @Composable
 fun TukNavHost(
@@ -68,6 +70,9 @@ fun TukNavHost(
         gatheringDetailNavGraph(
             onBack = {
                 navController.popBackStack()
+            },
+            navigateToWebViewScreen = { url ->
+                navController.navigateToWebView(url)
             }
         )
         createProposalNavGraph(
@@ -81,6 +86,11 @@ fun TukNavHost(
             },
             navigateToHomeScreen = {
                 navController.popBackStack(Route.Home, inclusive = false)
+            }
+        )
+        webViewNavGraph(
+            onBack = {
+                navController.popBackStack()
             }
         )
     }

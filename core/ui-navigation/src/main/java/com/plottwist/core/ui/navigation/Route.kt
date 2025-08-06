@@ -34,4 +34,9 @@ sealed interface Route {
 
     @Serializable
     data object OnboardingName : Route
+
+    @Serializable
+    data class WebView(
+        val url: String
+    ) : Route
 }

@@ -5,14 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.plottwist.core.domain.gathering.usecase.GetGatheringDetailUseCase
 import com.plottwist.core.ui.navigation.Route
+import com.plottwist.core.weburl.WebUrlConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
 class GatheringDetailViewModel @Inject constructor(
     private val getGatheringDetailUseCase: GetGatheringDetailUseCase,
+    private val webUrlConfig: WebUrlConfig,
     savedStateHandle: SavedStateHandle
 ) : ContainerHost<GatheringDetailState, GatheringDetailSideEffect>, ViewModel() {
     override val container = container<GatheringDetailState, GatheringDetailSideEffect>(
@@ -26,6 +29,14 @@ class GatheringDetailViewModel @Inject constructor(
         when(action) {
             GatheringDetailAction.ClickBack -> {
                 navigateBack()
+            }
+
+            GatheringDetailAction.ClickReceivedProposal -> {
+                handleReceivedProposalClick()
+            }
+
+            GatheringDetailAction.ClickSentProposal -> {
+                handleSentProposalClick()
             }
         }
     }
@@ -44,5 +55,15 @@ class GatheringDetailViewModel @Inject constructor(
 
     private fun navigateBack() = intent {
         postSideEffect(GatheringDetailSideEffect.NavigateBack)
+    }
+
+    private fun handleReceivedProposalClick() = intent {
+        val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalUrl,"UTF-8")
+        postSideEffect(GatheringDetailSideEffect.NavigateToWebView(encodedUrl))
+    }
+
+    private fun handleSentProposalClick() = intent {
+        val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalUrl,"UTF-8")
+        postSideEffect(GatheringDetailSideEffect.NavigateToWebView(encodedUrl))
     }
 }

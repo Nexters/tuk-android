@@ -46,6 +46,11 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                             "GOOGLE_CLIENT_ID",
                             "\"${localProperties.getProperty("GOOGLE_CLIENT_ID")}\""
                         )
+                        buildConfigField(
+                            "String",
+                            "TUK_SENT_PROPOSAL_URL",
+                            "\"${localProperties.getProperty("TUK_SENT_PROPOSAL_URL")}\""
+                        )
                     }
                 }
             }

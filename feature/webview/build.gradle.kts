@@ -4,12 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.plottwist.feature.gathering_detail"
+    namespace = "com.plottwist.feature.webview"
 }
 
 dependencies {
-    implementation(project(":core:weburl"))
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
