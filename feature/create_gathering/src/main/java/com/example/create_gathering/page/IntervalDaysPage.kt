@@ -32,6 +32,7 @@ import com.plottwist.core.designsystem.component.TukOutlinedButton
 import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
+import com.plottwist.core.ui.component.RadioButtonItem
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.tuk.feature.create_gathering.R
 
@@ -67,44 +68,13 @@ fun CreateGatheringSelectIntervalDays(
         )
 
         options.forEachIndexed { index, (days, title, subtitle) ->
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = title,
-                            style = TukPretendardTypography.body14M
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = subtitle,
-                            style = TukPretendardTypography.body12L,
-                            color = Color(0xFF999999)
-                        )
-                    }
-
-                    RadioButton(
-                        selected = selectedOption == days,
-                        onClick = { onOptionSelected(days) },
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = Color.Black,
-                            unselectedColor = Color(0xFFCCCCCC)
-                        )
-                    )
-                }
-
-                if (index < options.lastIndex) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(0.dp),
-                        thickness = 1.dp,
-                        color = Color(0xFFEEEEEE)
-                    )
-                }
-            }
+            RadioButtonItem(
+                title = title,
+                subtitle = subtitle,
+                selected = selectedOption == days,
+                onClick = { onOptionSelected(days) },
+                hasDivider = index < options.lastIndex
+            )
         }
 
         Spacer(modifier = Modifier.weight(1f))
