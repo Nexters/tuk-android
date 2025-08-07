@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.component.TukSolidButton
@@ -23,6 +24,8 @@ fun CreateGatheringNameInput(
     onClear: () -> Unit
 ) {
     var isFocused by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     TukScaffold(
         title = "어떤 모임을\n만들까요?",
         description = "기존에 쓰던 모임명이 없다면\n센스를 발휘해 보세요",
@@ -30,7 +33,10 @@ fun CreateGatheringNameInput(
             TukSolidButton(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),
                 text = "다음",
-                onClick = onNext,
+                onClick = {
+                    keyboardController?.hide()
+                    onNext()
+                },
                 buttonType = TukSolidButtonType.from(state.text.isNotBlank())
             )
         }
