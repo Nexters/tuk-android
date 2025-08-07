@@ -103,10 +103,9 @@ fun SelectGatheringAppBar(
 ) {
     TukTopAppBar(
         modifier = modifier,
-        type = TukTopAppBarType.PLAIN,
-        actionButtons = {
-            TopAppBarCloseButton(onCloseClicked = onBackClick)
-        }
+        type = TukTopAppBarType.DEPTH,
+        title = stringResource(R.string.select_gathering_topbar_title),
+        onBack = onBackClick,
     )
 }
 

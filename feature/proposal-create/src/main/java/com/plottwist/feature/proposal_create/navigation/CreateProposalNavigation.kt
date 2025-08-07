@@ -30,8 +30,8 @@ fun NavGraphBuilder.createProposalNavGraph(
 ) {
     composable<Route.CreateProposal> (
         enterTransition = { slideInVertically() },
-        exitTransition = { slideOutVertically() },
-        popEnterTransition = { popSlideInVertically() },
+        exitTransition = { null },
+        popEnterTransition = { null },
         popExitTransition = { popSlideOutVertically() }
     ) { backStackEntry ->
         CreateProposalScreen(

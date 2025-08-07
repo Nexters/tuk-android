@@ -4,10 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.plottwist.core.ui.extension.popSlideInVertically
-import com.plottwist.core.ui.extension.popSlideOutVertically
-import com.plottwist.core.ui.extension.slideInVertically
-import com.plottwist.core.ui.extension.slideOutVertically
+import com.plottwist.core.ui.extension.slideIn
+import com.plottwist.core.ui.extension.slideOut
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.proposal_create.gathering_select.SelectGatheringScreen
 import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
@@ -27,10 +25,8 @@ fun NavGraphBuilder.selectGatheringNavGraph(
     backToCreateProposal: (SelectedGatheringParam) -> Unit
 ) {
     composable<Route.SelectGathering> (
-        enterTransition = { slideInVertically() },
-        exitTransition = { slideOutVertically() },
-        popEnterTransition = { popSlideInVertically() },
-        popExitTransition = { popSlideOutVertically() }
+        enterTransition = { slideIn() },
+        popExitTransition = { slideOut() }
     ) {
         SelectGatheringScreen(
             onBack = onBack,
