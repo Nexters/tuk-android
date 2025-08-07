@@ -71,8 +71,8 @@ fun TukNavHost(
         myPageNavGraph(
             onBack = { navController.popBackStack() },
             navigateToNotificationSetting = { navController.navigateToNotificationSetting() },
-            navigateToTerms = { navController.navigateToPolicyWebView("이용약관","")},
-            navigateToPrivacyPolicy = { navController.navigateToPolicyWebView("개인정보처리방침","")}
+            navigateToTerms = { navController.navigateToPolicyWebView("서비스 이용약관","https://www.tuk.kr/service-policy")},
+            navigateToPrivacyPolicy = { navController.navigateToPolicyWebView("개인정보 처리방침","https://www.tuk.kr/privacy-policy")}
         )
         notificationSettingNavGraph(
             onBack = { navController.popBackStack() }
