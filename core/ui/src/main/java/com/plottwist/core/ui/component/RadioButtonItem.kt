@@ -1,5 +1,6 @@
 package com.plottwist.core.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,12 @@ fun RadioButtonItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(
+                    interactionSource = null,
+                    indication = null
+                ) {
+                    onClick()
+                }
                 .padding(vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -53,7 +60,7 @@ fun RadioButtonItem(
 
             RadioButton(
                 selected = selected,
-                onClick = onClick,
+                onClick = null,
                 colors = RadioButtonDefaults.colors(
                     selectedColor = Color.Black,
                     unselectedColor = Color(0xFFCCCCCC)

@@ -25,6 +25,7 @@
     <string name="create_proposal_title">가볍게 제안하고\n만남을 이어가세요</string>
     <string name="create_proposal_select_gathering">모임 선택</string>
     <string name="create_proposal_propose">제안하기</string>
+    <string name="create_proposal_selected_gathering_name">%s 친구들에게</string>
 
     <string name="onboarding_name_title">어떤 이름으로 친구들에게\n인사할까요?</string>
     <string name="onboarding_name_description">모임 안에서 나를 알아볼 수 있게,\n실명을 적어주세요.</string>

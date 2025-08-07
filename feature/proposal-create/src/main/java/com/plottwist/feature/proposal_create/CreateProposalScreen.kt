@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
@@ -29,18 +31,22 @@ import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.core.ui.component.TopAppBarCloseButton
+import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
 import com.plottwist.feature.proposal_create.component.CreateProposalPostCard
+import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun CreateProposalScreen(
+    backStackEntry: NavBackStackEntry,
     onBack : () -> Unit,
     navigateToSelectGatheringScreen: (Long?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
+    val selectedGatheringParam = backStackEntry.savedStateHandle.get<SelectedGatheringParam>(KEY_SELECTED_GATHERING)
 
     viewModel.collectSideEffect { sideEffect ->
         when(sideEffect) {
@@ -54,17 +60,32 @@ fun CreateProposalScreen(
         }
     }
 
+    LaunchedEffect(selectedGatheringParam) {
+        if(selectedGatheringParam != null) {
+            viewModel.handleAction(
+                CreateProposalAction.SelectedGathering(
+                    gatheringId = selectedGatheringParam.id,
+                    gatheringName = selectedGatheringParam.name
+                )
+            )
+        }
+    }
+
     CreateProposalScreen(
         modifier = modifier,
         whereLabel = state.whereLabel,
         whenLabel = state.whenLabel,
         whatLabel = state.whatLabel,
-        isGatheringSelected = state.selectedGatheringId != null,
+        selectedGatheringName = state.selectedGathering?.name ?: "",
+        isGatheringSelected = state.selectedGathering != null,
         onCloseClicked = {
             viewModel.handleAction(CreateProposalAction.ClickClose)
         },
         onSelectGatheringClick = {
             viewModel.handleAction(CreateProposalAction.ClickSelectGathering)
+        },
+        onCloseSelectedGatheringClick = {
+            viewModel.handleAction(CreateProposalAction.ClickCloseSelectedGathering)
         }
     )
 }
@@ -74,9 +95,11 @@ private fun CreateProposalScreen(
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
+    selectedGatheringName: String,
     isGatheringSelected: Boolean,
     onCloseClicked: () -> Unit,
     onSelectGatheringClick: () -> Unit,
+    onCloseSelectedGatheringClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -107,7 +130,9 @@ private fun CreateProposalScreen(
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
                     whatLabel = whatLabel,
-                    onSelectGatheringClick = onSelectGatheringClick
+                    selectedGatheringName = selectedGatheringName,
+                    onSelectGatheringClick = onSelectGatheringClick,
+                    onCloseSelectedGatheringClick = onCloseSelectedGatheringClick
                 )
             }
 
@@ -176,8 +201,10 @@ private fun CreateProposalScreenPreview() {
         whereLabel = "where",
         whenLabel = "when",
         whatLabel = "what",
+        selectedGatheringName = "",
         isGatheringSelected = false,
         onCloseClicked = {},
-        onSelectGatheringClick = {}
+        onSelectGatheringClick = {},
+        onCloseSelectedGatheringClick = {}
     )
 }

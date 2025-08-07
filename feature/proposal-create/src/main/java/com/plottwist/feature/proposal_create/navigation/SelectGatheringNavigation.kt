@@ -10,6 +10,7 @@ import com.plottwist.core.ui.extension.slideInVertically
 import com.plottwist.core.ui.extension.slideOutVertically
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.proposal_create.gathering_select.SelectGatheringScreen
+import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
 
 fun NavController.navigateToSelectGathering(
     gatheringId: Long?,
@@ -22,7 +23,8 @@ fun NavController.navigateToSelectGathering(
 }
 
 fun NavGraphBuilder.selectGatheringNavGraph(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    backToCreateProposal: (SelectedGatheringParam) -> Unit
 ) {
     composable<Route.SelectGathering> (
         enterTransition = { slideInVertically() },
@@ -31,7 +33,8 @@ fun NavGraphBuilder.selectGatheringNavGraph(
         popExitTransition = { popSlideOutVertically() }
     ) {
         SelectGatheringScreen(
-            onBack = onBack
+            onBack = onBack,
+            backToCreateProposal = backToCreateProposal
         )
     }
 }

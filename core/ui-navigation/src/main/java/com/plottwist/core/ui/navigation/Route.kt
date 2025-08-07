@@ -44,7 +44,7 @@ sealed interface Route {
         val whereLabel: String,
         val whenLabel: String,
         val whatLabel: String
-    )
+    ) : Route
 
     @Serializable
     data object OnboardingName : Route

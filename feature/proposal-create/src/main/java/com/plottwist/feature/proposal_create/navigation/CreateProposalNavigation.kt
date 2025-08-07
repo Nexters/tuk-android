@@ -33,10 +33,11 @@ fun NavGraphBuilder.createProposalNavGraph(
         exitTransition = { slideOutVertically() },
         popEnterTransition = { popSlideInVertically() },
         popExitTransition = { popSlideOutVertically() }
-    ) {
+    ) { backStackEntry ->
         CreateProposalScreen(
             onBack = onBack,
-            navigateToSelectGatheringScreen = navigateToSelectGatheringScreen
+            navigateToSelectGatheringScreen = navigateToSelectGatheringScreen,
+            backStackEntry = backStackEntry,
         )
     }
 }

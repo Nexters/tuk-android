@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
 import com.plottwist.core.ui.navigation.Route
+import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
 import com.plottwist.feature.proposal_create.model.toSelectGatheringUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
@@ -14,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SelectGatheringViewModel @Inject constructor(
     private val getGatheringsUseCase: GetGatheringsUseCase,
-    savedStateHandle: SavedStateHandle
+    val savedStateHandle: SavedStateHandle
 ) : ContainerHost<SelectGatheringState, SelectGatheringSideEffect>, ViewModel() {
     override val container = container<SelectGatheringState, SelectGatheringSideEffect>(
         SelectGatheringState(
@@ -29,8 +30,13 @@ class SelectGatheringViewModel @Inject constructor(
             SelectGatheringAction.ClickBack -> {
                 navigateBack()
             }
+
             is SelectGatheringAction.SelectGathering -> {
                 selectGathering(action.gatheringId)
+            }
+
+            SelectGatheringAction.ClickPropose -> {
+                handleProposeClick()
             }
         }
     }
@@ -61,5 +67,18 @@ class SelectGatheringViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    private fun handleProposeClick() = intent {
+        val selectedGathering = state.gatherings.find { it.selected } ?: return@intent
+
+        postSideEffect(
+            SelectGatheringSideEffect.NavigateToCreateProposal(
+                SelectedGatheringParam(
+                    id = selectedGathering.id,
+                    name = selectedGathering.name
+                )
+            )
+        )
     }
 }

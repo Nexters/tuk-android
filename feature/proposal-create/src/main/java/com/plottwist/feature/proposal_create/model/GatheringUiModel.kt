@@ -5,7 +5,7 @@ import com.plottwist.core.domain.model.GatheringOverviews
 data class GatheringUiModel(
     val id: Long,
     val name: String,
-    val lastNotificationRelativeTime: String,
+    val lastNotificationRelativeTime: String = "",
     val selected: Boolean = false
 )
 

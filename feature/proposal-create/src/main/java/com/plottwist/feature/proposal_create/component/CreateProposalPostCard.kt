@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -34,7 +35,9 @@ fun CreateProposalPostCard(
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
+    selectedGatheringName: String,
     onSelectGatheringClick: () -> Unit,
+    onCloseSelectedGatheringClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     PostCard(
@@ -46,13 +49,25 @@ fun CreateProposalPostCard(
             end = 15.dp
         )
     ) {
-        SelectGatheringButton(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = onSelectGatheringClick
-        )
+        if (selectedGatheringName.isNotEmpty()) {
+            SelectedGatheringButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                gatheringName = selectedGatheringName,
+                onClick = onCloseSelectedGatheringClick
+            )
+        } else {
+            SelectGatheringButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onSelectGatheringClick
+            )
+        }
+
 
         ProposalContent(
-            modifier = Modifier.weight(1f).padding(start = 26.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterStart)
+                .padding(start = 26.dp),
             whereLabel = whereLabel,
             whenLabel = whenLabel,
             whatLabel = whatLabel
@@ -96,13 +111,50 @@ fun SelectGatheringButton(
 }
 
 @Composable
+fun SelectedGatheringButton(
+    gatheringName: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .dashedBorder(
+                color = Color(0xFFA0A0A0),
+                shape = RoundedCornerShape(10.dp),
+                strokeWidth = 1.dp
+            )
+            .clip(RoundedCornerShape(10.dp))
+            .padding(8.dp)
+            .widthIn(max = 147.dp)
+            .clickable {
+                onClick()
+            },
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = stringResource(R.string.create_proposal_selected_gathering_name, gatheringName),
+            style = TukSerifTypography.body14R,
+            color = Color(0xFF888888)
+        )
+        Icon(
+            modifier = Modifier.size(20.dp),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_close_small),
+            contentDescription = "close",
+            tint = Color(0xFF888888)
+        )
+    }
+}
+
+
+@Composable
 fun ProposalContent(
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
     modifier: Modifier = Modifier
 ) {
-    Column (
+    Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center
     ) {
@@ -138,6 +190,8 @@ private fun CreateProposalPostCardPreview() {
         whereLabel = "where",
         whenLabel = "when",
         whatLabel = "what",
-        onSelectGatheringClick = {}
+        selectedGatheringName = "다음만남은 계획대로 되지않아 친구들에게",
+        onSelectGatheringClick = {},
+        onCloseSelectedGatheringClick = {}
     )
 }

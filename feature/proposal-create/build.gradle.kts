@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.tuk.android.library)
     alias(libs.plugins.tuk.feature)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {

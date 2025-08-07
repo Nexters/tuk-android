@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,7 +29,7 @@ fun PostCard(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(10.dp),
     paddingValues: PaddingValues = PaddingValues(),
-    content : @Composable ColumnScope.() -> Unit = {}
+    content : @Composable BoxScope.() -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -46,8 +47,8 @@ fun PostCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column (
-            modifier = Modifier.weight(1f)
+        Box (
+            modifier = Modifier.fillMaxWidth().weight(1f)
         ) {
             content()
         }
