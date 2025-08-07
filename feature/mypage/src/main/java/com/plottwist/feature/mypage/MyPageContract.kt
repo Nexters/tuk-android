@@ -1,0 +1,25 @@
+package com.plottwist.feature.mypage
+
+import com.plottwist.core.domain.model.GatheringMember
+
+data class MyPageState(
+    val gatheringUser: GatheringMember = GatheringMember()
+)
+
+sealed class MyPageAction {
+    data object ClickEditName : MyPageAction()
+    data object ClickNotificationSetting : MyPageAction()
+    data object ClickUpdateApp : MyPageAction()
+    data object ClickTerms : MyPageAction()
+    data object ClickPrivacyPolicy : MyPageAction()
+    data object ClickLogout : MyPageAction()
+}
+
+sealed class MyPageSideEffect {
+    data object NavigateToEditName : MyPageSideEffect()
+    data object NavigateToNotificationSetting: MyPageSideEffect()
+    data object NavigateToTerms: MyPageSideEffect()
+    data object NavigateToPrivacyPolicy:MyPageSideEffect()
+    data object NavigateToLogout: MyPageSideEffect()
+    data object NavigateToUpdateApp: MyPageSideEffect()
+}

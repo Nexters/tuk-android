@@ -15,6 +15,10 @@ import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
 import com.plottwist.feature.mypage.navigation.navigateToMyPage
+import com.plottwist.feature.mypage.navigation.navigateToNotificationSetting
+import com.plottwist.feature.mypage.navigation.navigateToPolicyWebView
+import com.plottwist.feature.mypage.navigation.notificationSettingNavGraph
+import com.plottwist.feature.mypage.navigation.policyWebViewNavGraph
 import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
@@ -64,7 +68,18 @@ fun TukNavHost(
                 navController.navigateToOnboardingName()
             }
         )
-        myPageNavGraph()
+        myPageNavGraph(
+            onBack = { navController.popBackStack() },
+            navigateToNotificationSetting = { navController.navigateToNotificationSetting() },
+            navigateToTerms = { navController.navigateToPolicyWebView("서비스 이용약관","https://www.tuk.kr/service-policy")},
+            navigateToPrivacyPolicy = { navController.navigateToPolicyWebView("개인정보 처리방침","https://www.tuk.kr/privacy-policy")}
+        )
+        notificationSettingNavGraph(
+            onBack = { navController.popBackStack() }
+        )
+        policyWebViewNavGraph(
+            onClose = { navController.popBackStack() }
+        )
         createGatheringNavGraph(
             onSubmit = {
                 navController.popBackStack(Route.Home, inclusive = false)
