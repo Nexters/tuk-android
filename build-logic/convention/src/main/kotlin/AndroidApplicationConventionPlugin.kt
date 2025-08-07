@@ -51,6 +51,11 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                             "TUK_SENT_PROPOSAL_URL",
                             "\"${localProperties.getProperty("TUK_SENT_PROPOSAL_URL")}\""
                         )
+                        buildConfigField(
+                            "String",
+                            "TUK_PROPOSALS_URL",
+                            "\"${localProperties.getProperty("TUK_PROPOSALS_URL")}\""
+                        )
                     }
                 }
             }

@@ -18,6 +18,7 @@ sealed class HomeAction {
     data object ClickRefreshWhat : HomeAction()
     data class ClickGathering(val gatheringId: Long): HomeAction()
     data object ClickPropose: HomeAction()
+    data object ClickProposals: HomeAction()
 }
 
 sealed class HomeSideEffect {
@@ -31,6 +32,9 @@ sealed class HomeSideEffect {
         val whereLabel: String,
         val whenLabel: String,
         val whatLabel: String
+    ) : HomeSideEffect()
+    data class NavigateToWebViewScreen(
+        val encodedUrl: String
     ) : HomeSideEffect()
 }
 

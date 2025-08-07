@@ -51,6 +51,9 @@ fun TukNavHost(
                     whenLabel = whenLabel,
                     whatLabel = whatLabel
                 )
+            },
+            navigateToWebView = { url ->
+                navController.navigateToWebView(url)
             }
         )
         loginNavGraph(

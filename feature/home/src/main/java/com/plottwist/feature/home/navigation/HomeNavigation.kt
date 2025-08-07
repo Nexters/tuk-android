@@ -11,6 +11,7 @@ fun NavGraphBuilder.homeNavGraph(
     navigateToCreateGathering: () -> Unit,
     navigateToGatheringDetail: (Long) -> Unit,
     navigateToCreateProposal: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
+    navigateToWebView: (String) -> Unit,
 ) {
     composable<Route.Home> {
         HomeScreen(
@@ -18,7 +19,8 @@ fun NavGraphBuilder.homeNavGraph(
             navigateToMyPageScreen = navigateToMyPageScreen,
             navigateToCreateGathering = navigateToCreateGathering,
             navigateToGatheringDetail = navigateToGatheringDetail,
-            navigateToCreateProposal = navigateToCreateProposal
+            navigateToCreateProposal = navigateToCreateProposal,
+            navigateToWebView = navigateToWebView
         )
     }
 }
