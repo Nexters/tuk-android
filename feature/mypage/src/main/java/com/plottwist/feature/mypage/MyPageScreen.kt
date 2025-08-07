@@ -1,5 +1,7 @@
 package com.plottwist.feature.mypage
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -19,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
@@ -99,13 +104,23 @@ fun MyPageContent(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 8.dp)
+                    .padding(top = 8.dp, bottom = 60.dp)
             ) {
                 item {
                     SectionTitle("내 정보관리")
                     MyPageItem("이름 설정", onEditNameClick)
                     MyPageItem("알림 설정", onNotificationClick)
                 }
+
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .background(Color(0xFFF5F5F5))
+                    )
+                }
+
 
                 item {
                     SectionTitle("ABOUT TUK")
@@ -138,13 +153,32 @@ fun MyPageContent(
                 }
 
                 item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .background(Color(0xFFF5F5F5))
+                    )
+                }
+
+                item {
                     Spacer(modifier = Modifier.height(16.dp))
                     MyPageItem("로그아웃", onLogoutClick)
                 }
 
-
             }
+
         }
+
+        Text(
+            text = "탈퇴하기",
+            color = Color(0xFF888888),
+            style = TukPretendardTypography.body14R,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+                .clickable { }
+        )
     }
 
 }
@@ -156,7 +190,8 @@ fun SectionTitle(text: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, top = 20.dp, bottom = 8.dp),
-        style = TukPretendardTypography.body14R
+        style = TukPretendardTypography.body14R,
+        color = Color(0xFF888888)
     )
 }
 
@@ -165,16 +200,32 @@ fun MyPageItem(
     title: String,
     onClick: () -> Unit
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
-            style = TukPretendardTypography.body16R
+            style = TukPretendardTypography.body16R,
+            color = Color(0xFF1F1F1F)
+        )
+
+        Image(
+            painter = painterResource(R.drawable.icon_arrow),
+            contentDescription = null,
+            modifier = Modifier.size(20.dp),
         )
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewMyPage(
+) {
+    MyPageContent({}, {}, {}, {}, {}, {}, {})
 }
 
