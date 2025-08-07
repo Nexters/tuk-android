@@ -74,21 +74,7 @@ fun CreateGatheringSelectTags(
                         onClick = onClickNext
                     )
                 }
-
-                Text(
-                    text = "건너뛰기",
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .clickable(onClick = onClickSkip),
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        color = Color(0xFF9E9E9E),
-                        textDecoration = TextDecoration.Underline
-                    )
-                )
             }
-
         }
     ) {
         items(categories) { category ->

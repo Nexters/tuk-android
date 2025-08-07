@@ -98,6 +98,9 @@ fun TukNavHost(
                         launchSingleTop = true
                     }
                 )
+            },
+            onBack = {
+                navController.popBackStack()
             }
         )
         gatheringDetailNavGraph(

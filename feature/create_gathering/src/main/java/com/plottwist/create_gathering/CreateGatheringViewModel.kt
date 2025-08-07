@@ -79,6 +79,10 @@ class CreateGatheringViewModel @Inject constructor(
             CreateGatheringAction.ClearGatheringName -> {
                 state.gatheringName.clearText()
             }
+
+            CreateGatheringAction.ClickClose -> {
+                postSideEffect(CreateGatheringSideEffect.NavigateToBack)
+            }
         }
     }
 
