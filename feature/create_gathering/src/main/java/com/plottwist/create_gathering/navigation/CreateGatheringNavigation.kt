@@ -7,11 +7,11 @@ import com.plottwist.create_gathering.CreateGatheringScreen
 import com.plottwist.core.ui.navigation.Route
 
 fun NavGraphBuilder.createGatheringNavGraph(
-    onSubmit: () -> Unit
+    navigateToHomeScreen: () -> Unit
 ) {
     composable<Route.CreateGathering> {
         CreateGatheringScreen(
-            onSubmit = onSubmit
+            navigateToHomeScreen = navigateToHomeScreen
         )
     }
 }

@@ -20,7 +20,7 @@ import com.plottwist.tuk.feature.create_gathering.R
 
 @Composable
 fun CreateGatheringScreen(
-    onSubmit: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateGatheringViewModel = hiltViewModel()
 ) {
@@ -40,7 +40,7 @@ fun CreateGatheringScreen(
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
                 CreateGatheringSideEffect.NavigateToHomeScreen -> {
-
+                    navigateToHomeScreen()
                 }
 
                 CreateGatheringSideEffect.NavigateToBack -> {

@@ -1,6 +1,8 @@
 package com.plottwist.feature.home.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.home.HomeScreen
@@ -23,4 +25,9 @@ fun NavGraphBuilder.homeNavGraph(
             navigateToWebView = navigateToWebView
         )
     }
+}
+fun NavController.navigateToHome(
+    navOptions: NavOptions? = null
+) {
+    this.navigate(route = Route.Home, navOptions = navOptions)
 }
