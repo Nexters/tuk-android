@@ -32,7 +32,7 @@ sealed interface Route {
     data object CreateGathering: Route
 
     @Serializable
-    data object InviteGathering: Route
+    data class InviteGathering(val encodedUrl : String): Route
 
     @Serializable
     data class GatheringDetail(

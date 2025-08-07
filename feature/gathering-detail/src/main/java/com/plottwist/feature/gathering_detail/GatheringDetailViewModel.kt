@@ -38,6 +38,10 @@ class GatheringDetailViewModel @Inject constructor(
             GatheringDetailAction.ClickSentProposal -> {
                 handleSentProposalClick()
             }
+
+            GatheringDetailAction.ClickInviteMember -> {
+                handleInviteMemberClick()
+            }
         }
     }
 
@@ -65,5 +69,11 @@ class GatheringDetailViewModel @Inject constructor(
     private fun handleSentProposalClick() = intent {
         val encodedUrl = URLEncoder.encode(webUrlConfig.sentProposalsUrl,"UTF-8")
         postSideEffect(GatheringDetailSideEffect.NavigateToWebView(encodedUrl))
+    }
+
+    private fun handleInviteMemberClick() = intent {
+        val url = webUrlConfig.inviteGatheringUrl.replace("{gatheringId}", state.gatheringDetail.gatheringId.toString())
+        val encodedUrl = URLEncoder.encode(url,"UTF-8")
+        postSideEffect(GatheringDetailSideEffect.NavigateInviteGatheringScreen(encodedUrl))
     }
 }

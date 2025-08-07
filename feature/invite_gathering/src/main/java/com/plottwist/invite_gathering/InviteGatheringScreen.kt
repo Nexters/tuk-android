@@ -1,189 +1,115 @@
 package com.plottwist.invite_gathering
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.designsystem.component.TukSolidButton
-import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
-import com.plottwist.core.ui.component.StableImage
-import com.plottwist.tuk.feature.invite_gathering.R
+import com.plottwist.core.designsystem.component.TukTopAppBarType
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray100
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
+import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun InviteGatheringScreen(
-    onCloseClicked: () -> Unit
-
+    onBackClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: InviteGatheringViewModel = hiltViewModel()
 ) {
-    Box(
-        modifier = Modifier
-    ) {
-        StableImage(
-            modifier = Modifier
-                .fillMaxWidth(),
-            drawableResId = com.plottwist.core.designsystem.R.drawable.image_login_gradient
-        )
+    val state by viewModel.collectAsState()
 
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            InviteGatheringAppBar(
-                onCloseClicked = onCloseClicked
-            )
-
-
-            Text(
-                modifier = Modifier.padding(horizontal = 20.dp),
-
-                text = "가볍게 제안하고\n" +
-                        "만남을 이어가세요",
-                style = TukSerifTypography.title22M
-            )
-
-            InviteGatheringContent()
-
-            Spacer(modifier = Modifier.weight(1f))
-            InviteGatheringButton( onClick = {})
-
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            InviteGatheringSideEffect.NavigateBack -> onBackClicked()
         }
     }
-}
 
-@Composable
-fun InviteGatheringContent(
-) {
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(288f/329f)
-            .clip(RoundedCornerShape(20.dp))
-    ) {
-
-        Image(
-            painter = painterResource(id = R.drawable.image_invite_gathering_card),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-
-
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .border(
-                        width = 1.dp,
-                        color = Color(0xFFE0E0E0),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(horizontal = 12.dp, vertical = 4.dp)
-            ) {
-
-
-                StableImage(
-                    drawableResId = R.drawable.image_invite_gathering_create_btn
-                )
-            }
-
-
-            Column(
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Text(
-                    text = "제주 여행가서 이야기 나누기 어때"
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-
-            ) {
-
-                Text(
-                    text = "연락이"
-                )
-                Text(
-                    text = "뜸해진 우리"
-                )
-
-            }
-        }
-
-    }
-
-}
-
-@Composable
-fun InviteGatheringButton(
-    onClick: () -> Unit
-) {
-    TukSolidButton(
-        text = "넌지시 제안하기",
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 29.dp, bottom = 17.dp)
-            .height(52.dp),
-        onClick = {onClick()}
+    InviteGatheringScreen(
+        modifier = modifier,
+        url = state.url,
+        onBackClicked = { viewModel.handleAction(InviteGatheringAction.ClickBack) }
     )
 }
 
+@Composable
+private fun InviteGatheringScreen(
+    url: String,
+    onBackClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxSize().padding(horizontal = 20.dp)
+    ) {
+        InviteGatheringAppBar(onBackClicked = onBackClicked)
+
+        Text(
+            modifier = modifier.padding(top = 20.dp),
+            text = stringResource(R.string.invite_gathering_description),
+            style = TukPretendardTypography.body14R,
+            color = Gray800
+        )
+        InviteGatheringLink(
+            modifier = Modifier.padding(top = 15.dp),
+            url = url
+        )
+        
+    }
+}
 
 @Composable
 fun InviteGatheringAppBar(
-    onCloseClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TukTopAppBar(
-        modifier = Modifier,
-        actionButtons = {
-            TopAppBarCloseButton(
-                onCloseClicked = onCloseClicked
-            )
-        }
+        modifier = modifier,
+        type = TukTopAppBarType.DEPTH,
+        title = stringResource(R.string.invite_gathering_topbar_title),
+        onBack = onBackClicked,
     )
 }
 
 @Composable
-fun TopAppBarCloseButton(
-    onCloseClicked: () -> Unit,
+fun InviteGatheringLink(
+    url: String,
     modifier: Modifier = Modifier
 ) {
-    IconButton(
-        modifier = modifier,
-        onClick = onCloseClicked
+    Column (
+        modifier = modifier.fillMaxWidth()
+            .background(
+                color = Gray100,
+                shape = RoundedCornerShape(20.dp)
+            ).padding(vertical = 34.dp, horizontal = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        StableImage(
-            drawableResId = com.plottwist.core.designsystem.R.drawable.ic_close
+        Text(
+            text = url,
+            style = TukPretendardTypography.body12R,
+            color = Gray900
         )
     }
+}
+
+@Preview
+@Composable
+private fun InviteGatheringScreenPreview() {
+    InviteGatheringScreen(
+        onBackClicked = {}
+    )
 }

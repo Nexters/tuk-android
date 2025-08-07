@@ -28,6 +28,8 @@ import com.plottwist.feature.proposal_create.navigation.navigateToSelectGatherin
 import com.plottwist.feature.proposal_create.navigation.selectGatheringNavGraph
 import com.plottwist.feature.webview.navigation.navigateToWebView
 import com.plottwist.feature.webview.navigation.webViewNavGraph
+import com.plottwist.invite_gathering.navigation.inviteGatheringNavGraph
+import com.plottwist.invite_gathering.navigation.navigateToInviteGathering
 
 @Composable
 fun TukNavHost(
@@ -94,6 +96,9 @@ fun TukNavHost(
             },
             navigateToWebViewScreen = { url ->
                 navController.navigateToWebView(url)
+            },
+            navigateToInviteGathering = { url ->
+                navController.navigateToInviteGathering(url)
             }
         )
         createProposalNavGraph(
@@ -126,6 +131,11 @@ fun TukNavHost(
                     ?.savedStateHandle
                     ?.set(KEY_SELECTED_GATHERING, it)
                 navController.popBackStack()
+            }
+        )
+        inviteGatheringNavGraph(
+            onCloseClicked = {
+
             }
         )
     }

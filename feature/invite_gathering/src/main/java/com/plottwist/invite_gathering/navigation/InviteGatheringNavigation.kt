@@ -11,11 +11,13 @@ fun NavGraphBuilder.inviteGatheringNavGraph(
 ) {
     composable<Route.InviteGathering>{
         InviteGatheringScreen(
-            onCloseClicked = onCloseClicked
+            onBackClicked = onCloseClicked
         )
     }
 }
 
-fun NavController.navigateToInviteGathering() {
-    this.navigate(Route.InviteGathering)
+fun NavController.navigateToInviteGathering(
+    encodedUrl: String
+) {
+    this.navigate(Route.InviteGathering(encodedUrl))
 }
