@@ -24,10 +24,24 @@ class InviteGatheringViewModel @Inject constructor(
             InviteGatheringAction.ClickBack -> {
                 navigateBack()
             }
+            InviteGatheringAction.ClickCopy -> {
+                copyUrlToClipboard()
+            }
+            InviteGatheringAction.ClickShare -> {
+                shareUrl()
+            }
         }
     }
 
     private fun navigateBack() = intent {
         postSideEffect(InviteGatheringSideEffect.NavigateBack)
+    }
+
+    private fun copyUrlToClipboard() = intent {
+        postSideEffect(InviteGatheringSideEffect.CopyToClipboard(state.url))
+    }
+
+    private fun shareUrl() = intent {
+        postSideEffect(InviteGatheringSideEffect.ShareContent(state.url))
     }
 }
