@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
@@ -29,8 +31,11 @@ import com.plottwist.create_gathering.model.TagCategory
 import com.plottwist.core.designsystem.component.TukOutlinedButton
 import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray300
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.ui.component.StableImage
+import com.plottwist.core.ui.component.TukScaffold
 import com.plottwist.tuk.feature.create_gathering.R
 
 @Composable
@@ -42,72 +47,58 @@ fun CreateGatheringSelectTags(
     onClickNext: () -> Unit,
     onClickSkip: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-    ) {
-        Spacer(modifier = Modifier.height(10.dp))
-
-        StableImage(drawableResId = R.drawable.image_chip_select_title)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = "만남을 가지면 주로 무엇을 하나요",
-            style = TukPretendardTypography.body14R,
-            color = Color(0xFF888888),
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-        ) {
-            categories.forEach { category ->
-                CategoryItem(
-                    title = category.categoryName,
-                    tags = category.tags,
-                    selectedTags = selectedTags,
-                    onToggle = onToggle
+    TukScaffold(
+        title = "마지막으로\n모임에 대해 알려주세요",
+        description = "만남을 가지면 주로 무엇을 하나요" + " ${selectedTags.size}/5",
+        bottomBar = {
+            Column (
+                modifier = Modifier.padding(
+                    vertical = 17.dp,
+                    horizontal = 20.dp
                 )
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                TukOutlinedButton(
-                    modifier = Modifier.weight(1f),
-                    text = "이전",
-                    onClick = onClickPrev
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    TukOutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        text = "이전",
+                        onClick = onClickPrev
+                    )
 
-                TukSolidButton(
-                    modifier = Modifier.weight(1f),
-                    text = "생성하기",
-                    buttonType = TukSolidButtonType.from(selectedTags.isNotEmpty()),
-                    onClick = onClickNext
+                    TukSolidButton(
+                        modifier = Modifier.weight(1f),
+                        text = "생성하기",
+                        buttonType = TukSolidButtonType.from(selectedTags.isNotEmpty()),
+                        onClick = onClickNext
+                    )
+                }
+
+                Text(
+                    text = "건너뛰기",
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .clickable(onClick = onClickSkip),
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        color = Color(0xFF9E9E9E),
+                        textDecoration = TextDecoration.Underline
+                    )
                 )
             }
 
-            Text(
-                text = "건너뛰기",
-                modifier = Modifier
-                    .padding(top = 16.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .clickable(onClick = onClickSkip),
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    color = Color(0xFF9E9E9E),
-                    textDecoration = TextDecoration.Underline
-                )
+        }
+    ) {
+        items(categories) { category ->
+            CategoryItem(
+                title = category.categoryName,
+                tags = category.tags,
+                selectedTags = selectedTags,
+                onToggle = onToggle
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -148,14 +139,15 @@ fun SelectableTag(
     Box(
         modifier = Modifier
             .background(
-                color = if (isSelected) Color(0xFF4B0000) else Color.White,
+                color = if (isSelected) Gray900 else Color.White,
                 shape = RoundedCornerShape(24.dp)
             )
             .border(
                 width = 1.dp,
-                color = if (isSelected) Color(0xFF4B0000) else Color(0xFFE0E0E0),
+                color = if (isSelected) Gray900  else Gray300,
                 shape = RoundedCornerShape(24.dp)
             )
+            .clip(RoundedCornerShape(24.dp))
             .clickable { onToggle(tag) }
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
