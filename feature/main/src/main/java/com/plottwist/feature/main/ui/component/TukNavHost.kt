@@ -1,14 +1,12 @@
 package com.plottwist.feature.main.ui.component
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.create_gathering.navigation.createGatheringNavGraph
-import com.example.create_gathering.navigation.navigateToCreateGathering
-import com.plottwist.core.ui.navigation.NavigationConstants
+import com.plottwist.create_gathering.navigation.createGatheringNavGraph
+import com.plottwist.create_gathering.navigation.navigateToCreateGathering
 import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.gathering_detail.navigation.gatheringDetailNavGraph
