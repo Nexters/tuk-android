@@ -17,7 +17,6 @@ import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.ui.component.RadioButtonItem
-import com.plottwist.core.ui.component.TopAppBarCloseButton
 import com.plottwist.core.ui.component.TukScaffold
 import com.plottwist.feature.proposal_create.model.GatheringUiModel
 import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
@@ -85,7 +84,7 @@ private fun SelectGatheringScreen(
         itemsIndexed(gatherings) { index , gathering ->
             RadioButtonItem(
                 title = gathering.name,
-                subtitle = "${stringResource(R.string.gathering_detail_last_alarm_title)} ${gathering.lastNotificationRelativeTime}",
+                subtitle = "${stringResource(R.string.gathering_detail_last_alarm_title)} ${gathering.lastPushRelativeTime}",
                 selected = gathering.selected,
                 onClick = {
                     onGatheringClick(gathering.id)

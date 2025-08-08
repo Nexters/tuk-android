@@ -4,6 +4,7 @@ import com.plottwist.core.network.model.gathering.CreateGatheringRequest
 import com.plottwist.core.network.model.gathering.CreateGatheringResponse
 import com.plottwist.core.network.model.gathering.GatheringDetailResponse
 import com.plottwist.core.network.model.gathering.GatheringsResponse
+import com.plottwist.core.network.model.gathering.GetPurposesResponse
 import com.plottwist.core.network.model.gathering.GetTagsResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -27,4 +28,7 @@ interface TukApiService {
     suspend fun getGatheringDetail(
         @Path("gatheringId") gatheringId: Long
     ): GatheringDetailResponse
+
+    @GET("/api/v1/purposes")
+    suspend fun getPurposes(): GetPurposesResponse
 }

@@ -124,7 +124,7 @@ private fun CreateProposalScreen(
                 CreateProposalPostCard(
                     modifier = Modifier
                         .padding(top = 66.dp)
-                        .width(260.dp)
+                        .width(300.dp)
                         .height(370.dp)
                         .align(Alignment.CenterHorizontally),
                     whereLabel = whereLabel,
