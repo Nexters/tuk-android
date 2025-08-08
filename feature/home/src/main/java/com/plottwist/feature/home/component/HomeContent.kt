@@ -32,30 +32,20 @@ import com.plottwist.feature.home.LoginState
 
 @Composable
 fun HomeContent(
-    loginState: LoginState,
     gatherings: Gatherings,
     onAddGatheringClick: () -> Unit,
     onGatheringClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if(loginState == LoginState.Loading) return
-
-    if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
-        HomeCreateGatheringPreview(
-            modifier = modifier,
-            onAddGatheringClick = onAddGatheringClick
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        GatheringsCard(
+            gatherings = gatherings,
+            onCreateGatheringClick = onAddGatheringClick,
+            onGatheringClick = onGatheringClick
         )
-    } else {
-        Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            GatheringsCard(
-                gatherings = gatherings,
-                onCreateGatheringClick = onAddGatheringClick,
-                onGatheringClick = onGatheringClick
-            )
-        }
     }
 }
 
@@ -99,24 +89,24 @@ fun Modifier.outerDropShadow(
     offsetY: Dp = 5.dp,
     spread: Dp = 1.dp,
 ): Modifier = drawBehind {
-    val spreadPx  = spread.toPx()
-    val blurPx    = blur.toPx()
-    val dx        = offsetX.toPx()
-    val dy        = offsetY.toPx()
+    val spreadPx = spread.toPx()
+    val blurPx = blur.toPx()
+    val dx = offsetX.toPx()
+    val dy = offsetY.toPx()
 
     val innerOutline = shape.createOutline(size, layoutDirection, this)
-    val innerPath    = when (innerOutline) {
-        is Outline.Generic    -> innerOutline.path
-        is Outline.Rounded    -> Path().apply { addRoundRect(innerOutline.roundRect) }
-        is Outline.Rectangle  -> Path().apply { addRect(innerOutline.rect) }
+    val innerPath = when (innerOutline) {
+        is Outline.Generic -> innerOutline.path
+        is Outline.Rounded -> Path().apply { addRoundRect(innerOutline.roundRect) }
+        is Outline.Rectangle -> Path().apply { addRect(innerOutline.rect) }
     }
 
-    val outerSize    = Size(size.width + spreadPx, size.height + spreadPx)
+    val outerSize = Size(size.width + spreadPx, size.height + spreadPx)
     val outerOutline = shape.createOutline(outerSize, layoutDirection, this)
-    val outerPath    = when (outerOutline) {
-        is Outline.Generic    -> outerOutline.path
-        is Outline.Rounded    -> Path().apply { addRoundRect(outerOutline.roundRect) }
-        is Outline.Rectangle  -> Path().apply { addRect(outerOutline.rect) }
+    val outerPath = when (outerOutline) {
+        is Outline.Generic -> outerOutline.path
+        is Outline.Rounded -> Path().apply { addRoundRect(outerOutline.roundRect) }
+        is Outline.Rectangle -> Path().apply { addRect(outerOutline.rect) }
     }
 
     val ringPath = Path.combine(

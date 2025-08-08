@@ -1,6 +1,7 @@
 package com.plottwist.feature.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -35,6 +38,7 @@ import com.plottwist.core.ui.component.StableImage
 import com.plottwist.feature.home.component.HomeBottomSheet
 import com.plottwist.feature.home.component.HomeBottomSheetState
 import com.plottwist.feature.home.component.HomeContent
+import com.plottwist.feature.home.component.HomeCreateGatheringPreview
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -136,7 +140,8 @@ private fun HomeScreen(
     onChangedState: (HomeBottomSheetState) -> Unit,
     onProposeClick: () -> Unit,
     onProposalsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    verticalScrollState : ScrollState = rememberScrollState()
 ) {
     Box(
         modifier = modifier
@@ -144,29 +149,43 @@ private fun HomeScreen(
         HomeGradientBackgroundImage(
             modifier = Modifier.align(Alignment.Center)
         )
-
-        Column(
+        Column (
             modifier = Modifier.fillMaxSize()
         ) {
             HomeAppBar(onMyPageClick)
 
-            HomeTitle()
+            Column(
+                modifier = Modifier.fillMaxSize().padding(
+                    bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp
+                ).then(
+                    if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
+                        Modifier
+                    } else {
+                        Modifier.verticalScroll(verticalScrollState)
+                    }
+                )
+            ) {
+                HomeTitle()
 
-            HomeProposals(
-                modifier = Modifier.padding(start = 20.dp, top= 24.dp),
-                onClick = onProposalsClick
-            )
+                if(loginState == LoginState.Loading) return
 
-            HomeContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp),
-                loginState = loginState,
-                gatherings = gatherings,
-                onAddGatheringClick = onAddGatheringClick,
-                onGatheringClick = onGatheringClick
-            )
+                if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
+                    HomeCreateGatheringPreview(
+                        modifier = Modifier.fillMaxSize(),
+                        onAddGatheringClick = onAddGatheringClick
+                    )
+                } else {
+                    HomeContent(
+                        modifier = Modifier
+                            .padding(top = 80.dp, bottom = 40.dp),
+                        gatherings = gatherings,
+                        onAddGatheringClick = onAddGatheringClick,
+                        onGatheringClick = onGatheringClick
+                    )
+                }
+            }
         }
+
         HomeBottomSheet(
             whenLabel = whenLabel,
             whereLabel = whereLabel,
