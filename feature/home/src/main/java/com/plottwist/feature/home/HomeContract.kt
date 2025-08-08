@@ -5,9 +5,12 @@ import com.plottwist.core.domain.model.Gatherings
 data class HomeState(
     val loginState: LoginState = LoginState.Loading,
     val gatherings: Gatherings = Gatherings(),
-    val whenLabel: String = HomeViewModel.whenLabels.firstOrNull() ?: "",
-    val whereLabel: String = HomeViewModel.whereLabels.firstOrNull() ?: "",
-    val whatLabel: String = HomeViewModel.whatLabels.firstOrNull() ?: "",
+    val whenLabel: String = "",
+    val whereLabel: String = "",
+    val whatLabel: String = "",
+    val whenTags: List<String> = emptyList(),
+    val whereTags: List<String> = emptyList(),
+    val whatTags: List<String> = emptyList()
 )
 
 sealed class HomeAction {
