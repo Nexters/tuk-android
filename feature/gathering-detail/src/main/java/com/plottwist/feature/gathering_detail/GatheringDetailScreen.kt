@@ -41,6 +41,7 @@ fun GatheringDetailScreen(
     onBack: () -> Unit,
     navigateToWebViewScreen: (String) -> Unit,
     navigateToInviteGathering: (String) -> Unit,
+    navigateToCreateGatheringProposal: (Long, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GatheringDetailViewModel = hiltViewModel()
 ) {
@@ -59,6 +60,10 @@ fun GatheringDetailScreen(
             is GatheringDetailSideEffect.NavigateInviteGatheringScreen -> {
                 navigateToInviteGathering(sideEffect.encodedUrl)
             }
+
+            is GatheringDetailSideEffect.NavigateToCreateGatheringProposal -> {
+                navigateToCreateGatheringProposal(sideEffect.gatheringId, sideEffect.gatheringName)
+            }
         }
     }
 
@@ -70,7 +75,9 @@ fun GatheringDetailScreen(
         sentProposalCount = state.gatheringDetail.sentProposalCount,
         receivedProposalCount = state.gatheringDetail.receivedProposalCount,
         onAlarmSettingClick = {},
-        onProposalClick = {},
+        onProposalClick = {
+            viewModel.handleAction(GatheringDetailAction.ClickProposal)
+        },
         onSentProposalClick = {
             viewModel.handleAction(GatheringDetailAction.ClickSentProposal)
         },

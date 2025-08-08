@@ -58,4 +58,10 @@ sealed interface Route {
     data class SelectGathering(
         val gatheringId: Long?
     ) : Route
+
+    @Serializable
+    data class CreateGatheringProposal(
+        val gatheringId: Long,
+        val gatheringName: String
+    ) : Route
 }

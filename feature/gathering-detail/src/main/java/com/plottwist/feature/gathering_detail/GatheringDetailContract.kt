@@ -11,10 +11,15 @@ sealed class GatheringDetailAction {
     data object ClickSentProposal: GatheringDetailAction()
     data object ClickReceivedProposal: GatheringDetailAction()
     data object ClickInviteMember: GatheringDetailAction()
+    data object ClickProposal: GatheringDetailAction()
 }
 
 sealed class GatheringDetailSideEffect {
     data object NavigateBack: GatheringDetailSideEffect()
     data class NavigateToWebView(val encodedUrl: String): GatheringDetailSideEffect()
     data class NavigateInviteGatheringScreen(val encodedUrl: String): GatheringDetailSideEffect()
+    data class NavigateToCreateGatheringProposal(
+        val gatheringId: Long,
+        val gatheringName: String
+    ): GatheringDetailSideEffect()
 }
