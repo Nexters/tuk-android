@@ -71,7 +71,7 @@ fun GatheringDetailScreen(
         modifier = modifier,
         members = state.gatheringDetail.members,
         gatheringTitle = state.gatheringDetail.gatheringName,
-        lastAlarm = state.gatheringDetail.lastNotificationRelativeTime,
+        lastAlarm = state.gatheringDetail.lastPushRelativeTime,
         sentProposalCount = state.gatheringDetail.sentProposalCount,
         receivedProposalCount = state.gatheringDetail.receivedProposalCount,
         onAlarmSettingClick = {},

@@ -30,7 +30,8 @@ fun GatheringDetailData.toDomainModel() : GatheringDetail {
     return GatheringDetail(
         gatheringId = this.gatheringId,
         gatheringName = this.gatheringName,
-        lastNotificationRelativeTime = this.lastNotificationRelativeTime,
+        lastPushRelativeTime = this.lastPushRelativeTime,
+        gatheringIntervalDays = this.gatheringIntervalDays,
         sentProposalCount = this.sentProposalCount,
         receivedProposalCount = this.receivedProposalCount,
         members = this.members.map { it.toDomainModel() }
