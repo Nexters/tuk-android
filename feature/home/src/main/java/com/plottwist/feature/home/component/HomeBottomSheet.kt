@@ -51,6 +51,7 @@ fun HomeBottomSheet(
     whatLabel: String,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
+    homeBottomSheetAction: HomeBottomSheetAction,
     onChangedState: (HomeBottomSheetState) -> Unit,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
@@ -63,6 +64,7 @@ fun HomeBottomSheet(
         whenLabel = whenLabel,
         whereLabel = whereLabel,
         whatLabel = whatLabel,
+        homeBottomSheetAction = homeBottomSheetAction,
         onWhenRefreshClick = onWhenRefreshClick,
         onWhereRefreshClick = onWhereRefreshClick,
         onWhatRefreshClick = onWhatRefreshClick,
@@ -81,6 +83,7 @@ fun DraggableBottomSheet(
     whatLabel: String,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
+    homeBottomSheetAction: HomeBottomSheetAction,
     onChangedState: (HomeBottomSheetState) -> Unit,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
@@ -114,6 +117,18 @@ fun DraggableBottomSheet(
             .collect {
                 onChangedState(it)
             }
+    }
+
+    LaunchedEffect(homeBottomSheetAction) {
+        when(homeBottomSheetAction) {
+            HomeBottomSheetAction.EXPAND -> {
+                offsetY.animateTo(0f)
+            }
+            HomeBottomSheetAction.COLLAPSE -> {
+                offsetY.animateTo(sheetFullPx - sheetPeekPx)
+            }
+            else -> Unit
+        }
     }
 
     Box(
@@ -249,4 +264,8 @@ fun DragHandle(
 
 enum class HomeBottomSheetState {
     EXPANDED, CHANGING, COLLAPSED
+}
+
+enum class HomeBottomSheetAction {
+    EXPAND, COLLAPSE, IDLE
 }

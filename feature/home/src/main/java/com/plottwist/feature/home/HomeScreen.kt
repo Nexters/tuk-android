@@ -13,11 +13,17 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,14 +37,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
+import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed500
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
+import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.domain.model.Gatherings
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.feature.home.component.HomeBottomSheet
+import com.plottwist.feature.home.component.HomeBottomSheetAction
 import com.plottwist.feature.home.component.HomeBottomSheetState
 import com.plottwist.feature.home.component.HomeContent
 import com.plottwist.feature.home.component.HomeCreateGatheringPreview
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -55,6 +65,15 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.collectAsState()
+    var isShownNoGatheringsPopup by remember { mutableStateOf(false) }
+    var homeBottomSheetAction: HomeBottomSheetAction by remember {
+        mutableStateOf(HomeBottomSheetAction.IDLE)
+    }
+
+    LaunchedEffect(homeBottomSheetAction) {
+        delay(200)
+        homeBottomSheetAction = HomeBottomSheetAction.IDLE
+    }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -84,6 +103,10 @@ fun HomeScreen(
             is HomeSideEffect.NavigateToWebViewScreen -> {
                 navigateToWebView(sideEffect.encodedUrl)
             }
+
+            HomeSideEffect.ShowNoGatheringsPopup -> {
+                isShownNoGatheringsPopup = !isShownNoGatheringsPopup
+            }
         }
     }
 
@@ -94,6 +117,7 @@ fun HomeScreen(
         whatLabel = state.whatLabel,
         loginState = state.loginState,
         gatherings = state.gatherings,
+        homeBottomSheetAction = homeBottomSheetAction,
         onMyPageClick = {
             viewModel.handleAction(HomeAction.ClickMyPage)
         },
@@ -122,6 +146,35 @@ fun HomeScreen(
             viewModel.handleAction(HomeAction.ClickProposals)
         }
     )
+
+    if(isShownNoGatheringsPopup) {
+        AlertDialog(
+            text = {
+                Text(
+                    text = "아직 만들어진 모임이 없어요.\n" +
+                            "우리, 먼저 모임부터 만들어볼까요?",
+                    style = TukPretendardTypography.body14R
+                )
+            },
+            onDismissRequest = {
+                isShownNoGatheringsPopup = false
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        isShownNoGatheringsPopup = false
+                        homeBottomSheetAction = HomeBottomSheetAction.COLLAPSE
+                    }
+                ) {
+                    Text(
+                        text = "확인",
+                        style = TukPretendardTypography.body14M,
+                        color = CoralRed500
+                    )
+                }
+            },
+        )
+    }
 }
 
 @Composable
@@ -131,6 +184,7 @@ private fun HomeScreen(
     whenLabel: String,
     whereLabel: String,
     whatLabel: String,
+    homeBottomSheetAction: HomeBottomSheetAction,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
@@ -192,6 +246,7 @@ private fun HomeScreen(
             whatLabel = whatLabel,
             sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
             sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
+            homeBottomSheetAction = homeBottomSheetAction,
             onWhenRefreshClick = onWhenRefreshClick,
             onWhereRefreshClick = onWhereRefreshClick,
             onWhatRefreshClick = onWhatRefreshClick,
@@ -303,6 +358,7 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         whenLabel = "",
         whereLabel = "",
         whatLabel = "",
+        homeBottomSheetAction = HomeBottomSheetAction.IDLE,
         onWhenRefreshClick = { },
         onWhereRefreshClick = { },
         onWhatRefreshClick = { },
