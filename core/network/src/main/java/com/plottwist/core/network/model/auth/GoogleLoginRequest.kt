@@ -13,5 +13,6 @@ data class DeviceInfo(
     val deviceId: String,
     val deviceType: String,
     val appVersion: String = "",
-    val osVersion: String = ""
+    val osVersion: String = "",
+    val deviceToken: String? = null
 )

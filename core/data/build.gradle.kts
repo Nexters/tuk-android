@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:preference"))
     implementation(project(":core:domain"))
+    implementation(project(":core:push"))
 
     implementation(libs.retrofit)
     ksp(libs.hilt.compiler)
