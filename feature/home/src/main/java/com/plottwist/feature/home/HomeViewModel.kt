@@ -79,6 +79,10 @@ class HomeViewModel @Inject constructor(
             HomeAction.ClickProposals -> {
                 handleProposalsClick()
             }
+
+            HomeAction.OnPermissionGranted -> {
+                handleOnPermissionGranted()
+            }
         }
     }
 
@@ -90,6 +94,7 @@ class HomeViewModel @Inject constructor(
                 LoginState.LoggedIn -> {
                     fetchGatherings(loginState)
                     updateDeviceTokenUseCase()
+                    postSideEffect(HomeSideEffect.RequestNotificationPermission)
                 }
 
                 else -> {
@@ -197,5 +202,9 @@ class HomeViewModel @Inject constructor(
     private fun handleProposalsClick() = intent {
         val encodedUrl = URLEncoder.encode(webViewConfig.proposalsUrl,"UTF-8")
         postSideEffect(HomeSideEffect.NavigateToWebViewScreen(encodedUrl))
+    }
+
+    private fun handleOnPermissionGranted() = intent {
+        updateDeviceTokenUseCase()
     }
 }

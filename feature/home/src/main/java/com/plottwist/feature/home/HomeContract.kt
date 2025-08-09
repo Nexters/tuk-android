@@ -22,6 +22,7 @@ sealed class HomeAction {
     data class ClickGathering(val gatheringId: Long): HomeAction()
     data object ClickPropose: HomeAction()
     data object ClickProposals: HomeAction()
+    data object OnPermissionGranted: HomeAction()
 }
 
 sealed class HomeSideEffect {
@@ -40,6 +41,7 @@ sealed class HomeSideEffect {
         val encodedUrl: String
     ) : HomeSideEffect()
     data object ShowNoGatheringsPopup: HomeSideEffect()
+    data object RequestNotificationPermission: HomeSideEffect()
 }
 
 enum class LoginState {
