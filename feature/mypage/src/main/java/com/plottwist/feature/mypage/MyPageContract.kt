@@ -20,6 +20,6 @@ sealed class MyPageSideEffect {
     data object NavigateToNotificationSetting: MyPageSideEffect()
     data object NavigateToTerms: MyPageSideEffect()
     data object NavigateToPrivacyPolicy:MyPageSideEffect()
-    data object NavigateToLogout: MyPageSideEffect()
+    data object NavigateToHome: MyPageSideEffect()
     data object NavigateToUpdateApp: MyPageSideEffect()
 }

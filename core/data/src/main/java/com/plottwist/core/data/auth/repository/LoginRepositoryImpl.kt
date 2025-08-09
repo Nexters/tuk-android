@@ -59,4 +59,8 @@ class LoginRepositoryImpl @Inject constructor(
             accessToken?.isNotEmpty() ?: false && onboardingCompleted ?: false
         }
     }
+
+    override fun logout(): Flow<Unit> {
+        return authDataSource.clear()
+    }
 }

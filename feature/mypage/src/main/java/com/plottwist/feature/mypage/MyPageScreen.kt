@@ -35,6 +35,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun MyPageScreen(
     viewModel: MyPageViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
+    navigateToHome: () -> Unit,
     navigateToNotificationSetting: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToPrivacyPolicy: () -> Unit
@@ -64,8 +65,8 @@ fun MyPageScreen(
                 navigateToPrivacyPolicy()
             }
 
-            MyPageSideEffect.NavigateToLogout -> {
-
+            MyPageSideEffect.NavigateToHome -> {
+                navigateToHome()
             }
         }
     }
