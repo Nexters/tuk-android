@@ -1,9 +1,13 @@
 package com.plottwist.feature.proposal_create.gathering_proposal
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.navigation.toRoute
 import com.plottwist.core.domain.gathering.usecase.GetPurposesUseCase
 import com.plottwist.core.domain.model.Purposes
+import com.plottwist.core.ui.navigation.Route
+import com.plottwist.feature.proposal_create.CreateProposalState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -11,9 +15,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateGatheringProposalViewModel @Inject constructor(
-    private val getPurposesUseCase: GetPurposesUseCase
+    private val getPurposesUseCase: GetPurposesUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ContainerHost<CreateGatheringProposalState, CreateGatheringProposalSideEffect>, ViewModel() {
-    override val container = container<CreateGatheringProposalState, CreateGatheringProposalSideEffect>(CreateGatheringProposalState()) {
+    override val container = container<CreateGatheringProposalState, CreateGatheringProposalSideEffect>(
+        savedStateHandle.toRoute<Route.CreateGatheringProposal>().let { route ->
+            CreateGatheringProposalState(
+                gatheringName = route.gatheringName,
+                gatheringId = route.gatheringId
+            )
+        }) {
         getPurposes()
     }
 
@@ -49,6 +60,10 @@ class CreateGatheringProposalViewModel @Inject constructor(
 
             CreateGatheringProposalAction.ClickWhereRefresh -> {
                 handleWhereRefresh()
+            }
+
+            CreateGatheringProposalAction.ClickNext -> {
+                handleNext()
             }
         }
     }
@@ -93,4 +108,11 @@ class CreateGatheringProposalViewModel @Inject constructor(
         }
     }
 
+    private fun handleNext() = intent {
+        reduce {
+            state.copy(
+                isReady = true
+            )
+        }
+    }
 }

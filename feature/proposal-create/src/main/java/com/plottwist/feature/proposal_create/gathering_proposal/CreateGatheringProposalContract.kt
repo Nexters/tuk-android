@@ -9,7 +9,10 @@ data class CreateGatheringProposalState(
     val whatLabel : TextFieldState = TextFieldState(),
     val whenTags : List<String> = emptyList(),
     val whereTags : List<String> = emptyList(),
-    val whatTags : List<String> = emptyList()
+    val whatTags : List<String> = emptyList(),
+    val gatheringName: String,
+    val gatheringId: Long,
+    val isReady: Boolean = false
 )
 
 sealed class CreateGatheringProposalAction {
@@ -17,6 +20,7 @@ sealed class CreateGatheringProposalAction {
     data object ClickWhenRefresh : CreateGatheringProposalAction()
     data object ClickWhereRefresh : CreateGatheringProposalAction()
     data object ClickWhatRefresh : CreateGatheringProposalAction()
+    data object ClickNext: CreateGatheringProposalAction()
 }
 
 sealed class CreateGatheringProposalSideEffect {

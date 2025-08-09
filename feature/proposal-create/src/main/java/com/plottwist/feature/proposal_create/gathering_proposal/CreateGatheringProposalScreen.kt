@@ -19,8 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,6 +32,7 @@ import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.TopAppBarCloseButton
 import com.plottwist.feature.proposal_create.CreateProposalGradientBackgroundImage
 import com.plottwist.feature.proposal_create.component.CreateGatheringProposalPostCard
+import com.plottwist.feature.proposal_create.component.CreateProposalPostCard
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -45,9 +44,11 @@ fun CreateGatheringProposalScreen(
 ) {
     val state by viewModel.collectAsState()
 
-    viewModel.collectSideEffect {
-        when (it) {
-            CreateGatheringProposalSideEffect.NavigateBack -> onBack()
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            CreateGatheringProposalSideEffect.NavigateBack -> {
+                onBack()
+            }
         }
     }
 
@@ -56,10 +57,13 @@ fun CreateGatheringProposalScreen(
         whenLabel = state.whenLabel,
         whereLabel = state.whereLabel,
         whatLabel = state.whatLabel,
+        isReady = state.isReady,
+        selectedGatheringName = state.gatheringName,
         onBackClick = { viewModel.handleAction(CreateGatheringProposalAction.ClickBack) },
         onWhenRefreshClick = { viewModel.handleAction(CreateGatheringProposalAction.ClickWhenRefresh) },
         onWhereRefreshClick = { viewModel.handleAction(CreateGatheringProposalAction.ClickWhereRefresh) },
-        onWhatRefreshClick = { viewModel.handleAction(CreateGatheringProposalAction.ClickWhatRefresh) }
+        onWhatRefreshClick = { viewModel.handleAction(CreateGatheringProposalAction.ClickWhatRefresh) },
+        onNextClick = { viewModel.handleAction(CreateGatheringProposalAction.ClickNext) }
     )
 }
 
@@ -68,10 +72,13 @@ private fun CreateGatheringProposalScreen(
     whenLabel: TextFieldState,
     whereLabel: TextFieldState,
     whatLabel: TextFieldState,
+    isReady: Boolean,
+    selectedGatheringName: String,
     onBackClick: () -> Unit,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
     verticalState: ScrollState = rememberScrollState(),
 ) {
@@ -105,30 +112,45 @@ private fun CreateGatheringProposalScreen(
                     color = Gray900
                 )
 
-                CreateGatheringProposalPostCard(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(370.dp)
-                        .align(Alignment.CenterHorizontally)
-                    ,
-                    whereLabel = whereLabel,
-                    whenLabel = whenLabel,
-                    whatLabel = whatLabel,
-                    onWhenRefreshClick = onWhenRefreshClick,
-                    onWhereRefreshClick = onWhereRefreshClick,
-                    onWhatRefreshClick = onWhatRefreshClick
-                )
+                if(isReady) {
+                    CreateProposalPostCard(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(370.dp)
+                            .align(Alignment.CenterHorizontally),
+                        whereLabel = whereLabel.text.toString(),
+                        whenLabel = whenLabel.text.toString(),
+                        whatLabel = whatLabel.text.toString(),
+                        selectedGatheringName = selectedGatheringName,
+                        isEnabledEditGatheringName = false,
+                        onSelectGatheringClick = { },
+                        onCloseSelectedGatheringClick = {}
+                    )
+                } else {
+                    CreateGatheringProposalPostCard(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(370.dp)
+                            .align(Alignment.CenterHorizontally)
+                        ,
+                        whereLabel = whereLabel,
+                        whenLabel = whenLabel,
+                        whatLabel = whatLabel,
+                        onWhenRefreshClick = onWhenRefreshClick,
+                        onWhereRefreshClick = onWhereRefreshClick,
+                        onWhatRefreshClick = onWhatRefreshClick
+                    )
+                }
+
             }
 
             TukSolidButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp),
-                text = stringResource(R.string.common_next),
+                text = if(isReady) "제안하기" else stringResource(R.string.common_next),
                 buttonType = TukSolidButtonType.ACTIVE,
-                onClick = {
-                    // TODO
-                }
+                onClick = onNextClick
             )
         }
     }
@@ -159,6 +181,9 @@ private fun CreateGatheringProposalScreenPreview() {
         whatLabel = TextFieldState(),
         onWhenRefreshClick = {},
         onWhereRefreshClick = {},
-        onWhatRefreshClick = {}
+        onWhatRefreshClick = {},
+        isReady = false,
+        selectedGatheringName = "",
+        onNextClick = {}
     )
 }
