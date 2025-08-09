@@ -21,7 +21,7 @@ interface TukApiService {
     ):  Response<CreateGatheringResponse>
 
     @GET("/api/v1/tags")
-    suspend fun getGatheringTags():GetTagsResponse
+    suspend fun getGatheringTags(): GetTagsResponse
 
     @GET("/api/v1/gatherings/{gatheringId}/members")
     suspend fun getGatheringDetail(

@@ -19,7 +19,7 @@ class TagRepositoryImpl @Inject constructor(
                 val domainCategories = response.data.categories.map { it.toDomain() }
                 emit(Result.success(domainCategories))
             } else {
-                emit(Result.failure(Exception(response.meta.errorMessage)))
+                emit(Result.failure(Exception(response.meta?.errorMessage)))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))

@@ -16,6 +16,7 @@ data class CreateGatheringState(
 sealed class CreateGatheringAction {
     data object ClickNext : CreateGatheringAction()
     data object ClickPrev : CreateGatheringAction()
+    data object ClickClose : CreateGatheringAction()
     data object ClickSkip : CreateGatheringAction()
     data object SubmitGathering : CreateGatheringAction()
 

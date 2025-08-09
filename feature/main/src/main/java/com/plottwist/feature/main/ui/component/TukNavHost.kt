@@ -3,8 +3,10 @@ package com.plottwist.feature.main.ui.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.plottwist.create_gathering.navigation.createGatheringNavGraph
 import com.plottwist.create_gathering.navigation.navigateToCreateGathering
 import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
@@ -12,6 +14,7 @@ import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.gathering_detail.navigation.gatheringDetailNavGraph
 import com.plottwist.feature.gathering_detail.navigation.navigateToGatheringDetail
 import com.plottwist.feature.home.navigation.homeNavGraph
+import com.plottwist.feature.home.navigation.navigateToHome
 import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
@@ -86,8 +89,18 @@ fun TukNavHost(
             onClose = { navController.popBackStack() }
         )
         createGatheringNavGraph(
-            onSubmit = {
-                navController.popBackStack(Route.Home, inclusive = false)
+            navigateToHomeScreen = {
+                navController.navigateToHome (
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            onBack = {
+                navController.popBackStack()
             }
         )
         gatheringDetailNavGraph(

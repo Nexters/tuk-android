@@ -28,8 +28,9 @@ class CreateGatheringViewModel @Inject constructor(
             result
                 .onSuccess { categories ->
                     val allTags = categories.flatMap { it.tags }
-                    val uiTags = allTags.map { it.toPresentation() }
-                    reduce { state.copy(tags = uiTags) }
+                    reduce { state.copy(
+                        tagCategories = categories.map { it.toPresentation() }
+                    ) }
                 }
                 .onFailure {
                 }
@@ -57,9 +58,11 @@ class CreateGatheringViewModel @Inject constructor(
             }
 
             is CreateGatheringAction.ToggleTag -> {
+
                 val updated = if (state.tags.contains(action.tag)) {
                     state.tags - action.tag
                 } else {
+                    if(state.tags.size >= 5) return@intent
                     state.tags + action.tag
                 }
                 reduce { state.copy(tags = updated) }
@@ -75,6 +78,10 @@ class CreateGatheringViewModel @Inject constructor(
 
             CreateGatheringAction.ClearGatheringName -> {
                 state.gatheringName.clearText()
+            }
+
+            CreateGatheringAction.ClickClose -> {
+                postSideEffect(CreateGatheringSideEffect.NavigateToBack)
             }
         }
     }

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class GetTagsResponse(
     val success: Boolean,
     val data: TagsData,
-    val meta: Meta
+    val meta: Meta?
 )
 @Serializable
 data class TagsData(

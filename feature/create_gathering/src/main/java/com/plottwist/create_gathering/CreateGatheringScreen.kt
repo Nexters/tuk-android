@@ -1,5 +1,6 @@
 package com.plottwist.create_gathering
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
@@ -20,7 +21,8 @@ import com.plottwist.tuk.feature.create_gathering.R
 
 @Composable
 fun CreateGatheringScreen(
-    onSubmit: () -> Unit,
+    onBack: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateGatheringViewModel = hiltViewModel()
 ) {
@@ -32,6 +34,14 @@ fun CreateGatheringScreen(
         pageCount = { 3 }
     )
 
+    BackHandler {
+        if(pagerState.currentPage == 0) {
+            onBack()
+        } else {
+            viewModel.onAction(CreateGatheringAction.ClickPrev)
+        }
+    }
+
     LaunchedEffect(state.currentPage) {
         pagerState.animateScrollToPage(state.currentPage)
     }
@@ -40,23 +50,25 @@ fun CreateGatheringScreen(
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
                 CreateGatheringSideEffect.NavigateToHomeScreen -> {
-
+                    navigateToHomeScreen()
                 }
 
                 CreateGatheringSideEffect.NavigateToBack -> {
-
+                    onBack()
                 }
             }
         }
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         TukTopAppBar(
             actionButtons = {
-                TopAppBarCloseButton(onCloseClicked = { /* TODO */ })
+                TopAppBarCloseButton(onCloseClicked = {
+                    viewModel.onAction(CreateGatheringAction.ClickClose)
+                })
             }
         )
 
@@ -79,6 +91,7 @@ fun CreateGatheringScreen(
 
                 1 -> CreateGatheringSelectIntervalDays(
                     selectedOption = state.intervalDays,
+                    onClickPrev = { viewModel.onAction(CreateGatheringAction.ClickPrev) },
                     onOptionSelected = {
                         viewModel.onAction(CreateGatheringAction.UpdateIntervalDays(it))
                     },
