@@ -40,6 +40,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun GatheringDetailScreen(
     onBack: () -> Unit,
     navigateToWebViewScreen: (String) -> Unit,
+    navigateToInviteGathering: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GatheringDetailViewModel = hiltViewModel()
 ) {
@@ -53,6 +54,10 @@ fun GatheringDetailScreen(
 
             is GatheringDetailSideEffect.NavigateToWebView -> {
                 navigateToWebViewScreen(sideEffect.encodedUrl)
+            }
+
+            is GatheringDetailSideEffect.NavigateInviteGatheringScreen -> {
+                navigateToInviteGathering(sideEffect.encodedUrl)
             }
         }
     }
@@ -72,7 +77,9 @@ fun GatheringDetailScreen(
         onReceivedProposalClick = {
             viewModel.handleAction(GatheringDetailAction.ClickReceivedProposal)
         },
-        onInviteMemberClick = {},
+        onInviteMemberClick = {
+            viewModel.handleAction(GatheringDetailAction.ClickInviteMember)
+        },
         onBackClick = {
             viewModel.handleAction(GatheringDetailAction.ClickBack)
         }

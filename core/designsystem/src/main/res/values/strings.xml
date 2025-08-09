@@ -36,4 +36,10 @@
     <string name="select_gathering_title">어떤 모임에게\n넌지시 제안할까요</string>
     <string name="select_gathering_description">가장 오랫동안 만나지 못한\n모임을 선택해 보세요</string>
 
+    <string name="invite_gathering_topbar_title">모임 초대 링크</string>
+    <string name="invite_gathering_description">초대 링크를 통해 누구나 모임에 참여할 수 있어요</string>
+    <string name="invite_gathering_copy">복사하기</string>
+    <string name="invite_gathering_share">공유하기</string>
+
+
 </resources>

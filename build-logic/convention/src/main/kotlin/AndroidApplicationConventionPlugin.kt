@@ -56,6 +56,12 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                             "TUK_PROPOSALS_URL",
                             "\"${localProperties.getProperty("TUK_PROPOSALS_URL")}\""
                         )
+                        buildConfigField(
+                            "String",
+                            "TUK_INVITE_GATHERING_URL",
+                            "\"${localProperties.getProperty("TUK_INVITE_GATHERING_URL")}\""
+                        )
+
                     }
                 }
             }
