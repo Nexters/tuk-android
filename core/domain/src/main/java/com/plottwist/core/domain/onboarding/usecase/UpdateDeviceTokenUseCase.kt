@@ -6,7 +6,7 @@ import javax.inject.Inject
 class UpdateDeviceTokenUseCase @Inject constructor(
     private val pushRepository: PushRepository
 ) {
-    suspend operator fun invoke(fcmToken: String): Result<Unit> {
-        return pushRepository.updateFcmToken(fcmToken)
+    suspend operator fun invoke(): Result<Unit> {
+        return pushRepository.updateFcmToken()
     }
 }

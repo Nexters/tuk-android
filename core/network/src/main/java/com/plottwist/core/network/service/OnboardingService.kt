@@ -1,6 +1,7 @@
 package com.plottwist.core.network.service
 
 import com.plottwist.core.network.model.auth.DeviceInfo
+import com.plottwist.core.network.model.auth.DeviceInfoRequest
 import com.plottwist.core.network.model.onboarding.UpdateDeviceInfoResponse
 import com.plottwist.core.network.model.onboarding.UpdateOnboardingInfoRequest
 import com.plottwist.core.network.model.onboarding.UpdateOnboardingInfoResponse
@@ -16,6 +17,6 @@ interface OnboardingService {
 
     @POST("/api/v1/device/token")
     suspend fun updateDeviceToken(
-        @Body deviceInfo: DeviceInfo
+        @Body deviceInfo: DeviceInfoRequest
     ): UpdateDeviceInfoResponse
 }

@@ -16,3 +16,8 @@ data class DeviceInfo(
     val osVersion: String = "",
     val deviceToken: String? = null
 )
+
+@Serializable
+data class DeviceInfoRequest(
+    val deviceInfo : DeviceInfo
+)

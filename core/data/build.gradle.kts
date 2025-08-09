@@ -16,4 +16,7 @@ dependencies {
     implementation(libs.retrofit)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 }

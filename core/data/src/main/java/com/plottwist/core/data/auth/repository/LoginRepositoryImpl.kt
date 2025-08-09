@@ -2,6 +2,7 @@ package com.plottwist.core.data.auth.repository
 
 import com.plottwist.core.data.common.DeviceInfoProvider
 import com.plottwist.core.domain.auth.repository.LoginRepository
+import com.plottwist.core.domain.push.repository.PushRepository
 import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.service.AuthApiService
@@ -9,22 +10,26 @@ import com.plottwist.core.preference.datasource.AuthDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 
 class LoginRepositoryImpl @Inject constructor(
     private val loginService: AuthApiService,
     private val authDataSource: AuthDataSource,
-    private val deviceInfoProvider: DeviceInfoProvider
+    private val deviceInfoProvider: DeviceInfoProvider,
+    private val pushRepository: PushRepository
 ) : LoginRepository {
 
     override suspend fun googleLogin(accountId: String): Result<Boolean> {
         return try {
+            val fcmToken = pushRepository.getFcmToken().firstOrNull()?.getOrNull()
             val deviceInfo = DeviceInfo(
                 deviceId = deviceInfoProvider.getDeviceSSAID(),
                 deviceType = deviceInfoProvider.getDeviceType(),
                 appVersion = deviceInfoProvider.getAppVersion(),
                 osVersion = deviceInfoProvider.getOsVersion(),
+                deviceToken = fcmToken
             )
 
             val request = GoogleLoginRequest(
