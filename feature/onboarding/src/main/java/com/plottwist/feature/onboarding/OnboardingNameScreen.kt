@@ -107,9 +107,7 @@ fun OnboardingNameAppBar(
 ) {
     TukTopAppBar(
         modifier = modifier,
-        actionButtons = {
-            TopAppBarCloseButton(onCloseClick)
-        }
+        actionButtons = { }
     )
 }
 
