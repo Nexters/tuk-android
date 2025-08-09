@@ -80,6 +80,7 @@ fun TukNavHost(
         )
         myPageNavGraph(
             onBack = { navController.popBackStack() },
+            navigateToHome = {navController.navigateToHome()},
             navigateToNotificationSetting = { navController.navigateToNotificationSetting() },
             navigateToTerms = { navController.navigateToPolicyWebView("서비스 이용약관","https://www.tuk.kr/service-policy")},
             navigateToPrivacyPolicy = { navController.navigateToPolicyWebView("개인정보 처리방침","https://www.tuk.kr/privacy-policy")}

@@ -30,12 +30,14 @@ fun NavController.navigateToPolicyWebView(title: String, url: String) {
 
 fun NavGraphBuilder.myPageNavGraph(
     onBack: () -> Unit,
+    navigateToHome: () -> Unit,
     navigateToNotificationSetting: ()->Unit,
     navigateToTerms: () -> Unit,
     navigateToPrivacyPolicy: () -> Unit
 ) {
     composable<Route.MyPage> {
         MyPageScreen(onBackClick = onBack,
+            navigateToHome = navigateToHome,
             navigateToNotificationSetting = navigateToNotificationSetting,
             navigateToTerms = navigateToTerms,
             navigateToPrivacyPolicy = navigateToPrivacyPolicy)

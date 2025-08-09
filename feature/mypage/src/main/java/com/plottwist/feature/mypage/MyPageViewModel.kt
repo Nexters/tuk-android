@@ -1,6 +1,7 @@
 package com.plottwist.feature.mypage
 
 import androidx.lifecycle.ViewModel
+import com.plottwist.core.domain.auth.usecase.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -8,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-
+    private val logoutUseCase: LogoutUseCase
 ) :ContainerHost<MyPageState, MyPageSideEffect>,ViewModel(){
 
     override val container = container<MyPageState, MyPageSideEffect>(
@@ -22,7 +23,10 @@ class MyPageViewModel @Inject constructor(
             MyPageAction.ClickUpdateApp -> postSideEffect(MyPageSideEffect.NavigateToUpdateApp)
             MyPageAction.ClickTerms -> postSideEffect(MyPageSideEffect.NavigateToTerms)
             MyPageAction.ClickPrivacyPolicy -> postSideEffect(MyPageSideEffect.NavigateToPrivacyPolicy)
-            MyPageAction.ClickLogout -> postSideEffect(MyPageSideEffect.NavigateToLogout)
+            MyPageAction.ClickLogout -> {
+                logoutUseCase.logoutWithGoogle()
+                postSideEffect(MyPageSideEffect.NavigateToHome)
+            }
         }
     }
 }
