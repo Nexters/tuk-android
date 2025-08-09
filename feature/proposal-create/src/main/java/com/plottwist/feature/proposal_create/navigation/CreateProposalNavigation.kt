@@ -25,16 +25,19 @@ fun NavController.navigateToCreateProposal(
 }
 
 fun NavGraphBuilder.createProposalNavGraph(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    navigateToSelectGatheringScreen: (Long?) -> Unit
 ) {
     composable<Route.CreateProposal> (
         enterTransition = { slideInVertically() },
-        exitTransition = { slideOutVertically() },
-        popEnterTransition = { popSlideInVertically() },
+        exitTransition = { null },
+        popEnterTransition = { null },
         popExitTransition = { popSlideOutVertically() }
-    ) {
+    ) { backStackEntry ->
         CreateProposalScreen(
-            onBack = onBack
+            onBack = onBack,
+            navigateToSelectGatheringScreen = navigateToSelectGatheringScreen,
+            backStackEntry = backStackEntry,
         )
     }
 }

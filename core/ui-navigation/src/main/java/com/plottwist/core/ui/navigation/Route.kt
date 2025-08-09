@@ -32,7 +32,7 @@ sealed interface Route {
     data object CreateGathering: Route
 
     @Serializable
-    data object InviteGathering: Route
+    data class InviteGathering(val encodedUrl : String): Route
 
     @Serializable
     data class GatheringDetail(
@@ -44,7 +44,7 @@ sealed interface Route {
         val whereLabel: String,
         val whenLabel: String,
         val whatLabel: String
-    )
+    ) : Route
 
     @Serializable
     data object OnboardingName : Route
@@ -52,5 +52,10 @@ sealed interface Route {
     @Serializable
     data class WebView(
         val url: String
+    ) : Route
+
+    @Serializable
+    data class SelectGathering(
+        val gatheringId: Long?
     ) : Route
 }

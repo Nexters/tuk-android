@@ -5,8 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.create_gathering.navigation.createGatheringNavGraph
-import com.example.create_gathering.navigation.navigateToCreateGathering
+import com.plottwist.create_gathering.navigation.createGatheringNavGraph
+import com.plottwist.create_gathering.navigation.navigateToCreateGathering
+import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.gathering_detail.navigation.gatheringDetailNavGraph
 import com.plottwist.feature.gathering_detail.navigation.navigateToGatheringDetail
@@ -23,8 +24,12 @@ import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
+import com.plottwist.feature.proposal_create.navigation.navigateToSelectGathering
+import com.plottwist.feature.proposal_create.navigation.selectGatheringNavGraph
 import com.plottwist.feature.webview.navigation.navigateToWebView
 import com.plottwist.feature.webview.navigation.webViewNavGraph
+import com.plottwist.invite_gathering.navigation.inviteGatheringNavGraph
+import com.plottwist.invite_gathering.navigation.navigateToInviteGathering
 
 @Composable
 fun TukNavHost(
@@ -91,11 +96,17 @@ fun TukNavHost(
             },
             navigateToWebViewScreen = { url ->
                 navController.navigateToWebView(url)
+            },
+            navigateToInviteGathering = { url ->
+                navController.navigateToInviteGathering(url)
             }
         )
         createProposalNavGraph(
             onBack = {
                 navController.popBackStack()
+            },
+            navigateToSelectGatheringScreen = {
+                navController.navigateToSelectGathering(it)
             }
         )
         onboardingNameNavGraph(
@@ -109,6 +120,22 @@ fun TukNavHost(
         webViewNavGraph(
             onBack = {
                 navController.popBackStack()
+            }
+        )
+        selectGatheringNavGraph(
+            onBack = {
+                navController.popBackStack()
+            },
+            backToCreateProposal = {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set(KEY_SELECTED_GATHERING, it)
+                navController.popBackStack()
+            }
+        )
+        inviteGatheringNavGraph(
+            onCloseClicked = {
+
             }
         )
     }

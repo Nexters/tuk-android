@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":feature:proposal-create"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:webview"))
+    implementation(project(":feature:invite_gathering"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

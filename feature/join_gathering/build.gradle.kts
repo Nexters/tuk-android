@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.join_gathering"
+    namespace = "com.plottwist.join_gathering"
 }
 
 dependencies {

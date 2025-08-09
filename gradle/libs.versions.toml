@@ -125,6 +125,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-juni5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp" , version.ref = "ksp"}
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlin"  }
 
 tuk-android-application = { id = "tuk.android.application", version = "unspecified" }
 tuk-android-application-compose = { id = "tuk.android.application.compose", version = "unspecified" }
