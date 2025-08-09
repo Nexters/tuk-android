@@ -21,6 +21,7 @@ fun NavGraphBuilder.gatheringDetailNavGraph(
     onBack: () -> Unit,
     navigateToWebViewScreen: (String) -> Unit,
     navigateToInviteGathering: (String) -> Unit,
+    navigateToCreateGatheringProposal: (Long, String) -> Unit
 ) {
     composable<Route.GatheringDetail> (
         enterTransition = {
@@ -33,7 +34,8 @@ fun NavGraphBuilder.gatheringDetailNavGraph(
         GatheringDetailScreen(
             onBack = onBack,
             navigateToWebViewScreen = navigateToWebViewScreen,
-            navigateToInviteGathering = navigateToInviteGathering
+            navigateToInviteGathering = navigateToInviteGathering,
+            navigateToCreateGatheringProposal = navigateToCreateGatheringProposal
         )
     }
 }

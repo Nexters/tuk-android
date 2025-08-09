@@ -14,13 +14,17 @@ class OnboardingRepositoryImpl @Inject constructor(
     override suspend fun updateOnboardingInfo(
         name: String
     ): Result<Unit> {
-        val result = onboardingService.updateOnboardingInfo(UpdateOnboardingInfoRequest(name))
+        try {
+            val  result = onboardingService.updateOnboardingInfo(UpdateOnboardingInfoRequest(name))
 
-        if (result.success) {
-            authDataSource.setOnboardingCompleted(true).collect()
-            return Result.success(Unit)
+            if (result.success) {
+                authDataSource.setOnboardingCompleted(true).collect()
+                return Result.success(Unit)
+            }
+
+            return Result.failure(Exception("Fail to update onboarding info"))
+        } catch (e:Exception) {
+            return Result.failure(Exception(e))
         }
-
-        return Result.failure(Exception("Fail to update onboarding info"))
     }
 }

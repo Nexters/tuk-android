@@ -23,3 +23,16 @@ data class GatheringTag(
     val name: String
 )
 
+@Serializable
+data class GetPurposesResponse(
+    val success: Boolean,
+    val data: PurposeData,
+    val meta: Meta?
+)
+
+@Serializable
+data class PurposeData(
+    val whenTags: List<String>,
+    val whereTags: List<String>,
+    val whatTags: List<String>
+)

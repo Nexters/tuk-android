@@ -1,6 +1,5 @@
 package com.plottwist.core.network.model.gathering
 
-import com.plottwist.core.network.model.auth.LoginData
 import com.plottwist.core.network.model.auth.Meta
 import kotlinx.serialization.Serializable
 
@@ -21,5 +20,5 @@ data class GatheringsData(
 data class GatheringOverviewsData(
     val gatheringId: Long,
     val gatheringName: String,
-    val lastNotificationRelativeTime: String
+    val lastPushRelativeTime: String
 )

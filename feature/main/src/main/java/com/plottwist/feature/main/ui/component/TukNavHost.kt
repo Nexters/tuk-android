@@ -25,7 +25,9 @@ import com.plottwist.feature.mypage.navigation.notificationSettingNavGraph
 import com.plottwist.feature.mypage.navigation.policyWebViewNavGraph
 import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
+import com.plottwist.feature.proposal_create.navigation.createGatheringProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
+import com.plottwist.feature.proposal_create.navigation.navigateToCreateGatheringProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToSelectGathering
 import com.plottwist.feature.proposal_create.navigation.selectGatheringNavGraph
@@ -112,6 +114,9 @@ fun TukNavHost(
             },
             navigateToInviteGathering = { url ->
                 navController.navigateToInviteGathering(url)
+            },
+            navigateToCreateGatheringProposal = { id, name ->
+                navController.navigateToCreateGatheringProposal(id, name)
             }
         )
         createProposalNavGraph(
@@ -148,7 +153,12 @@ fun TukNavHost(
         )
         inviteGatheringNavGraph(
             onCloseClicked = {
-
+                navController.popBackStack()
+            }
+        )
+        createGatheringProposalNavGraph(
+            onBack = {
+                navController.popBackStack()
             }
         )
     }
