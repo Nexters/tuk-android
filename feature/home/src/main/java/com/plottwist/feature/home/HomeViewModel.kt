@@ -142,13 +142,17 @@ class HomeViewModel @Inject constructor(
     private fun handleProposeClick() = intent {
         when (state.loginState) {
             LoginState.LoggedIn -> {
-                postSideEffect(
-                    HomeSideEffect.NavigateToCreateProposalScreen(
-                        whereLabel = state.whereLabel,
-                        whenLabel = state.whenLabel,
-                        whatLabel = state.whatLabel
+                if(state.gatherings.gatheringOverviews.isNotEmpty()) {
+                    postSideEffect(
+                        HomeSideEffect.NavigateToCreateProposalScreen(
+                            whereLabel = state.whereLabel,
+                            whenLabel = state.whenLabel,
+                            whatLabel = state.whatLabel
+                        )
                     )
-                )
+                } else {
+                    postSideEffect(HomeSideEffect.ShowNoGatheringsPopup)
+                }
             }
 
             else -> {

@@ -39,6 +39,7 @@ sealed class HomeSideEffect {
     data class NavigateToWebViewScreen(
         val encodedUrl: String
     ) : HomeSideEffect()
+    data object ShowNoGatheringsPopup: HomeSideEffect()
 }
 
 enum class LoginState {
