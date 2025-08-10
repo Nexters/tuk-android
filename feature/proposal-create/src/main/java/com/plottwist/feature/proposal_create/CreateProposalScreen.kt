@@ -125,8 +125,8 @@ private fun CreateProposalScreen(
                 CreateProposalPostCard(
                     modifier = Modifier
                         .padding(top = 73.dp)
-                        .widthIn(max = 290.dp)
-                        .heightIn(max = 380.dp),
+                        .padding(horizontal = 58.dp)
+                        .aspectRatio(260f/354f),
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
                     whatLabel = whatLabel,
@@ -138,8 +138,8 @@ private fun CreateProposalScreen(
                 StableImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 100.dp)
-                        .widthIn(max = 400.dp),
+                        .padding(top = 64.dp)
+                        .aspectRatio(260f/364f),
                     drawableResId = R.drawable.image_post_cover,
                     contentScale = ContentScale.FillWidth
                 )

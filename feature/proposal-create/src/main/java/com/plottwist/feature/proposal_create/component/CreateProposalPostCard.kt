@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.PostCard
@@ -45,32 +46,17 @@ fun CreateProposalPostCard(
     PostCard(
         modifier = modifier,
         paddingValues = PaddingValues(
-            top = 12.dp,
+            top = 25.dp,
             bottom = 15.dp,
             start = 15.dp,
             end = 15.dp
         )
     ) {
-        if (selectedGatheringName.isNotEmpty()) {
-            SelectedGatheringButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                gatheringName = selectedGatheringName,
-                isEnabledEditGatheringName = isEnabledEditGatheringName,
-                onClick = onCloseSelectedGatheringClick
-            )
-        } else {
-            SelectGatheringButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = onSelectGatheringClick
-            )
-        }
-
 
         ProposalContent(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterStart)
-                .padding(start = 26.dp),
+            ,
             whereLabel = whereLabel,
             whenLabel = whenLabel,
             whatLabel = whatLabel
@@ -165,28 +151,36 @@ fun ProposalContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center
+        modifier = modifier
     ) {
-        StableImage(
-            drawableResId = R.drawable.image_double_quotation_marks
+        Icon(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            imageVector = ImageVector.vectorResource(R.drawable.image_double_quotation_marks),
+            contentDescription = "",
+            tint =  Gray900
         )
         Text(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.padding(top = 31.dp).align(Alignment.CenterHorizontally),
+            text = "웃긴거 아는데",
+            style = TukSerifTypography.body16M
+        )
+        Text(
+            modifier = Modifier.padding(start = 29.dp, top = 51.dp),
             text = whereLabel,
             style = TukSerifTypography.body16M
         )
         Text(
-            modifier = Modifier.padding(vertical = 5.dp),
+            modifier = Modifier.padding(vertical = 5.dp).padding(start = 29.dp),
             text = whenLabel,
             style = TukSerifTypography.body16M
         )
         Text(
-            modifier = Modifier.padding(bottom = 15.dp),
+            modifier = Modifier.padding(start = 29.dp,bottom = 15.dp),
             text = whatLabel,
             style = TukSerifTypography.body16M
         )
         Text(
+            modifier = Modifier.padding(start = 29.dp),
             text = stringResource(R.string.home_random_proposal_description_suffix),
             style = TukSerifTypography.body16M
         )
