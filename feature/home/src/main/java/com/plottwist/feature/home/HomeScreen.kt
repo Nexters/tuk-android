@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
@@ -42,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -63,6 +67,7 @@ import com.plottwist.feature.home.component.HomeContent
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import kotlin.math.roundToInt
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -87,10 +92,16 @@ fun HomeScreen(
     var homeBottomSheetAction: HomeBottomSheetAction by remember {
         mutableStateOf(HomeBottomSheetAction.IDLE)
     }
+    var hasBottomSheetShook by remember { mutableStateOf(false) }
 
     LaunchedEffect(homeBottomSheetAction) {
         delay(200)
         homeBottomSheetAction = HomeBottomSheetAction.IDLE
+    }
+
+    LaunchedEffect(Unit) {
+        delay(800)
+        hasBottomSheetShook = true
     }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -234,6 +245,20 @@ private fun HomeScreen(
     verticalScrollState : ScrollState = rememberScrollState()
 ) {
     val homeContentTopPadding = screenHeight / 2 - statusBarHeight -  TOP_APP_BAR_HEIGHT.dp
+    val shake = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        delay(200)
+        for (i in 0..10) {
+            when (i % 2) {
+                0 -> shake.animateTo(3f, spring(stiffness = 50_000f))
+                else -> shake.animateTo(-3f, spring(stiffness = 50_000f))
+            }
+        }
+        shake.animateTo(0f)
+    }
+
+
     Box(
         modifier = modifier
     ) {
@@ -268,6 +293,8 @@ private fun HomeScreen(
         }
 
         HomeBottomSheet(
+            modifier = Modifier
+                .offset { IntOffset(x= 0, y = shake.value.roundToInt()) }  ,
             whenLabels = whenLabels,
             whereLabels = whereLabels,
             whatLabels = whatLabels,
