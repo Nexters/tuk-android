@@ -180,7 +180,7 @@ fun HomeScreen(
                     }
                 ) {
                     Text(
-                        text = "확인",
+                        text = stringResource(R.string.common_confirm),
                         style = TukPretendardTypography.body14M,
                         color = CoralRed500
                     )
@@ -234,32 +234,19 @@ private fun HomeScreen(
             Column(
                 modifier = Modifier.fillMaxSize().padding(
                     bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp
-                ).then(
-                    if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
-                        Modifier
-                    } else {
-                        Modifier.verticalScroll(verticalScrollState)
-                    }
-                )
+                ).verticalScroll(verticalScrollState)
             ) {
                 HomeTitle()
 
                 if(loginState == LoginState.Loading) return
 
-                if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
-                    HomeCreateGatheringPreview(
-                        modifier = Modifier.fillMaxSize(),
-                        onAddGatheringClick = onAddGatheringClick
-                    )
-                } else {
-                    HomeContent(
-                        modifier = Modifier
-                            .padding(top = 80.dp, bottom = 40.dp),
-                        gatherings = gatherings,
-                        onAddGatheringClick = onAddGatheringClick,
-                        onGatheringClick = onGatheringClick
-                    )
-                }
+                HomeContent(
+                    modifier = Modifier
+                        .padding(top = 80.dp, bottom = 40.dp),
+                    gatherings = gatherings,
+                    onAddGatheringClick = onAddGatheringClick,
+                    onGatheringClick = onGatheringClick
+                )
             }
         }
 
@@ -296,12 +283,19 @@ fun HomeAppBar(
 
 @Composable
 fun HomeTitle(
+    name: String = "",
     modifier: Modifier = Modifier
 ) {
     Text(
+        modifier = modifier.padding(start = 20.dp, bottom = 18.dp),
+        text = stringResource(R.string.home_subtitle, name),
+        style = TukSerifTypography.title22M
+    )
+
+    Text(
         modifier = modifier.padding(start = 20.dp),
         text = stringResource(R.string.home_title),
-        style = TukSerifTypography.title24M
+        style = TukSerifTypography.title22M
     )
 }
 
