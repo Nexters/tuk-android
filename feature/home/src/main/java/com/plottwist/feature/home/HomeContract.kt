@@ -4,6 +4,7 @@ import com.plottwist.core.domain.model.Gatherings
 
 data class HomeState(
     val loginState: LoginState = LoginState.Loading,
+    val userName: String = "",
     val gatherings: Gatherings = Gatherings(),
     val whenLabel: String = "",
     val whereLabel: String = "",

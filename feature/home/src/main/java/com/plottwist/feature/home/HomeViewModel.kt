@@ -6,6 +6,7 @@ import com.plottwist.core.domain.auth.usecase.CheckLoginStatusUseCase
 import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
 import com.plottwist.core.domain.gathering.usecase.GetPurposesUseCase
 import com.plottwist.core.domain.model.Purposes
+import com.plottwist.core.domain.onboarding.usecase.GetMemberInfoUseCase
 import com.plottwist.core.domain.onboarding.usecase.UpdateDeviceTokenUseCase
 import com.plottwist.core.weburl.WebUrlConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,11 +24,13 @@ class HomeViewModel @Inject constructor(
     private val getGatheringsUseCase: GetGatheringsUseCase,
     private val getPurposesUseCase: GetPurposesUseCase,
     private val webViewConfig: WebUrlConfig,
-    private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase
+    private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
+    private val getMemberInfoUseCase: GetMemberInfoUseCase
 ) : ContainerHost<HomeState, HomeSideEffect>, ViewModel() {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         observeLoginState()
         getPurposes()
+        getMemberInfo()
     }
 
     private fun getPurposes() = intent {
@@ -43,7 +46,15 @@ class HomeViewModel @Inject constructor(
                 whenLabel = result.whenTags.firstOrNull() ?: ""
             )
         }
+    }
 
+    private fun getMemberInfo() = intent {
+        val result = getMemberInfoUseCase()
+        reduce {
+            state.copy(
+                userName = result.getOrNull()?.name ?: ""
+            )
+        }
     }
 
     fun handleAction(action: HomeAction) {

@@ -147,6 +147,7 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize(),
         screenHeight = configuration.screenHeightDp.dp,
         statusBarHeight = statusBarHeight,
+        userName = state.userName,
         whenLabels = state.whenTags,
         whereLabels = state.whereTags,
         whatLabels = state.whatTags,
@@ -226,6 +227,7 @@ fun HomeScreen(
 private fun HomeScreen(
     screenHeight: Dp,
     statusBarHeight: Dp,
+    userName: String,
     loginState: LoginState,
     gatherings: Gatherings,
     whenLabels: List<String>,
@@ -276,7 +278,8 @@ private fun HomeScreen(
                 ).verticalScroll(verticalScrollState)
             ) {
                 HomeTitle(
-                    modifier = Modifier.height(HOME_TITLE_HEIGHT.dp)
+                    modifier = Modifier.height(HOME_TITLE_HEIGHT.dp),
+                    name = userName
                 )
 
                 HomeContent(
@@ -327,7 +330,7 @@ fun HomeAppBar(
 
 @Composable
 fun HomeTitle(
-    name: String = "",
+    name: String,
     modifier: Modifier = Modifier
 ) {
     Column (
@@ -445,6 +448,7 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         loginState = LoginState.LoggedIn,
         gatherings = Gatherings(),
+        userName = "",
         onMyPageClick = {},
         onAddGatheringClick = {},
         onGatheringClick = {},
