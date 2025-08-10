@@ -164,7 +164,7 @@ fun HomeScreen(
             viewModel.handleAction(HomeAction.ClickRefreshWhat)
         },
         onProposeClick = {
-            viewModel.handleAction(HomeAction.ClickPropose)
+            viewModel.handleAction(HomeAction.ClickPropose(it))
         },
         onProposalsClick = {
             viewModel.handleAction(HomeAction.ClickProposals)
@@ -228,7 +228,7 @@ private fun HomeScreen(
     onAddGatheringClick: () -> Unit,
     onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
     onProposalsClick: () -> Unit,
     modifier: Modifier = Modifier,
     verticalScrollState : ScrollState = rememberScrollState()

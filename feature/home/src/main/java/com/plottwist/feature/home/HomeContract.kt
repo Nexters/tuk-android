@@ -20,7 +20,7 @@ sealed class HomeAction {
     data object ClickRefreshWhen : HomeAction()
     data object ClickRefreshWhat : HomeAction()
     data class ClickGathering(val gatheringId: Long): HomeAction()
-    data object ClickPropose: HomeAction()
+    data class ClickPropose(val index : Int): HomeAction()
     data object ClickProposals: HomeAction()
     data object OnPermissionGranted: HomeAction()
 }

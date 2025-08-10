@@ -17,6 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,17 +31,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukButton
 import com.plottwist.core.designsystem.component.TukRoundSolidButton
 import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed100
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray700
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
-import com.plottwist.core.ui.launched_effect.SwitchContentAnimator
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 
 @Composable
 fun RandomProposal(
@@ -47,11 +55,27 @@ fun RandomProposal(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
     onStopClick: () -> Unit,
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var currentIndex by remember { mutableIntStateOf(0) }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner, isPlayed) {
+        val minSize = arrayOf(whatLabels.size, whereLabels.size, whenLabels.size).min()
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            while (isActive && isPlayed) {
+                delay(DURATION_SHOW_ITEM)
+
+                delay(DURATION_ANIMATION.toLong())
+                currentIndex = (currentIndex + 1) % minSize
+            }
+        }
+    }
+
     Column (
         modifier = modifier.padding(bottom = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -65,19 +89,19 @@ fun RandomProposal(
 
         RandomProposalItem(
             labels = whereLabels,
-            isPlayed = isPlayed,
+            currentIndex = currentIndex,
             onRefreshClick = onWhereRefreshClick
         )
 
         RandomProposalItem(
             labels = whenLabels,
-            isPlayed = isPlayed,
+            currentIndex = currentIndex,
             onRefreshClick = onWhenRefreshClick
         )
 
         RandomProposalItem(
             labels = whatLabels,
-            isPlayed = isPlayed,
+            currentIndex = currentIndex,
             onRefreshClick = onWhatRefreshClick
         )
 
@@ -119,7 +143,9 @@ fun RandomProposal(
                     modifier = Modifier.height(40.dp),
                     containerColor = Gray900,
                     contentColor = Color(0xFFFFFFFF),
-                    onClick = onProposeClick
+                    onClick = {
+                        onProposeClick(currentIndex)
+                    }
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_next_arrow_circle),
@@ -135,7 +161,7 @@ fun RandomProposal(
 
 @Composable
 fun RandomProposalItem(
-    isPlayed: Boolean,
+    currentIndex: Int,
     labels: List<String>,
     onRefreshClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -159,22 +185,13 @@ fun RandomProposalItem(
         horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SwitchContentAnimator(
-            items = labels,
-            isStopped = !isPlayed,
-            durationShowItem = DURATION_SHOW_ITEM,
-            durationAnimation = DURATION_ANIMATION,
-            content = { index ->
-                Text(
-                    modifier = Modifier.fillMaxSize(),
-                    text = labels.getOrNull(index) ?: "",
-                    style = TukSerifTypography.body16M,
-                    textAlign = TextAlign.Center,
-                    color = Gray900
-                )
-            }
+        Text(
+            modifier = Modifier.fillMaxSize(),
+            text = labels.getOrNull(currentIndex) ?: "",
+            style = TukSerifTypography.body16M,
+            textAlign = TextAlign.Center,
+            color = Gray900
         )
-
     }
 }
 

@@ -57,7 +57,7 @@ fun HomeBottomSheet(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
    var isPlayed by remember { mutableStateOf(true) }
@@ -95,7 +95,7 @@ fun DraggableBottomSheet(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
     onStopClick: () -> Unit,
     onPlayClick: () -> Unit,
     thresholdHeight: Dp = 30.dp,

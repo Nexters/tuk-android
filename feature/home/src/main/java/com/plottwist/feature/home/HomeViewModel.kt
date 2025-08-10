@@ -72,8 +72,8 @@ class HomeViewModel @Inject constructor(
                 handleGatheringClick(action.gatheringId)
             }
 
-            HomeAction.ClickPropose -> {
-                handleProposeClick()
+            is HomeAction.ClickPropose -> {
+                handleProposeClick(action.index)
             }
 
             HomeAction.ClickProposals -> {
@@ -147,15 +147,15 @@ class HomeViewModel @Inject constructor(
         postSideEffect(HomeSideEffect.NavigateToGatheringDetailScreen(gatheringId))
     }
 
-    private fun handleProposeClick() = intent {
+    private fun handleProposeClick(index : Int) = intent {
         when (state.loginState) {
             LoginState.LoggedIn -> {
                 if(state.gatherings.gatheringOverviews.isNotEmpty()) {
                     postSideEffect(
                         HomeSideEffect.NavigateToCreateProposalScreen(
-                            whereLabel = state.whereLabel,
-                            whenLabel = state.whenLabel,
-                            whatLabel = state.whatLabel
+                            whereLabel = state.whereTags[index],
+                            whenLabel = state.whenTags[index],
+                            whatLabel = state.whatTags[index]
                         )
                     )
                 } else {
