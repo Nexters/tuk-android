@@ -12,17 +12,20 @@ import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
 
 fun NavController.navigateToSelectGathering(
     gatheringId: Long?,
+    whereLabel: String,
+    whenLabel: String,
+    whatLabel: String,
     navOptions: NavOptions? = null
 ) {
     this.navigate(
-        route = Route.SelectGathering(gatheringId),
+        route = Route.SelectGathering(gatheringId, whereLabel, whenLabel, whatLabel),
         navOptions = navOptions
     )
 }
 
 fun NavGraphBuilder.selectGatheringNavGraph(
     onBack: () -> Unit,
-    backToCreateProposal: (SelectedGatheringParam) -> Unit
+    navigateToCreateProposalWithGathering: (SelectedGatheringParam) -> Unit,
 ) {
     composable<Route.SelectGathering> (
         enterTransition = { slideIn() },
@@ -30,7 +33,7 @@ fun NavGraphBuilder.selectGatheringNavGraph(
     ) {
         SelectGatheringScreen(
             onBack = onBack,
-            backToCreateProposal = backToCreateProposal
+            navigateToCreateProposalWithGathering = navigateToCreateProposalWithGathering
         )
     }
 }

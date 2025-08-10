@@ -41,6 +41,8 @@ sealed interface Route {
 
     @Serializable
     data class CreateProposal(
+        val gatheringId: Long?,
+        val gatheringName: String?,
         val whereLabel: String,
         val whenLabel: String,
         val whatLabel: String
@@ -56,7 +58,10 @@ sealed interface Route {
 
     @Serializable
     data class SelectGathering(
-        val gatheringId: Long?
+        val gatheringId: Long?,
+        val whereLabel: String,
+        val whenLabel: String,
+        val whatLabel: String
     ) : Route
 
     @Serializable

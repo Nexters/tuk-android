@@ -18,9 +18,15 @@ class SelectGatheringViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle
 ) : ContainerHost<SelectGatheringState, SelectGatheringSideEffect>, ViewModel() {
     override val container = container<SelectGatheringState, SelectGatheringSideEffect>(
-        SelectGatheringState(
-            selectedGatheringId = savedStateHandle.toRoute<Route.SelectGathering>().gatheringId
-        )
+        savedStateHandle.toRoute<Route.SelectGathering>().let {
+            SelectGatheringState(
+                selectedGatheringId = it.gatheringId,
+                whereLabel = it.whereLabel,
+                whenLabel = it.whenLabel,
+                whatLabel = it.whatLabel
+            )
+        }
+
     ) {
         fetchGatherings()
     }
@@ -76,7 +82,10 @@ class SelectGatheringViewModel @Inject constructor(
             SelectGatheringSideEffect.NavigateToCreateProposal(
                 SelectedGatheringParam(
                     id = selectedGathering.id,
-                    name = selectedGathering.name
+                    name = selectedGathering.name,
+                    whenLabel = state.whenLabel,
+                    whereLabel = state.whereLabel,
+                    whatLabel = state.whatLabel
                 )
             )
         )

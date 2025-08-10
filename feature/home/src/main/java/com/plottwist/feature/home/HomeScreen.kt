@@ -78,6 +78,7 @@ fun HomeScreen(
     navigateToCreateGathering: () -> Unit,
     navigateToGatheringDetail: (Long) -> Unit,
     navigateToCreateProposal: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
+    navigateToSelectGathering: (whereLabel: String, whenLabel: String, whatLabel: String) -> Unit,
     navigateToWebView: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
@@ -139,6 +140,14 @@ fun HomeScreen(
 
             HomeSideEffect.RequestNotificationPermission -> {
                 requestNotificationPermission = true
+            }
+
+            is HomeSideEffect.NavigateToSelectGatheringScreen -> {
+                navigateToSelectGathering(
+                    sideEffect.whereLabel,
+                    sideEffect.whenLabel,
+                    sideEffect.whatLabel
+                )
             }
         }
     }

@@ -13,13 +13,15 @@ import com.plottwist.feature.proposal_create.CreateProposalScreen
 
 
 fun NavController.navigateToCreateProposal(
+    gatheringId: Long?,
+    gatheringName: String?,
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
     navOptions: NavOptions? = null
 ) {
     this.navigate(
-        route = Route.CreateProposal(whereLabel, whenLabel, whatLabel),
+        route = Route.CreateProposal(gatheringId, gatheringName,whereLabel, whenLabel, whatLabel),
         navOptions = navOptions
     )
 }

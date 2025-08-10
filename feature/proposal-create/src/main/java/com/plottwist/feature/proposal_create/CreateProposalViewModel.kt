@@ -18,6 +18,12 @@ class CreateProposalViewModel @Inject constructor(
         container<CreateProposalState, CreateProposalSideEffect>(
             savedStateHandle.toRoute<Route.CreateProposal>().let { route ->
                 CreateProposalState(
+                    selectedGathering = route.gatheringId?.let {
+                        GatheringUiModel(
+                            id = it,
+                            name = route.gatheringName ?: ""
+                        )
+                    },
                     whereLabel = route.whereLabel,
                     whenLabel = route.whenLabel,
                     whatLabel = route.whatLabel

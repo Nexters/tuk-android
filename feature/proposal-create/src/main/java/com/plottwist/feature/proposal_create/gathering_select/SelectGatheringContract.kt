@@ -5,6 +5,9 @@ import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
 
 data class SelectGatheringState(
     val selectedGatheringId: Long? = null,
+    val whereLabel: String = "",
+    val whenLabel: String = "",
+    val whatLabel: String = "",
     val gatherings: List<GatheringUiModel> = emptyList()
 )
 

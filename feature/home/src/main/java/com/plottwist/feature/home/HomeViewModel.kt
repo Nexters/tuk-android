@@ -163,14 +163,20 @@ class HomeViewModel @Inject constructor(
             LoginState.LoggedIn -> {
                 if(state.gatherings.gatheringOverviews.isNotEmpty()) {
                     postSideEffect(
-                        HomeSideEffect.NavigateToCreateProposalScreen(
+                        HomeSideEffect.NavigateToSelectGatheringScreen(
                             whereLabel = state.whereTags[index],
                             whenLabel = state.whenTags[index],
                             whatLabel = state.whatTags[index]
                         )
                     )
                 } else {
-                    postSideEffect(HomeSideEffect.ShowNoGatheringsPopup)
+                    postSideEffect(
+                        HomeSideEffect.NavigateToCreateProposalScreen(
+                            whereLabel = state.whereTags[index],
+                            whenLabel = state.whenTags[index],
+                            whatLabel = state.whatTags[index]
+                        )
+                    )
                 }
             }
 

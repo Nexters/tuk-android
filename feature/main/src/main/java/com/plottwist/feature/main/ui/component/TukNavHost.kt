@@ -63,11 +63,21 @@ fun TukNavHost(
                 navController.navigateToCreateProposal(
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
-                    whatLabel = whatLabel
+                    whatLabel = whatLabel,
+                    gatheringId = null,
+                    gatheringName = null
                 )
             },
             navigateToWebView = { url ->
                 navController.navigateToWebView(url)
+            },
+            navigateToSelectGathering = { whereLabel, whenLabel, whatLabel ->
+                navController.navigateToSelectGathering(
+                    whereLabel = whereLabel,
+                    whenLabel = whenLabel,
+                    whatLabel = whatLabel,
+                    gatheringId = null
+                )
             }
         )
         loginNavGraph(
@@ -125,7 +135,7 @@ fun TukNavHost(
                 navController.popBackStack()
             },
             navigateToSelectGatheringScreen = {
-                navController.navigateToSelectGathering(it)
+        //        navController.navigateToSelectGathering(it)
             }
         )
         onboardingNameNavGraph(
@@ -145,11 +155,14 @@ fun TukNavHost(
             onBack = {
                 navController.popBackStack()
             },
-            backToCreateProposal = {
-                navController.previousBackStackEntry
-                    ?.savedStateHandle
-                    ?.set(KEY_SELECTED_GATHERING, it)
-                navController.popBackStack()
+            navigateToCreateProposalWithGathering = {
+                navController.navigateToCreateProposal(
+                    gatheringId = it.id,
+                    gatheringName = it.name,
+                    whenLabel = it.whenLabel,
+                    whereLabel = it.whereLabel,
+                    whatLabel = it.whatLabel
+                )
             }
         )
         inviteGatheringNavGraph(
