@@ -10,7 +10,7 @@ data class CreateProposalState(
 )
 
 sealed class CreateProposalAction {
-    data object ClickClose: CreateProposalAction()
+    data object ClickBack: CreateProposalAction()
     data object ClickSelectGathering: CreateProposalAction()
     data class SelectedGathering(
         val gatheringId: Long,

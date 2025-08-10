@@ -35,7 +35,7 @@ class CreateProposalViewModel @Inject constructor(
 
     fun handleAction(action: CreateProposalAction) {
         when (action) {
-            CreateProposalAction.ClickClose -> {
+            CreateProposalAction.ClickBack -> {
                 navigateBack()
             }
 

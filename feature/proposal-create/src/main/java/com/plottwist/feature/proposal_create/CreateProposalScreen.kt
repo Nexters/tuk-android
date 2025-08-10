@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,15 +25,16 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTopAppBar
+import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
-import com.plottwist.core.ui.component.TopAppBarCloseButton
 import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
 import com.plottwist.feature.proposal_create.component.CreateProposalPostCard
 import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
@@ -78,8 +82,8 @@ fun CreateProposalScreen(
         whatLabel = state.whatLabel,
         selectedGatheringName = state.selectedGathering?.name ?: "",
         isGatheringSelected = state.selectedGathering != null,
-        onCloseClicked = {
-            viewModel.handleAction(CreateProposalAction.ClickClose)
+        onBackClicked = {
+            viewModel.handleAction(CreateProposalAction.ClickBack)
         },
         onSelectGatheringClick = {
             viewModel.handleAction(CreateProposalAction.ClickSelectGathering)
@@ -97,7 +101,7 @@ private fun CreateProposalScreen(
     whatLabel: String,
     selectedGatheringName: String,
     isGatheringSelected: Boolean,
-    onCloseClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     onSelectGatheringClick: () -> Unit,
     onCloseSelectedGatheringClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -105,34 +109,39 @@ private fun CreateProposalScreen(
     Box(
         modifier = modifier.fillMaxSize().background(color = Color(0xFFFAFAFA))
     ) {
-        CreateProposalGradientBackgroundImage(
-            modifier = Modifier.align(Alignment.Center)
-        )
-
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            CreateProposalAppBar(onCloseClicked = onCloseClicked)
+            CreateProposalAppBar(onBackClicked = onBackClicked)
 
             CreateProposalTitle()
 
-            Column(
+            Box(
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterHorizontally),
+                contentAlignment = Alignment.TopCenter
             ) {
                 CreateProposalPostCard(
                     modifier = Modifier
-                        .padding(top = 66.dp)
-                        .width(300.dp)
-                        .height(370.dp)
-                        .align(Alignment.CenterHorizontally),
+                        .padding(top = 73.dp)
+                        .widthIn(max = 290.dp)
+                        .heightIn(max = 380.dp),
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
                     whatLabel = whatLabel,
                     selectedGatheringName = selectedGatheringName,
                     onSelectGatheringClick = onSelectGatheringClick,
                     onCloseSelectedGatheringClick = onCloseSelectedGatheringClick
+                )
+
+                StableImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 100.dp)
+                        .widthIn(max = 400.dp),
+                    drawableResId = R.drawable.image_post_cover,
+                    contentScale = ContentScale.FillWidth
                 )
             }
 
@@ -167,16 +176,14 @@ fun CreateProposalGradientBackgroundImage(
 
 @Composable
 fun CreateProposalAppBar(
-    onCloseClicked: () -> Unit,
+    onBackClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TukTopAppBar(
         modifier = modifier,
-        actionButtons = {
-            TopAppBarCloseButton(
-                onCloseClicked = onCloseClicked
-            )
-        }
+        type = TukTopAppBarType.DEPTH,
+        title = "만남 초대장 만들기",
+        onBack = onBackClicked
     )
 }
 
@@ -203,7 +210,7 @@ private fun CreateProposalScreenPreview() {
         whatLabel = "what",
         selectedGatheringName = "",
         isGatheringSelected = false,
-        onCloseClicked = {},
+        onBackClicked = {},
         onSelectGatheringClick = {},
         onCloseSelectedGatheringClick = {}
     )
