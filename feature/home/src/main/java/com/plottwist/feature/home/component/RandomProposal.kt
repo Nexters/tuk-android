@@ -63,11 +63,11 @@ fun RandomProposal(
     var currentIndex by remember { mutableIntStateOf(0) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
+    val minSize = arrayOf(whatLabels.size, whereLabels.size, whenLabels.size).min()
 
-    LaunchedEffect(lifecycleOwner, isPlayed) {
-        val minSize = arrayOf(whatLabels.size, whereLabels.size, whenLabels.size).min()
+    LaunchedEffect(lifecycleOwner, isPlayed, minSize) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            while (isActive && isPlayed) {
+            while (isActive && isPlayed && minSize >= 1) {
                 delay(DURATION_SHOW_ITEM)
 
                 delay(DURATION_ANIMATION.toLong())
