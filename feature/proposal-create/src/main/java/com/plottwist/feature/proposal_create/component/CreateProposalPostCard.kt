@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
@@ -38,7 +39,8 @@ fun CreateProposalPostCard(
     selectedGatheringName: String,
     onSelectGatheringClick: () -> Unit,
     onCloseSelectedGatheringClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEnabledEditGatheringName: Boolean = true
 ) {
     PostCard(
         modifier = modifier,
@@ -53,6 +55,7 @@ fun CreateProposalPostCard(
             SelectedGatheringButton(
                 modifier = Modifier.align(Alignment.TopEnd),
                 gatheringName = selectedGatheringName,
+                isEnabledEditGatheringName = isEnabledEditGatheringName,
                 onClick = onCloseSelectedGatheringClick
             )
         } else {
@@ -114,14 +117,18 @@ fun SelectGatheringButton(
 fun SelectedGatheringButton(
     gatheringName: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEnabledEditGatheringName: Boolean = true
 ) {
     Row(
         modifier = modifier
-            .dashedBorder(
-                color = Color(0xFFA0A0A0),
-                shape = RoundedCornerShape(10.dp),
-                strokeWidth = 1.dp
+            .then(
+                if(isEnabledEditGatheringName) Modifier.dashedBorder(
+                    color = Color(0xFFA0A0A0),
+                    shape = RoundedCornerShape(10.dp),
+                    strokeWidth = 1.dp
+                )
+                else Modifier
             )
             .clip(RoundedCornerShape(10.dp))
             .padding(8.dp)
@@ -135,14 +142,17 @@ fun SelectedGatheringButton(
             modifier = Modifier.weight(1f),
             text = stringResource(R.string.create_proposal_selected_gathering_name, gatheringName),
             style = TukSerifTypography.body14R,
+            textAlign = if(isEnabledEditGatheringName) TextAlign.Start else TextAlign.End,
             color = Color(0xFF888888)
         )
-        Icon(
-            modifier = Modifier.size(20.dp),
-            imageVector = ImageVector.vectorResource(R.drawable.ic_close_small),
-            contentDescription = "close",
-            tint = Color(0xFF888888)
-        )
+        if(isEnabledEditGatheringName){
+            Icon(
+                modifier = Modifier.size(20.dp),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_close_small),
+                contentDescription = "close",
+                tint = Color(0xFF888888)
+            )
+        }
     }
 }
 
