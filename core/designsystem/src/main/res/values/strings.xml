@@ -3,10 +3,11 @@
     <string name="home_title">친구들은 요즘\n어떻게 지내고 있을까요</string>
     <string name="home_subtitle">%s 님,</string>
     <string name="home_bottom_sheet_nudging_text">툭, 찔러만봐</string>
+    <string name="home_bottom_sheet_stop_text">멈추기</string>
     <string name="home_bottom_create_gathering_description">모임을 생성하고\n넌지시 만남을 제안해 보세요</string>
     <string name="home_bottom_create_gathering_button_text">모임 생성하기</string>
     <string name="home_last_alarm">마지막 알람</string>
-    <string name="home_random_proposal_description_prefix">연락이 뜸해진 우리</string>
+    <string name="home_random_proposal_description_prefix">웃긴거 아는데, 우리</string>
     <string name="home_random_proposal_description_suffix">어때</string>
     <string name="home_proposals">받은 초대장</string>
     

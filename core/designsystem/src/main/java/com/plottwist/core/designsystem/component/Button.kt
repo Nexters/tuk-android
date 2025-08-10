@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray200
@@ -85,13 +86,14 @@ fun TukOutlinedButton(
 }
 
 @Composable
-private fun TukButton(
+fun TukButton(
     containerColor: Color,
     disabledContainerColor: Color,
     contentColor: Color,
     disabledContentColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    height: Dp = 52.dp,
     enabled: Boolean = true,
     shape:Shape = RoundedCornerShape(15.dp),
     contentPadding: PaddingValues = PaddingValues(vertical = 10.dp, horizontal = 10.dp),
@@ -99,7 +101,7 @@ private fun TukButton(
     content: @Composable () -> Unit
 ) {
     Button(
-        modifier = modifier.height(52.dp),
+        modifier = modifier.height(height),
         enabled = enabled,
         shape = shape,
         border = border,

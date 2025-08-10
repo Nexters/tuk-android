@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -59,8 +60,11 @@ fun HomeBottomSheet(
     onProposeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+   var isRolling by remember { mutableStateOf(true) }
+
     DraggableBottomSheet(
         modifier = modifier,
+        isRolling = isRolling,
         whenLabel = whenLabel,
         whereLabel = whereLabel,
         whatLabel = whatLabel,
@@ -71,13 +75,16 @@ fun HomeBottomSheet(
         sheetPeekHeight = sheetPeekHeight,
         sheetFullHeight = sheetFullHeight,
         onChangedState = onChangedState,
-        onProposeClick = onProposeClick
+        onProposeClick = onProposeClick,
+        onStopClick = { isRolling = !isRolling },
+        onPlayClick = { isRolling = !isRolling }
     )
 }
 
 @Composable
 fun DraggableBottomSheet(
     modifier: Modifier = Modifier,
+    isRolling: Boolean,
     whenLabel: String,
     whereLabel: String,
     whatLabel: String,
@@ -89,6 +96,8 @@ fun DraggableBottomSheet(
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
     onProposeClick: () -> Unit,
+    onStopClick: () -> Unit,
+    onPlayClick: () -> Unit,
     thresholdHeight: Dp = 30.dp,
     shape: RoundedCornerShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
     borderColor: Color = Color(0xAAE1E1E1),
@@ -233,13 +242,16 @@ fun DraggableBottomSheet(
                 ) {
                     RandomProposal(
                         modifier = Modifier.padding(top = 4.dp),
+                        isRolling = isRolling,
                         whenLabel = whenLabel,
                         whereLabel = whereLabel,
                         whatLabel = whatLabel,
                         onWhenRefreshClick = onWhenRefreshClick,
                         onWhereRefreshClick = onWhereRefreshClick,
                         onWhatRefreshClick = onWhatRefreshClick,
-                        onProposeClick = onProposeClick
+                        onProposeClick = onProposeClick,
+                        onStopClick = onStopClick,
+                        onPlayClick = onPlayClick
                     )
                 }
             }
