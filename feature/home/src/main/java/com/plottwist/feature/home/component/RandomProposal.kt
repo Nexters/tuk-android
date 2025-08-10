@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,32 +20,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukButton
-import com.plottwist.core.designsystem.component.TukOutlinedButton
 import com.plottwist.core.designsystem.component.TukRoundSolidButton
 import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed100
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray500
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray700
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
-import com.plottwist.core.ui.component.StableImage
+import com.plottwist.core.ui.launched_effect.SwitchContentAnimator
 
 @Composable
 fun RandomProposal(
-    isRolling: Boolean,
-    whenLabel: String,
-    whereLabel: String,
-    whatLabel: String,
+    isPlayed: Boolean,
+    whenLabels: List<String>,
+    whereLabels: List<String>,
+    whatLabels: List<String>,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
@@ -66,17 +64,20 @@ fun RandomProposal(
         )
 
         RandomProposalItem(
-            label = whereLabel,
+            labels = whereLabels,
+            isPlayed = isPlayed,
             onRefreshClick = onWhereRefreshClick
         )
 
         RandomProposalItem(
-            label = whenLabel,
+            labels = whenLabels,
+            isPlayed = isPlayed,
             onRefreshClick = onWhenRefreshClick
         )
 
         RandomProposalItem(
-            label = whatLabel,
+            labels = whatLabels,
+            isPlayed = isPlayed,
             onRefreshClick = onWhatRefreshClick
         )
 
@@ -88,7 +89,7 @@ fun RandomProposal(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if(isRolling) {
+        if(isPlayed) {
             StopButton(
                 onClick = onStopClick
             )
@@ -134,7 +135,8 @@ fun RandomProposal(
 
 @Composable
 fun RandomProposalItem(
-    label: String,
+    isPlayed: Boolean,
+    labels: List<String>,
     onRefreshClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -147,9 +149,9 @@ fun RandomProposalItem(
                 shape = CircleShape
             )
             .clip(CircleShape)
-            .clickable {
-                onRefreshClick()
-            }
+//            .clickable {
+//                onRefreshClick()
+//            }
             .padding(
                 horizontal = 20.dp,
                 vertical = 15.dp
@@ -157,10 +159,22 @@ fun RandomProposalItem(
         horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = label,
-            style = TukSerifTypography.body16M
+        SwitchContentAnimator(
+            items = labels,
+            isStopped = !isPlayed,
+            durationShowItem = DURATION_SHOW_ITEM,
+            durationAnimation = DURATION_ANIMATION,
+            content = { index ->
+                Text(
+                    modifier = Modifier.fillMaxSize(),
+                    text = labels.getOrNull(index) ?: "",
+                    style = TukSerifTypography.body16M,
+                    textAlign = TextAlign.Center,
+                    color = Gray900
+                )
+            }
         )
+
     }
 }
 
@@ -201,3 +215,6 @@ fun StopButton(
         )
     }
 }
+
+private const val DURATION_SHOW_ITEM = 30L
+private const val DURATION_ANIMATION = 30

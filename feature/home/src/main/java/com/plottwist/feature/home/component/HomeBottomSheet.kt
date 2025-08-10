@@ -47,9 +47,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeBottomSheet(
-    whenLabel: String,
-    whereLabel: String,
-    whatLabel: String,
+    whenLabels: List<String>,
+    whereLabels: List<String>,
+    whatLabels: List<String>,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     homeBottomSheetAction: HomeBottomSheetAction,
@@ -60,14 +60,14 @@ fun HomeBottomSheet(
     onProposeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-   var isRolling by remember { mutableStateOf(true) }
+   var isPlayed by remember { mutableStateOf(true) }
 
     DraggableBottomSheet(
         modifier = modifier,
-        isRolling = isRolling,
-        whenLabel = whenLabel,
-        whereLabel = whereLabel,
-        whatLabel = whatLabel,
+        isPlayed = isPlayed,
+        whenLabels = whenLabels,
+        whereLabels = whereLabels,
+        whatLabels = whatLabels,
         homeBottomSheetAction = homeBottomSheetAction,
         onWhenRefreshClick = onWhenRefreshClick,
         onWhereRefreshClick = onWhereRefreshClick,
@@ -76,18 +76,18 @@ fun HomeBottomSheet(
         sheetFullHeight = sheetFullHeight,
         onChangedState = onChangedState,
         onProposeClick = onProposeClick,
-        onStopClick = { isRolling = !isRolling },
-        onPlayClick = { isRolling = !isRolling }
+        onStopClick = { isPlayed = !isPlayed },
+        onPlayClick = { isPlayed = !isPlayed }
     )
 }
 
 @Composable
 fun DraggableBottomSheet(
     modifier: Modifier = Modifier,
-    isRolling: Boolean,
-    whenLabel: String,
-    whereLabel: String,
-    whatLabel: String,
+    isPlayed: Boolean,
+    whenLabels: List<String>,
+    whereLabels: List<String>,
+    whatLabels: List<String>,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     homeBottomSheetAction: HomeBottomSheetAction,
@@ -242,10 +242,10 @@ fun DraggableBottomSheet(
                 ) {
                     RandomProposal(
                         modifier = Modifier.padding(top = 4.dp),
-                        isRolling = isRolling,
-                        whenLabel = whenLabel,
-                        whereLabel = whereLabel,
-                        whatLabel = whatLabel,
+                        isPlayed = isPlayed,
+                        whenLabels = whenLabels,
+                        whereLabels = whereLabels,
+                        whatLabels = whatLabels,
                         onWhenRefreshClick = onWhenRefreshClick,
                         onWhereRefreshClick = onWhereRefreshClick,
                         onWhatRefreshClick = onWhatRefreshClick,
