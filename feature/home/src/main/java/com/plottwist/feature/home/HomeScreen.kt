@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -37,12 +41,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.component.TOP_APP_BAR_HEIGHT
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed500
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
@@ -54,11 +60,11 @@ import com.plottwist.feature.home.component.HomeBottomSheet
 import com.plottwist.feature.home.component.HomeBottomSheetAction
 import com.plottwist.feature.home.component.HomeBottomSheetState
 import com.plottwist.feature.home.component.HomeContent
-import com.plottwist.feature.home.component.HomeCreateGatheringPreview
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen(
@@ -73,6 +79,9 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.collectAsState()
+    val configuration = LocalConfiguration.current
+    val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val statusBarHeight = remember(statusBarPaddingValue) { statusBarPaddingValue }
     var isShownNoGatheringsPopup by remember { mutableStateOf(false) }
     var requestNotificationPermission by remember { mutableStateOf(false) }
     var homeBottomSheetAction: HomeBottomSheetAction by remember {
@@ -125,6 +134,8 @@ fun HomeScreen(
 
     HomeScreen(
         modifier = modifier.fillMaxSize(),
+        screenHeight = configuration.screenHeightDp.dp,
+        statusBarHeight = statusBarHeight,
         whenLabel = state.whenLabel,
         whereLabel = state.whereLabel,
         whatLabel = state.whatLabel,
@@ -202,6 +213,8 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreen(
+    screenHeight: Dp,
+    statusBarHeight: Dp,
     loginState: LoginState,
     gatherings: Gatherings,
     whenLabel: String,
@@ -220,6 +233,7 @@ private fun HomeScreen(
     modifier: Modifier = Modifier,
     verticalScrollState : ScrollState = rememberScrollState()
 ) {
+    val homeContentTopPadding = screenHeight / 2 - statusBarHeight -  TOP_APP_BAR_HEIGHT.dp
     Box(
         modifier = modifier
     ) {
@@ -236,13 +250,16 @@ private fun HomeScreen(
                     bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp
                 ).verticalScroll(verticalScrollState)
             ) {
-                HomeTitle()
-
-                if(loginState == LoginState.Loading) return
+                HomeTitle(
+                    modifier = Modifier.height(HOME_TITLE_HEIGHT.dp)
+                )
 
                 HomeContent(
                     modifier = Modifier
-                        .padding(top = 80.dp, bottom = 40.dp),
+                        .padding(
+                            top = homeContentTopPadding - HOME_TITLE_HEIGHT.dp - 40.dp,
+                            bottom = 40.dp
+                        ),
                     gatherings = gatherings,
                     onAddGatheringClick = onAddGatheringClick,
                     onGatheringClick = onGatheringClick
@@ -286,17 +303,21 @@ fun HomeTitle(
     name: String = "",
     modifier: Modifier = Modifier
 ) {
-    Text(
-        modifier = modifier.padding(start = 20.dp, bottom = 18.dp),
-        text = stringResource(R.string.home_subtitle, name),
-        style = TukSerifTypography.title22M
-    )
-
-    Text(
+    Column (
         modifier = modifier.padding(start = 20.dp),
-        text = stringResource(R.string.home_title),
-        style = TukSerifTypography.title22M
-    )
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(R.string.home_subtitle, name),
+            style = TukSerifTypography.title22M
+        )
+
+        Text(
+            text = stringResource(R.string.home_title),
+            style = TukSerifTypography.title22M
+        )
+    }
+
 }
 
 @Composable
@@ -385,6 +406,7 @@ fun RequestPermission(onPermissionsGranted: () -> Unit, onShowRationalDialog: ()
     }
 }
 
+private const val HOME_TITLE_HEIGHT = 108
 private const val BOTTOM_SHEET_PEEK_HEIGHT = 120
 private const val BOTTOM_SHEET_FULL_HEIGHT = 570
 private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 2
@@ -408,6 +430,8 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         onWhereRefreshClick = { },
         onWhatRefreshClick = { },
         onProposeClick = {},
-        onProposalsClick = {}
+        onProposalsClick = {},
+        screenHeight = 720.dp,
+        statusBarHeight = 28.dp,
     )
 }

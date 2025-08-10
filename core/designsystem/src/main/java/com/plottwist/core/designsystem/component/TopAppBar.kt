@@ -33,7 +33,7 @@ fun TukTopAppBar(
     Row(
         modifier = modifier
             .statusBarsPadding()
-            .height(64.dp)
+            .height(TOP_APP_BAR_HEIGHT.dp)
             .fillMaxWidth()
             .padding(
                 start = if(type == TukTopAppBarType.PLAIN) 20.dp else 12.dp,
@@ -78,6 +78,7 @@ fun TopAppBarBackButton(
     }
 }
 
+const val TOP_APP_BAR_HEIGHT = 64
 
 enum class TukTopAppBarType {
     DEPTH,
