@@ -6,6 +6,7 @@ import com.plottwist.core.domain.auth.usecase.CheckLoginStatusUseCase
 import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
 import com.plottwist.core.domain.gathering.usecase.GetPurposesUseCase
 import com.plottwist.core.domain.model.Purposes
+import com.plottwist.core.domain.onboarding.usecase.UpdateDeviceTokenUseCase
 import com.plottwist.core.weburl.WebUrlConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -22,6 +23,7 @@ class HomeViewModel @Inject constructor(
     private val getGatheringsUseCase: GetGatheringsUseCase,
     private val getPurposesUseCase: GetPurposesUseCase,
     private val webViewConfig: WebUrlConfig,
+    private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase
 ) : ContainerHost<HomeState, HomeSideEffect>, ViewModel() {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         observeLoginState()
@@ -77,6 +79,10 @@ class HomeViewModel @Inject constructor(
             HomeAction.ClickProposals -> {
                 handleProposalsClick()
             }
+
+            HomeAction.OnPermissionGranted -> {
+                handleOnPermissionGranted()
+            }
         }
     }
 
@@ -87,6 +93,8 @@ class HomeViewModel @Inject constructor(
             when (loginState) {
                 LoginState.LoggedIn -> {
                     fetchGatherings(loginState)
+                    updateDeviceTokenUseCase()
+                    postSideEffect(HomeSideEffect.RequestNotificationPermission)
                 }
 
                 else -> {
@@ -194,5 +202,9 @@ class HomeViewModel @Inject constructor(
     private fun handleProposalsClick() = intent {
         val encodedUrl = URLEncoder.encode(webViewConfig.proposalsUrl,"UTF-8")
         postSideEffect(HomeSideEffect.NavigateToWebViewScreen(encodedUrl))
+    }
+
+    private fun handleOnPermissionGranted() = intent {
+        updateDeviceTokenUseCase()
     }
 }

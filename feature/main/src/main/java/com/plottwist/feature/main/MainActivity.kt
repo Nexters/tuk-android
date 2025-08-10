@@ -23,4 +23,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        const val NOTIFICATION_REQUEST_CODE = 0
+    }
 }

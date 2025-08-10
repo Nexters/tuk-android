@@ -1,6 +1,9 @@
 package com.plottwist.feature.home
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +39,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed500
@@ -52,6 +59,7 @@ import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen(
     navigateToLoginScreen: () -> Unit,
@@ -66,6 +74,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val state by viewModel.collectAsState()
     var isShownNoGatheringsPopup by remember { mutableStateOf(false) }
+    var requestNotificationPermission by remember { mutableStateOf(false) }
     var homeBottomSheetAction: HomeBottomSheetAction by remember {
         mutableStateOf(HomeBottomSheetAction.IDLE)
     }
@@ -106,6 +115,10 @@ fun HomeScreen(
 
             HomeSideEffect.ShowNoGatheringsPopup -> {
                 isShownNoGatheringsPopup = !isShownNoGatheringsPopup
+            }
+
+            HomeSideEffect.RequestNotificationPermission -> {
+                requestNotificationPermission = true
             }
         }
     }
@@ -173,6 +186,16 @@ fun HomeScreen(
                     )
                 }
             },
+        )
+    }
+
+    if(requestNotificationPermission) {
+        RequestPermission(
+            onPermissionsGranted = {
+                requestNotificationPermission = false
+                viewModel.handleAction(HomeAction.OnPermissionGranted)
+            },
+            onShowRationalDialog = {}
         )
     }
 }
@@ -337,6 +360,34 @@ fun TopAppBarMyPageButton(
         StableImage(
             drawableResId = R.drawable.ic_mypage
         )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun RequestPermission(onPermissionsGranted: () -> Unit, onShowRationalDialog: () -> Unit) {
+    val permissionAlreadyRequested = rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    val permissionState = rememberPermissionState(
+        permission =  Manifest.permission.POST_NOTIFICATIONS,
+        onPermissionResult = { result ->
+            permissionAlreadyRequested.value = true
+
+            if(result) {
+                onPermissionsGranted()
+            }
+        }
+    )
+
+    if (!permissionAlreadyRequested.value && !permissionState.status.shouldShowRationale) {
+        LaunchedEffect(Unit) {
+            permissionState.launchPermissionRequest()
+        }
+    } else {
+        onShowRationalDialog()
     }
 }
 

@@ -1,18 +1,17 @@
 plugins {
     alias(libs.plugins.tuk.android.library)
     alias(libs.plugins.tuk.android.library.hilt)
+    alias(libs.plugins.google.service)
 }
 
 android {
-    namespace = "com.plottwist.core.data"
+    namespace = "com.plottwist.core.push"
 }
 
 dependencies {
-    implementation(project(":core:network"))
-    implementation(project(":core:preference"))
     implementation(project(":core:domain"))
-    implementation(project(":core:push"))
-
+    implementation(project(":core:notification"))
+    implementation(project(":feature:main"))
     implementation(libs.retrofit)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
