@@ -15,10 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
+import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed500
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -42,6 +48,9 @@ fun MyPageScreen(
 ) {
 
     val state by viewModel.container.stateFlow.collectAsState()
+
+    var showLogoutDialog by remember { mutableStateOf(false)}
+    var showDeleteAccountDialog by remember { mutableStateOf(false) }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -77,9 +86,73 @@ fun MyPageScreen(
         onUpdateClick = { viewModel.onAction(MyPageAction.ClickUpdateApp) },
         onTermsClick = { viewModel.onAction(MyPageAction.ClickTerms) },
         onPrivacyPolicyClick = { viewModel.onAction(MyPageAction.ClickPrivacyPolicy) },
-        onLogoutClick = { viewModel.onAction(MyPageAction.ClickLogout) },
+        onLogoutClick = { showLogoutDialog = true },
+        onDeleteAccountClick = { showDeleteAccountDialog = true },
         onBackClick = onBackClick
     )
+
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            text = {
+                Text(
+                    text = "정말 로그아웃 하시겠어요?",
+                    style = TukPretendardTypography.body14R
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showLogoutDialog = false
+                        viewModel.onAction(MyPageAction.ClickLogout)
+                    }
+                ) {
+                    Text(
+                        text = "확인",
+                        style = TukPretendardTypography.body14M,
+                        color = CoralRed500
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text(text = "취소", style = TukPretendardTypography.body14M)
+                }
+            }
+        )
+    }
+
+    // 탈퇴 다이얼로그
+    if (showDeleteAccountDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteAccountDialog = false },
+            text = {
+                Text(
+                    text = "정말 탈퇴하시겠어요? 탈퇴 후 데이터는 복구할 수 없습니다.",
+                    style = TukPretendardTypography.body14R
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteAccountDialog = false
+                        viewModel.onAction(MyPageAction.ClickDeleteAccount)
+                    }
+                ) {
+                    Text(
+                        text = "확인",
+                        style = TukPretendardTypography.body14M,
+                        color = CoralRed500
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteAccountDialog = false }) {
+                    Text(text = "취소", style = TukPretendardTypography.body14M)
+                }
+            }
+        )
+    }
 
 }
 
@@ -91,6 +164,7 @@ fun MyPageContent(
     onTermsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
 
@@ -178,7 +252,7 @@ fun MyPageContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)
-                .clickable { }
+                .clickable {onDeleteAccountClick()}
         )
     }
 
@@ -227,6 +301,6 @@ fun MyPageItem(
 @Preview(showBackground = true)
 fun PreviewMyPage(
 ) {
-    MyPageContent({}, {}, {}, {}, {}, {}, {})
+    MyPageContent({}, {}, {}, {}, {}, {}, {},{})
 }
 
