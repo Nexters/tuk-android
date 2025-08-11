@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -46,9 +47,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeBottomSheet(
-    whenLabel: String,
-    whereLabel: String,
-    whatLabel: String,
+    whenLabels: List<String>,
+    whereLabels: List<String>,
+    whatLabels: List<String>,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     homeBottomSheetAction: HomeBottomSheetAction,
@@ -56,14 +57,17 @@ fun HomeBottomSheet(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+   var isPlayed by remember { mutableStateOf(true) }
+
     DraggableBottomSheet(
         modifier = modifier,
-        whenLabel = whenLabel,
-        whereLabel = whereLabel,
-        whatLabel = whatLabel,
+        isPlayed = isPlayed,
+        whenLabels = whenLabels,
+        whereLabels = whereLabels,
+        whatLabels = whatLabels,
         homeBottomSheetAction = homeBottomSheetAction,
         onWhenRefreshClick = onWhenRefreshClick,
         onWhereRefreshClick = onWhereRefreshClick,
@@ -71,16 +75,19 @@ fun HomeBottomSheet(
         sheetPeekHeight = sheetPeekHeight,
         sheetFullHeight = sheetFullHeight,
         onChangedState = onChangedState,
-        onProposeClick = onProposeClick
+        onProposeClick = onProposeClick,
+        onStopClick = { isPlayed = !isPlayed },
+        onPlayClick = { isPlayed = !isPlayed }
     )
 }
 
 @Composable
 fun DraggableBottomSheet(
     modifier: Modifier = Modifier,
-    whenLabel: String,
-    whereLabel: String,
-    whatLabel: String,
+    isPlayed: Boolean,
+    whenLabels: List<String>,
+    whereLabels: List<String>,
+    whatLabels: List<String>,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     homeBottomSheetAction: HomeBottomSheetAction,
@@ -88,7 +95,9 @@ fun DraggableBottomSheet(
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
+    onStopClick: () -> Unit,
+    onPlayClick: () -> Unit,
     thresholdHeight: Dp = 30.dp,
     shape: RoundedCornerShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
     borderColor: Color = Color(0xAAE1E1E1),
@@ -233,13 +242,16 @@ fun DraggableBottomSheet(
                 ) {
                     RandomProposal(
                         modifier = Modifier.padding(top = 4.dp),
-                        whenLabel = whenLabel,
-                        whereLabel = whereLabel,
-                        whatLabel = whatLabel,
+                        isPlayed = isPlayed,
+                        whenLabels = whenLabels,
+                        whereLabels = whereLabels,
+                        whatLabels = whatLabels,
                         onWhenRefreshClick = onWhenRefreshClick,
                         onWhereRefreshClick = onWhereRefreshClick,
                         onWhatRefreshClick = onWhatRefreshClick,
-                        onProposeClick = onProposeClick
+                        onProposeClick = onProposeClick,
+                        onStopClick = onStopClick,
+                        onPlayClick = onPlayClick
                     )
                 }
             }

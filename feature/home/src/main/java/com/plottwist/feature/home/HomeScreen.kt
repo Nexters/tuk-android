@@ -4,16 +4,23 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -37,12 +44,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.component.TOP_APP_BAR_HEIGHT
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed500
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
@@ -54,11 +64,12 @@ import com.plottwist.feature.home.component.HomeBottomSheet
 import com.plottwist.feature.home.component.HomeBottomSheetAction
 import com.plottwist.feature.home.component.HomeBottomSheetState
 import com.plottwist.feature.home.component.HomeContent
-import com.plottwist.feature.home.component.HomeCreateGatheringPreview
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import kotlin.math.roundToInt
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen(
@@ -73,15 +84,24 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val state by viewModel.collectAsState()
+    val configuration = LocalConfiguration.current
+    val statusBarPaddingValue = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+    val statusBarHeight = remember(statusBarPaddingValue) { statusBarPaddingValue }
     var isShownNoGatheringsPopup by remember { mutableStateOf(false) }
     var requestNotificationPermission by remember { mutableStateOf(false) }
     var homeBottomSheetAction: HomeBottomSheetAction by remember {
         mutableStateOf(HomeBottomSheetAction.IDLE)
     }
+    var hasBottomSheetShook by remember { mutableStateOf(false) }
 
     LaunchedEffect(homeBottomSheetAction) {
         delay(200)
         homeBottomSheetAction = HomeBottomSheetAction.IDLE
+    }
+
+    LaunchedEffect(Unit) {
+        delay(800)
+        hasBottomSheetShook = true
     }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -125,9 +145,12 @@ fun HomeScreen(
 
     HomeScreen(
         modifier = modifier.fillMaxSize(),
-        whenLabel = state.whenLabel,
-        whereLabel = state.whereLabel,
-        whatLabel = state.whatLabel,
+        screenHeight = configuration.screenHeightDp.dp,
+        statusBarHeight = statusBarHeight,
+        userName = state.userName,
+        whenLabels = state.whenTags,
+        whereLabels = state.whereTags,
+        whatLabels = state.whatTags,
         loginState = state.loginState,
         gatherings = state.gatherings,
         homeBottomSheetAction = homeBottomSheetAction,
@@ -153,7 +176,7 @@ fun HomeScreen(
             viewModel.handleAction(HomeAction.ClickRefreshWhat)
         },
         onProposeClick = {
-            viewModel.handleAction(HomeAction.ClickPropose)
+            viewModel.handleAction(HomeAction.ClickPropose(it))
         },
         onProposalsClick = {
             viewModel.handleAction(HomeAction.ClickProposals)
@@ -180,7 +203,7 @@ fun HomeScreen(
                     }
                 ) {
                     Text(
-                        text = "확인",
+                        text = stringResource(R.string.common_confirm),
                         style = TukPretendardTypography.body14M,
                         color = CoralRed500
                     )
@@ -202,11 +225,14 @@ fun HomeScreen(
 
 @Composable
 private fun HomeScreen(
+    screenHeight: Dp,
+    statusBarHeight: Dp,
+    userName: String,
     loginState: LoginState,
     gatherings: Gatherings,
-    whenLabel: String,
-    whereLabel: String,
-    whatLabel: String,
+    whenLabels: List<String>,
+    whereLabels: List<String>,
+    whatLabels: List<String>,
     homeBottomSheetAction: HomeBottomSheetAction,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
@@ -215,11 +241,26 @@ private fun HomeScreen(
     onAddGatheringClick: () -> Unit,
     onGatheringClick: (Long) -> Unit,
     onChangedState: (HomeBottomSheetState) -> Unit,
-    onProposeClick: () -> Unit,
+    onProposeClick: (Int) -> Unit,
     onProposalsClick: () -> Unit,
     modifier: Modifier = Modifier,
     verticalScrollState : ScrollState = rememberScrollState()
 ) {
+    val homeContentTopPadding = screenHeight / 2 - statusBarHeight -  TOP_APP_BAR_HEIGHT.dp
+    val shake = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        delay(200)
+        for (i in 0..10) {
+            when (i % 2) {
+                0 -> shake.animateTo(3f, spring(stiffness = 50_000f))
+                else -> shake.animateTo(-3f, spring(stiffness = 50_000f))
+            }
+        }
+        shake.animateTo(0f)
+    }
+
+
     Box(
         modifier = modifier
     ) {
@@ -234,39 +275,32 @@ private fun HomeScreen(
             Column(
                 modifier = Modifier.fillMaxSize().padding(
                     bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp
-                ).then(
-                    if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
-                        Modifier
-                    } else {
-                        Modifier.verticalScroll(verticalScrollState)
-                    }
-                )
+                ).verticalScroll(verticalScrollState)
             ) {
-                HomeTitle()
+                HomeTitle(
+                    modifier = Modifier.height(HOME_TITLE_HEIGHT.dp),
+                    name = userName
+                )
 
-                if(loginState == LoginState.Loading) return
-
-                if(loginState == LoginState.LoggedOut || gatherings.totalCount == 0) {
-                    HomeCreateGatheringPreview(
-                        modifier = Modifier.fillMaxSize(),
-                        onAddGatheringClick = onAddGatheringClick
-                    )
-                } else {
-                    HomeContent(
-                        modifier = Modifier
-                            .padding(top = 80.dp, bottom = 40.dp),
-                        gatherings = gatherings,
-                        onAddGatheringClick = onAddGatheringClick,
-                        onGatheringClick = onGatheringClick
-                    )
-                }
+                HomeContent(
+                    modifier = Modifier
+                        .padding(
+                            top = homeContentTopPadding - HOME_TITLE_HEIGHT.dp - 40.dp,
+                            bottom = 40.dp
+                        ),
+                    gatherings = gatherings,
+                    onAddGatheringClick = onAddGatheringClick,
+                    onGatheringClick = onGatheringClick
+                )
             }
         }
 
         HomeBottomSheet(
-            whenLabel = whenLabel,
-            whereLabel = whereLabel,
-            whatLabel = whatLabel,
+            modifier = Modifier
+                .offset { IntOffset(x= 0, y = shake.value.roundToInt()) }  ,
+            whenLabels = whenLabels,
+            whereLabels = whereLabels,
+            whatLabels = whatLabels,
             sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
             sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
             homeBottomSheetAction = homeBottomSheetAction,
@@ -296,13 +330,24 @@ fun HomeAppBar(
 
 @Composable
 fun HomeTitle(
+    name: String,
     modifier: Modifier = Modifier
 ) {
-    Text(
+    Column (
         modifier = modifier.padding(start = 20.dp),
-        text = stringResource(R.string.home_title),
-        style = TukSerifTypography.title24M
-    )
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(R.string.home_subtitle, name),
+            style = TukSerifTypography.title22M
+        )
+
+        Text(
+            text = stringResource(R.string.home_title),
+            style = TukSerifTypography.title22M
+        )
+    }
+
 }
 
 @Composable
@@ -391,6 +436,7 @@ fun RequestPermission(onPermissionsGranted: () -> Unit, onShowRationalDialog: ()
     }
 }
 
+private const val HOME_TITLE_HEIGHT = 108
 private const val BOTTOM_SHEET_PEEK_HEIGHT = 120
 private const val BOTTOM_SHEET_FULL_HEIGHT = 570
 private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 2
@@ -402,18 +448,21 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         loginState = LoginState.LoggedIn,
         gatherings = Gatherings(),
+        userName = "",
         onMyPageClick = {},
         onAddGatheringClick = {},
         onGatheringClick = {},
         onChangedState = {},
-        whenLabel = "",
-        whereLabel = "",
-        whatLabel = "",
+        whenLabels = emptyList(),
+        whereLabels = emptyList(),
+        whatLabels = emptyList(),
         homeBottomSheetAction = HomeBottomSheetAction.IDLE,
         onWhenRefreshClick = { },
         onWhereRefreshClick = { },
         onWhatRefreshClick = { },
         onProposeClick = {},
-        onProposalsClick = {}
+        onProposalsClick = {},
+        screenHeight = 720.dp,
+        statusBarHeight = 28.dp,
     )
 }

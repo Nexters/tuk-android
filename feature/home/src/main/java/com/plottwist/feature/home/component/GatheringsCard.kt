@@ -54,18 +54,20 @@ fun GatheringsCard(
         CreateGatheringText(
             onAddGatheringClick = onCreateGatheringClick
         )
-        HorizontalDivider(
-            color = Color(0xFFEFEFEF)
-        )
-
-        gatherings.gatheringOverviews.forEach { gathering ->
-            GatheringItem(
-                gatheringName = gathering.gatheringName,
-                lastAlarm = gathering.lastPushRelativeTime.toString(),
-                onClick = {
-                    onGatheringClick(gathering.gatheringId)
-                }
+        if(gatherings.gatheringOverviews.isNotEmpty()) {
+            HorizontalDivider(
+                color = Color(0xFFEFEFEF)
             )
+
+            gatherings.gatheringOverviews.forEach { gathering ->
+                GatheringItem(
+                    gatheringName = gathering.gatheringName,
+                    lastAlarm = gathering.lastPushRelativeTime.toString(),
+                    onClick = {
+                        onGatheringClick(gathering.gatheringId)
+                    }
+                )
+            }
         }
     }
 }

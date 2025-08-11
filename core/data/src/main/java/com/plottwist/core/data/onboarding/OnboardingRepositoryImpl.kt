@@ -1,5 +1,7 @@
 package com.plottwist.core.data.onboarding
 
+import com.plottwist.core.data.mapper.toDomainModel
+import com.plottwist.core.domain.model.MemberInfo
 import com.plottwist.core.domain.onboarding.OnboardingRepository
 import com.plottwist.core.network.model.onboarding.UpdateOnboardingInfoRequest
 import com.plottwist.core.network.service.OnboardingService
@@ -23,6 +25,20 @@ class OnboardingRepositoryImpl @Inject constructor(
             }
 
             return Result.failure(Exception("Fail to update onboarding info"))
+        } catch (e:Exception) {
+            return Result.failure(Exception(e))
+        }
+    }
+
+    override suspend fun getMemberInfo(): Result<MemberInfo> {
+        try {
+            val result = onboardingService.getMemberInfo()
+
+            if (result.success) {
+                return Result.success(result.data.toDomainModel())
+            }
+
+            return Result.failure(Exception("Fail to get member info"))
         } catch (e:Exception) {
             return Result.failure(Exception(e))
         }

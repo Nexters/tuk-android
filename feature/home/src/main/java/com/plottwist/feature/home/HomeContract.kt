@@ -4,6 +4,7 @@ import com.plottwist.core.domain.model.Gatherings
 
 data class HomeState(
     val loginState: LoginState = LoginState.Loading,
+    val userName: String = "",
     val gatherings: Gatherings = Gatherings(),
     val whenLabel: String = "",
     val whereLabel: String = "",
@@ -20,7 +21,7 @@ sealed class HomeAction {
     data object ClickRefreshWhen : HomeAction()
     data object ClickRefreshWhat : HomeAction()
     data class ClickGathering(val gatheringId: Long): HomeAction()
-    data object ClickPropose: HomeAction()
+    data class ClickPropose(val index : Int): HomeAction()
     data object ClickProposals: HomeAction()
     data object OnPermissionGranted: HomeAction()
 }
