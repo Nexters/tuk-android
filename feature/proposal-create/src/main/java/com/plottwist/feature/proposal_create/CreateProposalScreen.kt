@@ -6,8 +6,10 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,6 +46,7 @@ import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.component.TukOutlinedButton
 import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTopAppBar
@@ -66,6 +69,7 @@ fun CreateProposalScreen(
     backStackEntry: NavBackStackEntry,
     onBack : () -> Unit,
     navigateToSelectGatheringScreen: (Long?) -> Unit,
+    navigateToCompleteProposeScreen: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
@@ -82,6 +86,10 @@ fun CreateProposalScreen(
 
             is CreateProposalSideEffect.NavigateToSelectGathering -> {
                 navigateToSelectGatheringScreen(sideEffect.selectedGatheringId)
+            }
+
+            is CreateProposalSideEffect.NavigateToCompletePropose -> {
+                navigateToCompleteProposeScreen(sideEffect.proposalId)
             }
         }
     }
@@ -114,6 +122,9 @@ fun CreateProposalScreen(
         },
         onCloseSelectedGatheringClick = {
             viewModel.handleAction(CreateProposalAction.ClickCloseSelectedGathering)
+        },
+        onProposeClick = {
+            viewModel.handleAction(CreateProposalAction.ClickPropose)
         }
     )
 }
@@ -130,6 +141,7 @@ private fun CreateProposalScreen(
     onBackClicked: () -> Unit,
     onSelectGatheringClick: () -> Unit,
     onCloseSelectedGatheringClick: () -> Unit,
+    onProposeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var postCardAnimated by remember { mutableStateOf(false) }
@@ -219,16 +231,24 @@ private fun CreateProposalScreen(
                         color = Gray100
                     )
                 }
-
-                TukSolidButton(
+                Row(
                     modifier = Modifier.fillMaxWidth()
                         .padding(horizontal = 20.dp, vertical = 16.dp),
-                    text = stringResource(R.string.create_proposal_propose),
-                    buttonType = if(isGatheringSelected) TukSolidButtonType.ACTIVE else TukSolidButtonType.DISABLED,
-                    onClick = {
-                        // TODO
-                    }
-                )
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    TukOutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(R.string.common_previous),
+                        onClick = onBackClicked
+                    )
+
+                    TukSolidButton(
+                        modifier = Modifier.weight(1f),
+                        text = stringResource(R.string.create_proposal_propose),
+                        onClick = onProposeClick
+                    )
+                }
+
 
             }
         }
@@ -291,6 +311,7 @@ private fun CreateProposalScreenPreview() {
         isGatheringSelected = false,
         onBackClicked = {},
         onSelectGatheringClick = {},
-        onCloseSelectedGatheringClick = {}
+        onCloseSelectedGatheringClick = {},
+        onProposeClick = {}
     )
 }

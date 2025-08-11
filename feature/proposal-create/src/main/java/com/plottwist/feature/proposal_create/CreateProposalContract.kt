@@ -17,9 +17,11 @@ sealed class CreateProposalAction {
         val gatheringName: String
     ): CreateProposalAction()
     data object ClickCloseSelectedGathering: CreateProposalAction()
+    data object ClickPropose : CreateProposalAction()
 }
 
 sealed class CreateProposalSideEffect {
     data object NavigateBack: CreateProposalSideEffect()
     data class NavigateToSelectGathering(val selectedGatheringId: Long?): CreateProposalSideEffect()
+    data class NavigateToCompletePropose(val proposalId: Long): CreateProposalSideEffect()
 }

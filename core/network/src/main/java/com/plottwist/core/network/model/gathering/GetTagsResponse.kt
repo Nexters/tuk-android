@@ -36,3 +36,15 @@ data class PurposeData(
     val whereTags: List<String>,
     val whatTags: List<String>
 )
+
+@Serializable
+data class CreateProposeResponse(
+    val success: Boolean,
+    val data: ProposalResponse,
+    val meta: Meta?
+)
+
+@Serializable
+data class ProposalResponse(
+    val proposalId: Long
+)

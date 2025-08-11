@@ -3,6 +3,7 @@ package com.plottwist.feature.proposal_create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
+import com.plottwist.core.domain.gathering.usecase.CreateProposalUseCase
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.proposal_create.model.GatheringUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateProposalViewModel @Inject constructor(
+    private val createProposalUseCase : CreateProposalUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ContainerHost<CreateProposalState, CreateProposalSideEffect>, ViewModel() {
     override val container =
@@ -50,6 +52,10 @@ class CreateProposalViewModel @Inject constructor(
             CreateProposalAction.ClickCloseSelectedGathering -> {
                 handleCloseSelectedGatheringClick()
             }
+
+            CreateProposalAction.ClickPropose -> {
+                handleProposeClick()
+            }
         }
     }
 
@@ -78,6 +84,19 @@ class CreateProposalViewModel @Inject constructor(
     private fun handleCloseSelectedGatheringClick() = intent {
         reduce {
             state.copy(selectedGathering = null)
+        }
+    }
+
+    private fun handleProposeClick() = intent {
+        createProposalUseCase(
+            gatheringId = state.selectedGathering?.id,
+            whereTag = state.whereLabel,
+            whenTag = state.whenLabel,
+            whatTag = state.whatLabel
+        ).onSuccess {
+            postSideEffect(CreateProposalSideEffect.NavigateToCompletePropose(it.proposalId))
+        }.onFailure {
+
         }
     }
 }

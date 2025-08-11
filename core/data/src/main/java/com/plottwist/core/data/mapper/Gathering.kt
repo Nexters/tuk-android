@@ -4,7 +4,9 @@ import com.plottwist.core.domain.model.GatheringDetail
 import com.plottwist.core.domain.model.GatheringMember
 import com.plottwist.core.domain.model.GatheringOverviews
 import com.plottwist.core.domain.model.Gatherings
+import com.plottwist.core.domain.model.Proposal
 import com.plottwist.core.domain.model.Purposes
+import com.plottwist.core.network.model.gathering.CreateProposeResponse
 import com.plottwist.core.network.model.gathering.GatheringDetailData
 import com.plottwist.core.network.model.gathering.GatheringMemberData
 import com.plottwist.core.network.model.gathering.GatheringOverviewsData
@@ -52,5 +54,11 @@ fun GetPurposesResponse.toDomainModel() : Purposes {
         whatTags = this.data.whatTags,
         whereTags = this.data.whereTags,
         whenTags = this.data.whenTags
+    )
+}
+
+fun CreateProposeResponse.toDomainModel() : Proposal {
+    return Proposal(
+        proposalId = this.data.proposalId
     )
 }

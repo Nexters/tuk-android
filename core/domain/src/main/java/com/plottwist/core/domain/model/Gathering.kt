@@ -31,3 +31,7 @@ data class Purposes(
     val whereTags: List<String> = emptyList(),
     val whatTags: List<String> = emptyList()
 )
+
+data class Proposal(
+    val proposalId : Long
+)

@@ -136,6 +136,16 @@ fun TukNavHost(
             },
             navigateToSelectGatheringScreen = {
         //        navController.navigateToSelectGathering(it)
+            },
+            navigateToCompleteProposeScreen = {
+                navController.navigateToHome (
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
             }
         )
         onboardingNameNavGraph(
