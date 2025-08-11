@@ -11,4 +11,6 @@ class WebUrlConfigImpl @Inject constructor() : WebUrlConfig {
         get() = BuildConfig.TUK_PROPOSALS_URL
     override val inviteGatheringUrl: String
         get() = BuildConfig.TUK_INVITE_GATHERING_URL
+    override val completeProposalUrl: String
+        get() = BuildConfig.TUK_COMPLETE_PROPOSAL_URL
 }

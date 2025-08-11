@@ -69,4 +69,7 @@ sealed interface Route {
         val gatheringId: Long,
         val gatheringName: String
     ) : Route
+
+    @Serializable
+    data class CompleteProposal(val encodedUrl : String): Route
 }

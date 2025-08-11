@@ -5,15 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.plottwist.core.domain.gathering.usecase.CreateProposalUseCase
 import com.plottwist.core.ui.navigation.Route
+import com.plottwist.core.weburl.WebUrlConfig
 import com.plottwist.feature.proposal_create.model.GatheringUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateProposalViewModel @Inject constructor(
     private val createProposalUseCase : CreateProposalUseCase,
+    private val webUrlConfig: WebUrlConfig,
     private val savedStateHandle: SavedStateHandle
 ) : ContainerHost<CreateProposalState, CreateProposalSideEffect>, ViewModel() {
     override val container =
@@ -94,7 +97,9 @@ class CreateProposalViewModel @Inject constructor(
             whenTag = state.whenLabel,
             whatTag = state.whatLabel
         ).onSuccess {
-            postSideEffect(CreateProposalSideEffect.NavigateToCompletePropose(it.proposalId))
+            val url = webUrlConfig.completeProposalUrl.replace("{meetId}", it.proposalId.toString())
+            val encodedUrl = URLEncoder.encode(url,"UTF-8")
+            postSideEffect(CreateProposalSideEffect.NavigateToCompletePropose(encodedUrl))
         }.onFailure {
 
         }

@@ -29,7 +29,7 @@ fun NavController.navigateToCreateProposal(
 fun NavGraphBuilder.createProposalNavGraph(
     onBack: () -> Unit,
     navigateToSelectGatheringScreen: (Long?) -> Unit,
-    navigateToCompleteProposeScreen: (Long) -> Unit,
+    navigateToCompleteProposeScreen: (String) -> Unit,
 ) {
     composable<Route.CreateProposal> (
         enterTransition = { slideInVertically() },

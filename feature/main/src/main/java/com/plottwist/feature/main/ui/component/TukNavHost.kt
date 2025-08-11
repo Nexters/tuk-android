@@ -25,8 +25,10 @@ import com.plottwist.feature.mypage.navigation.notificationSettingNavGraph
 import com.plottwist.feature.mypage.navigation.policyWebViewNavGraph
 import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
+import com.plottwist.feature.proposal_create.navigation.completeProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.createGatheringProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
+import com.plottwist.feature.proposal_create.navigation.navigateToCompleteProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateGatheringProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToSelectGathering
@@ -138,12 +140,11 @@ fun TukNavHost(
         //        navController.navigateToSelectGathering(it)
             },
             navigateToCompleteProposeScreen = {
-                navController.navigateToHome (
+                navController.navigateToCompleteProposal(it,
                     navOptions = navOptions {
                         popUpTo(Route.Home) {
-                            inclusive = true
+                            inclusive = false
                         }
-                        launchSingleTop = true
                     }
                 )
             }
@@ -183,6 +184,18 @@ fun TukNavHost(
         createGatheringProposalNavGraph(
             onBack = {
                 navController.popBackStack()
+            }
+        )
+        completeProposalNavGraph(
+            navigateToHome = {
+                navController.navigateToHome (
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
             }
         )
     }

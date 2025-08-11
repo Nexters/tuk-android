@@ -3,24 +3,18 @@ package com.plottwist.feature.proposal_create
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,26 +28,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukOutlinedButton
 import com.plottwist.core.designsystem.component.TukSolidButton
-import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray100
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray200
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
@@ -69,7 +58,7 @@ fun CreateProposalScreen(
     backStackEntry: NavBackStackEntry,
     onBack : () -> Unit,
     navigateToSelectGatheringScreen: (Long?) -> Unit,
-    navigateToCompleteProposeScreen: (Long) -> Unit,
+    navigateToCompleteProposeScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
@@ -89,7 +78,7 @@ fun CreateProposalScreen(
             }
 
             is CreateProposalSideEffect.NavigateToCompletePropose -> {
-                navigateToCompleteProposeScreen(sideEffect.proposalId)
+                navigateToCompleteProposeScreen(sideEffect.encodedUrl)
             }
         }
     }
