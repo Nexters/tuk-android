@@ -1,29 +1,44 @@
 package com.plottwist.feature.proposal_create
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,14 +48,19 @@ import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray100
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray200
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
 import com.plottwist.feature.proposal_create.component.CreateProposalPostCard
 import com.plottwist.feature.proposal_create.model.SelectedGatheringParam
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun CreateProposalScreen(
     backStackEntry: NavBackStackEntry,
@@ -50,6 +70,8 @@ fun CreateProposalScreen(
     viewModel: CreateProposalViewModel = hiltViewModel()
 ) {
     val state by viewModel.collectAsState()
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
     val selectedGatheringParam = backStackEntry.savedStateHandle.get<SelectedGatheringParam>(KEY_SELECTED_GATHERING)
 
     viewModel.collectSideEffect { sideEffect ->
@@ -77,6 +99,8 @@ fun CreateProposalScreen(
 
     CreateProposalScreen(
         modifier = modifier,
+        screenWidth = screenWidth,
+        screenHeight = configuration.screenHeightDp,
         whereLabel = state.whereLabel,
         whenLabel = state.whenLabel,
         whatLabel = state.whatLabel,
@@ -96,6 +120,8 @@ fun CreateProposalScreen(
 
 @Composable
 private fun CreateProposalScreen(
+    screenWidth : Int,
+    screenHeight: Int,
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
@@ -106,8 +132,28 @@ private fun CreateProposalScreen(
     onCloseSelectedGatheringClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var postCardAnimated by remember { mutableStateOf(false) }
+    var postCardAnimated2 by remember { mutableStateOf(false) }
+    val animatedOffset = animateDpAsState(
+        targetValue = if(!postCardAnimated) 0.dp else ((60f * screenHeight) / 812f).dp,
+        animationSpec = tween(500)
+    )
+
+    val animatedOffset2 = animateDpAsState(
+        targetValue = if(!postCardAnimated2) 0.dp else ((180f * screenHeight) / 812f).dp,
+        animationSpec = tween(700)
+    )
+
+    val topPadding = (screenHeight * 55 / 812f).dp
+
+    LaunchedEffect(Unit) {
+        delay(1000)
+        postCardAnimated = true
+        delay(1500)
+        postCardAnimated2 = true
+    }
     Box(
-        modifier = modifier.fillMaxSize().background(color = Color(0xFFFAFAFA))
+        modifier = modifier.fillMaxSize().background(color = Gray000)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -124,9 +170,9 @@ private fun CreateProposalScreen(
             ) {
                 CreateProposalPostCard(
                     modifier = Modifier
-                        .padding(top = 73.dp)
-                        .padding(horizontal = 58.dp)
-                        .aspectRatio(260f/354f),
+                        .padding(top = (73f * screenHeight / 812f).dp)
+                        .padding(horizontal = (60 * screenWidth / 375).dp)
+                        .aspectRatio(260f/334f),
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
                     whatLabel = whatLabel,
@@ -135,25 +181,56 @@ private fun CreateProposalScreen(
                     onCloseSelectedGatheringClick = onCloseSelectedGatheringClick
                 )
 
+                CreateProposalPostCard(
+                    modifier = Modifier
+                        .padding(horizontal = (60 * screenWidth / 375).dp)
+                        .padding(top = (73f * screenHeight / 812f).dp, bottom = 10.dp)
+                        .aspectRatio(260f/334f)
+                        .drawWithContent {
+                            clipRect(top = topPadding.toPx() + animatedOffset.value.toPx() + animatedOffset2.value.toPx()) {
+                                this@drawWithContent.drawContent()
+                            }
+                        }
+                        .blur(10.dp, 10.dp, BlurredEdgeTreatment.Unbounded),
+                    whereLabel = whereLabel,
+                    whenLabel = whenLabel,
+                    whatLabel = whatLabel,
+                    selectedGatheringName = selectedGatheringName,
+                    onSelectGatheringClick = onSelectGatheringClick,
+                    onCloseSelectedGatheringClick = onCloseSelectedGatheringClick
+                )
+
+
                 StableImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 64.dp)
+                        .offset(y=  animatedOffset2.value + animatedOffset.value)
                         .aspectRatio(260f/364f),
                     drawableResId = R.drawable.image_post_cover,
                     contentScale = ContentScale.FillWidth
                 )
             }
 
-            TukSolidButton(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
-                text = stringResource(R.string.create_proposal_propose),
-                buttonType = if(isGatheringSelected) TukSolidButtonType.ACTIVE else TukSolidButtonType.DISABLED,
-                onClick = {
-                    // TODO
+            Column (
+                modifier = Modifier.fillMaxWidth().background(Gray000)
+            ){
+                AnimatedVisibility(postCardAnimated2) {
+                    HorizontalDivider(
+                        color = Gray100
+                    )
                 }
-            )
+
+                TukSolidButton(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 16.dp),
+                    text = stringResource(R.string.create_proposal_propose),
+                    buttonType = if(isGatheringSelected) TukSolidButtonType.ACTIVE else TukSolidButtonType.DISABLED,
+                    onClick = {
+                        // TODO
+                    }
+                )
+
+            }
         }
     }
 }
@@ -205,6 +282,8 @@ private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 3
 @Composable
 private fun CreateProposalScreenPreview() {
     CreateProposalScreen(
+        screenWidth = 375,
+        screenHeight = 812,
         whereLabel = "where",
         whenLabel = "when",
         whatLabel = "what",

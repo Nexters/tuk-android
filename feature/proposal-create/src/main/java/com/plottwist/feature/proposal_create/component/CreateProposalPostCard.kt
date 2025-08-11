@@ -34,6 +34,7 @@ import com.plottwist.core.ui.extension.dashedBorder
 
 @Composable
 fun CreateProposalPostCard(
+
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
