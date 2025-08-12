@@ -1,5 +1,7 @@
 package com.plottwist.core.data.gathering.di
 
+import com.plottwist.core.data.gathering.JoinGatheringDataSource
+import com.plottwist.core.data.gathering.JoinGatheringDataSourceImpl
 import com.plottwist.core.data.gathering.datasource.CreateGatheringRemoteDataSource
 import com.plottwist.core.data.gathering.datasource.CreateGatheringRemoteDataSourceImpl
 import com.plottwist.core.data.gathering.datasource.TagRemoteDataSource
@@ -22,4 +24,10 @@ abstract class GatheringDataSourceModule {
     abstract fun bindTagDataSource(
         impl: TagRemoteDataSourceImpl
     ): TagRemoteDataSource
+
+    @Binds
+    abstract fun bindJoinGatheringDataSource(
+        impl: JoinGatheringDataSourceImpl
+    ): JoinGatheringDataSource
+
 }

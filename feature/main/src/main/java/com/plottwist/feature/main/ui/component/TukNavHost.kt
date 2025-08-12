@@ -37,6 +37,7 @@ import com.plottwist.feature.webview.navigation.navigateToWebView
 import com.plottwist.feature.webview.navigation.webViewNavGraph
 import com.plottwist.invite_gathering.navigation.inviteGatheringNavGraph
 import com.plottwist.invite_gathering.navigation.navigateToInviteGathering
+import com.plottwist.join_gathering.navigation.createJoinGatheringNavGraph
 
 @Composable
 fun TukNavHost(
@@ -182,6 +183,11 @@ fun TukNavHost(
             }
         )
         createGatheringProposalNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
+        createJoinGatheringNavGraph(
             onBack = {
                 navController.popBackStack()
             }

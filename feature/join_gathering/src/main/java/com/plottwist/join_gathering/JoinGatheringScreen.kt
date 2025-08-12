@@ -36,7 +36,6 @@ import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.ui.component.StableImage
 
 @Composable
-@Preview(showBackground = true)
 fun JoinGatheringScreen(
     onCloseClicked: () -> Unit = {},
     viewModel: JoinGatheringViewModel = hiltViewModel()

@@ -1,7 +1,9 @@
 package com.plottwist.core.data.gathering.di
 
 import com.plottwist.core.data.gathering.repository.CreateGatheringRepositoryImpl
+import com.plottwist.core.data.gathering.repository.JoinGatheringRepositoryImpl
 import com.plottwist.core.data.gathering.repository.TagRepositoryImpl
+import com.plottwist.core.domain.gathering.JoinGatheringRepository
 import com.plottwist.core.domain.gathering.repository.CreateGatheringRepository
 import com.plottwist.core.domain.gathering.repository.TagRepository
 import dagger.Binds
@@ -18,4 +20,7 @@ abstract class GatheringRepositoryModule {
 
     @Binds
     abstract fun bindCreateGatheringRepository(impl: CreateGatheringRepositoryImpl): CreateGatheringRepository
+
+    @Binds
+    abstract fun bindJoinGatheringRepository(impl: JoinGatheringRepositoryImpl): JoinGatheringRepository
 }
