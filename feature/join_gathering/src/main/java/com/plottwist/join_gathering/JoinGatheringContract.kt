@@ -1,7 +1,8 @@
 package com.plottwist.join_gathering
 
 data class JoinGatheringState (
-    val gatheringId : Long = 0
+    val gatheringId : Long = 0,
+    val gatheringName: String = ""
 )
 
 sealed class JoinGatheringAction  {

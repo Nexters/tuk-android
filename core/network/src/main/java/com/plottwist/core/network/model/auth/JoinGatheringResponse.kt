@@ -19,3 +19,16 @@ data class ErrorInfo(
     val errorType: String?,
     val errorMessage: String?
 )
+
+@Serializable
+data class GetGatheringNameResponse(
+    val success: Boolean,
+    val data: GetGathering?,
+    val meta: ErrorInfo?
+)
+
+@Serializable
+data class GetGathering(
+    val gatheringId: Long,
+    val gatheringName: String
+)

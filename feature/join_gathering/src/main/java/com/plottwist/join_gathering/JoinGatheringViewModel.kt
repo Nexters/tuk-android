@@ -3,6 +3,7 @@ package com.plottwist.join_gathering
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
+import com.plottwist.core.domain.gathering.usecase.GetGatheringNameUseCase
 import com.plottwist.core.domain.gathering.usecase.JoinGatheringUseCase
 import com.plottwist.core.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinGatheringViewModel @Inject constructor(
     private val joinGatheringUseCase: JoinGatheringUseCase,
+    private val getGatheringNameUseCase : GetGatheringNameUseCase,
     savedStateHandle: SavedStateHandle
 ) :ContainerHost<JoinGatheringState,JoinGatheringSideEffect>, ViewModel(){
 
@@ -20,7 +22,27 @@ class JoinGatheringViewModel @Inject constructor(
         savedStateHandle.toRoute<Route.JoinGathering>().gatheringId?.let {
             JoinGatheringState(it)
         } ?: JoinGatheringState()
-    )
+    ) {
+        getGatheringName()
+    }
+
+    private fun getGatheringName() = intent {
+        getGatheringNameUseCase(state.gatheringId)
+            .collect { result ->
+                result.fold(
+                    onSuccess = {
+                        reduce {
+                            state.copy(
+                                gatheringName = it
+                            )
+                        }
+                    },
+                    onFailure = {
+
+                    }
+                )
+            }
+    }
 
     fun handleAction(action: JoinGatheringAction) = intent {
         when (action) {
