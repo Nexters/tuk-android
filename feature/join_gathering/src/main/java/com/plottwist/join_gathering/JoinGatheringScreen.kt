@@ -16,10 +16,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,21 +44,32 @@ import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray700
 import com.plottwist.core.designsystem.foundation.TukPrimitivesColor
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
+import com.plottwist.core.ui.component.TukScaffold
+import kotlinx.coroutines.launch
 
 @Composable
 fun JoinGatheringScreen(
     onCloseClicked: () -> Unit = {},
-    onNavigateToGatheringDetail : (Long) -> Unit,
+    onNavigateToGatheringDetail: (Long) -> Unit,
     viewModel: JoinGatheringViewModel = hiltViewModel()
 ) {
-
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
-            when(sideEffect) {
-                is JoinGatheringSideEffect.NavigateToGatheringDetail ->{
+            when (sideEffect) {
+                is JoinGatheringSideEffect.NavigateToGatheringDetail -> {
                     onNavigateToGatheringDetail(sideEffect.gatheringId)
+                }
+
+                is JoinGatheringSideEffect.ShowSnackbar -> {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = sideEffect.message, duration = SnackbarDuration.Short
+                        )
+                    }
                 }
             }
 
@@ -71,34 +87,37 @@ fun JoinGatheringScreen(
             contentScale = ContentScale.FillWidth
         )
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        TukScaffold (
+            containerColor = Color.Transparent,
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackbarHostState
+                )
+            },
+            topBar = {
+                JoinGatheringAppBar(
+                    onCloseClicked = onCloseClicked
+                )
+            },
+            title = "모임에\n참여하시겠어요?",
+            bottomBar = {
+                JoinGatheringButton(
+                    onClick = {
+                        viewModel.handleAction(JoinGatheringAction.ClickJoin)
+                    }
+                )
+            }
         ) {
-            JoinGatheringAppBar(
-                onCloseClicked = onCloseClicked
-            )
-
-            StableImage(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                drawableResId = R.drawable.image_join_gathering_title
-            )
-            JoinGatheringContent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 60.dp)
-                    .weight(1f),
-                gatheringName = state.gatheringName
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-            JoinGatheringButton(
-                onClick = {
-                    viewModel.handleAction(JoinGatheringAction.ClickJoin)
-                }
-            )
-
+            item {
+                JoinGatheringContent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 60.dp),
+                    gatheringName = state.gatheringName
+                )
+            }
         }
+
     }
 }
 

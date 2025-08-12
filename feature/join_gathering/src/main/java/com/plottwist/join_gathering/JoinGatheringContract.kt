@@ -11,4 +11,5 @@ sealed class JoinGatheringAction  {
 
 sealed class JoinGatheringSideEffect {
     data class NavigateToGatheringDetail(val gatheringId: Long) : JoinGatheringSideEffect()
+    data class ShowSnackbar(val message: String) : JoinGatheringSideEffect()
 }

@@ -93,10 +93,20 @@ fun TukNavHost(
         )
         myPageNavGraph(
             onBack = { navController.popBackStack() },
-            navigateToHome = {navController.navigateToHome()},
+            navigateToHome = { navController.navigateToHome() },
             navigateToNotificationSetting = { navController.navigateToNotificationSetting() },
-            navigateToTerms = { navController.navigateToPolicyWebView("서비스 이용약관","https://www.tuk.kr/service-policy")},
-            navigateToPrivacyPolicy = { navController.navigateToPolicyWebView("개인정보 처리방침","https://www.tuk.kr/privacy-policy")}
+            navigateToTerms = {
+                navController.navigateToPolicyWebView(
+                    "서비스 이용약관",
+                    "https://www.tuk.kr/service-policy"
+                )
+            },
+            navigateToPrivacyPolicy = {
+                navController.navigateToPolicyWebView(
+                    "개인정보 처리방침",
+                    "https://www.tuk.kr/privacy-policy"
+                )
+            }
         )
         notificationSettingNavGraph(
             onBack = { navController.popBackStack() }
@@ -106,7 +116,7 @@ fun TukNavHost(
         )
         createGatheringNavGraph(
             navigateToHomeScreen = {
-                navController.navigateToHome (
+                navController.navigateToHome(
                     navOptions = navOptions {
                         popUpTo(Route.Home) {
                             inclusive = true
@@ -192,7 +202,14 @@ fun TukNavHost(
                 navController.popBackStack()
             },
             onNavigateToGatheringDetail = {
-                navController.navigateToGatheringDetail(it)
+                navController.navigateToGatheringDetail(
+                    it,
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = false
+                        }
+                    }
+                )
             }
         )
         completeProposalNavGraph(
