@@ -347,7 +347,7 @@ fun HomeTitle(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = stringResource(R.string.home_subtitle, name),
+            text = if(name.isNotEmpty()) stringResource(R.string.home_subtitle, name) else "",
             style = TukSerifTypography.title22M
         )
 
