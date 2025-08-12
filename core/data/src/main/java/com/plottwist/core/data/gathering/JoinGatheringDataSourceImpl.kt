@@ -2,6 +2,7 @@ package com.plottwist.core.data.gathering
 
 import com.plottwist.core.network.model.auth.JoinGatheringResponse
 import com.plottwist.core.network.service.AuthApiService
+import com.plottwist.core.network.service.TukApiService
 import javax.inject.Inject
 
 
@@ -10,7 +11,7 @@ interface JoinGatheringDataSource{
 }
 
 class JoinGatheringDataSourceImpl @Inject constructor(
-    private val api:AuthApiService
+    private val api:TukApiService
 ): JoinGatheringDataSource{
 
     override suspend fun joinGathering(gatheringId: Long): JoinGatheringResponse {

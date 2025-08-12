@@ -1,6 +1,5 @@
 package com.plottwist.join_gathering
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
@@ -17,26 +16,23 @@ class JoinGatheringViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) :ContainerHost<JoinGatheringState,JoinGatheringSideEffect>, ViewModel(){
 
-    override val container = container<JoinGatheringState,JoinGatheringSideEffect>(JoinGatheringState.Idle) {
-        savedStateHandle.toRoute<Route.JoinGathering>().let {
-            Log.d("JoinGatheringViewModel", "gatheringId: ${it.gatheringId}")
-        }
-    }
+    override val container = container<JoinGatheringState,JoinGatheringSideEffect>(
+        savedStateHandle.toRoute<Route.JoinGathering>().gatheringId?.let {
+            JoinGatheringState(it)
+        } ?: JoinGatheringState()
+    )
 
-    fun dispatch(action: JoinGatheringAction) = intent {
+    fun handleAction(action: JoinGatheringAction) = intent {
         when (action) {
             is JoinGatheringAction.ClickJoin -> {
-                reduce { JoinGatheringState.Loading }
 
-                joinGatheringUseCase(action.gatheringId)
+                joinGatheringUseCase(state.gatheringId)
                     .collect { result ->
                         result.fold(
                             onSuccess = {
-                                postSideEffect(JoinGatheringSideEffect.NavigateToGatheringDetail(it))
-                                reduce { JoinGatheringState.Success }
+                                postSideEffect(JoinGatheringSideEffect.NavigateToGatheringDetail(state.gatheringId))
                             },
                             onFailure = {
-                                reduce { JoinGatheringState.Error(it.message ?: "에러") }
 
                             }
                         )

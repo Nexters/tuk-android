@@ -15,11 +15,6 @@ interface AuthApiService {
         @Body googleLoginRequest: GoogleLoginRequest
     ): LoginResponse
 
-    @POST("/api/v1/gatherings/{gatheringId}/members")
-    suspend fun joinGathering(
-        @Path("gatheringId") gatheringId: Long
-    ): JoinGatheringResponse
-
     @DELETE("/api/v1/members")
     suspend fun deleteMember(): LogoutResponse
 }

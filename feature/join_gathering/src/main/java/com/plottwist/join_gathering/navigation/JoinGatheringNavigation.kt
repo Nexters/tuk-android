@@ -23,6 +23,7 @@ fun NavController.navigateToJoinGathering(
 
 fun NavGraphBuilder.createJoinGatheringNavGraph(
     onBack: () -> Unit,
+    onNavigateToGatheringDetail : (Long) -> Unit,
 ) {
     composable<Route.JoinGathering> (
         deepLinks = listOf(
@@ -39,7 +40,8 @@ fun NavGraphBuilder.createJoinGatheringNavGraph(
         popExitTransition = { popSlideOutVertically() }
     ) {
         JoinGatheringScreen(
-            onCloseClicked = onBack
+            onCloseClicked = onBack,
+            onNavigateToGatheringDetail = onNavigateToGatheringDetail
         )
     }
 }

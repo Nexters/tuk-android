@@ -190,6 +190,9 @@ fun TukNavHost(
         createJoinGatheringNavGraph(
             onBack = {
                 navController.popBackStack()
+            },
+            onNavigateToGatheringDetail = {
+                navController.navigateToGatheringDetail(it)
             }
         )
         completeProposalNavGraph(

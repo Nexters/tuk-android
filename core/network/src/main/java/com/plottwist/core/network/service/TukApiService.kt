@@ -1,5 +1,6 @@
 package com.plottwist.core.network.service
 
+import com.plottwist.core.network.model.auth.JoinGatheringResponse
 import com.plottwist.core.network.model.gathering.CreateGatheringRequest
 import com.plottwist.core.network.model.gathering.CreateGatheringResponse
 import com.plottwist.core.network.model.gathering.CreateProposeRequest
@@ -17,6 +18,11 @@ import retrofit2.http.Path
 interface TukApiService {
     @GET("/api/v1/gatherings")
     suspend fun getGatherings(): GatheringsResponse
+
+    @POST("/api/v1/gatherings/{gatheringId}/members")
+    suspend fun joinGathering(
+        @Path("gatheringId") gatheringId: Long
+    ): JoinGatheringResponse
 
     @POST("/api/v1/gatherings")
     suspend fun createGathering(

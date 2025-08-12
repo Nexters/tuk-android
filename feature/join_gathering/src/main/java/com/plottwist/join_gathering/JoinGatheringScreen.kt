@@ -38,6 +38,7 @@ import com.plottwist.core.ui.component.StableImage
 @Composable
 fun JoinGatheringScreen(
     onCloseClicked: () -> Unit = {},
+    onNavigateToGatheringDetail : (Long) -> Unit,
     viewModel: JoinGatheringViewModel = hiltViewModel()
 ) {
 
@@ -47,7 +48,7 @@ fun JoinGatheringScreen(
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when(sideEffect) {
                 is JoinGatheringSideEffect.NavigateToGatheringDetail ->{
-
+                    onNavigateToGatheringDetail(sideEffect.gatheringId)
                 }
             }
 
@@ -86,7 +87,9 @@ fun JoinGatheringScreen(
 
             Spacer(modifier = Modifier.weight(1f))
             JoinGatheringButton(
-                onClick = {}
+                onClick = {
+                    viewModel.handleAction(JoinGatheringAction.ClickJoin)
+                }
             )
 
         }
