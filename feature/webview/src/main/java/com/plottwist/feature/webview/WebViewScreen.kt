@@ -26,9 +26,15 @@ fun WebViewScreen(
     val state by viewModel.collectAsState()
     var webView : WebView? by remember { mutableStateOf(null) }
 
-    viewModel.collectSideEffect {
-        when (it) {
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
             WebViewSideEffect.NavigateBack -> onBack()
+            is WebViewSideEffect.UpdateSessionStorage -> {
+                sideEffect.webView.evaluateJavascript(
+                    "window.sessionStorage.setItem('accessToken', '${sideEffect.accessToken}')",
+                    null
+                )
+            }
         }
     }
 
@@ -37,6 +43,9 @@ fun WebViewScreen(
         onBackClick = { viewModel.handleAction(WebViewAction.ClickBack) },
         onWebViewCreated = {
             webView = it
+        },
+        onPageFinished = {
+            viewModel.handleAction(WebViewAction.OnPageFinished(it))
         },
         url = state.url
     )
@@ -47,12 +56,14 @@ private fun WebViewScreen(
     onBackClick: () -> Unit,
     url: String,
     onWebViewCreated : (WebView) -> Unit,
+    onPageFinished: (webView: WebView) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TukWebView(
         modifier = modifier.statusBarsPadding(),
         url = url,
         onWebViewCreated = onWebViewCreated,
+        onPageFinished = onPageFinished,
         addBridge = {
             it.addJavascriptInterface(
                 DefaultBridge(
@@ -92,5 +103,6 @@ private fun WebViewScreenPreview() {
         onBackClick = {},
         url = "https://www.google.com",
         onWebViewCreated = {},
+        onPageFinished = {}
     )
 }
