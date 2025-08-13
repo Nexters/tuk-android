@@ -4,7 +4,10 @@ import com.plottwist.core.data.mapper.toDomainModel
 import com.plottwist.core.domain.gathering.repository.GatheringRepository
 import com.plottwist.core.domain.model.GatheringDetail
 import com.plottwist.core.domain.model.Gatherings
+import com.plottwist.core.domain.model.Proposal
 import com.plottwist.core.domain.model.Purposes
+import com.plottwist.core.network.model.gathering.CreateProposeData
+import com.plottwist.core.network.model.gathering.CreateProposeRequest
 import com.plottwist.core.network.service.TukApiService
 import javax.inject.Inject
 
@@ -32,6 +35,34 @@ class GatheringRepositoryImpl @Inject constructor(
             Result.success(tukApiService.getPurposes().toDomainModel())
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    override suspend fun createPropose(
+        gatheringId: Long?,
+        whereTag: String,
+        whenTag: String,
+        whatTag: String
+    ): Result<Proposal> {
+        try {
+            val result = tukApiService.createPropose(
+                gatheringId = gatheringId,
+                CreateProposeRequest(
+                    purpose = CreateProposeData(
+                        whereTag = whereTag,
+                        whenTag = whenTag,
+                        whatTag = whatTag
+                    )
+                )
+            )
+
+            return if(result.success) {
+                Result.success(result.toDomainModel())
+            }else {
+                Result.failure(Exception(result.meta?.errorMessage))
+            }
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
     }
 }

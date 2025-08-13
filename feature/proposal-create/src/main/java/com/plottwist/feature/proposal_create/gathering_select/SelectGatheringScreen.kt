@@ -26,7 +26,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun SelectGatheringScreen(
     onBack: () -> Unit,
-    backToCreateProposal: (SelectedGatheringParam) -> Unit,
+    navigateToCreateProposalWithGathering: (SelectedGatheringParam) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SelectGatheringViewModel = hiltViewModel(),
 ) {
@@ -38,7 +38,7 @@ fun SelectGatheringScreen(
                 onBack()
             }
             is SelectGatheringSideEffect.NavigateToCreateProposal -> {
-                backToCreateProposal(sideEffect.selectedGathering)
+                navigateToCreateProposalWithGathering(sideEffect.selectedGathering)
             }
         }
     }

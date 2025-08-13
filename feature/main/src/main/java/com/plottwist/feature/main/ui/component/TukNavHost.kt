@@ -25,8 +25,10 @@ import com.plottwist.feature.mypage.navigation.notificationSettingNavGraph
 import com.plottwist.feature.mypage.navigation.policyWebViewNavGraph
 import com.plottwist.feature.onboarding.navigation.navigateToOnboardingName
 import com.plottwist.feature.onboarding.navigation.onboardingNameNavGraph
+import com.plottwist.feature.proposal_create.navigation.completeProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.createGatheringProposalNavGraph
 import com.plottwist.feature.proposal_create.navigation.createProposalNavGraph
+import com.plottwist.feature.proposal_create.navigation.navigateToCompleteProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateGatheringProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToSelectGathering
@@ -63,11 +65,21 @@ fun TukNavHost(
                 navController.navigateToCreateProposal(
                     whereLabel = whereLabel,
                     whenLabel = whenLabel,
-                    whatLabel = whatLabel
+                    whatLabel = whatLabel,
+                    gatheringId = null,
+                    gatheringName = null
                 )
             },
             navigateToWebView = { url ->
                 navController.navigateToWebView(url)
+            },
+            navigateToSelectGathering = { whereLabel, whenLabel, whatLabel ->
+                navController.navigateToSelectGathering(
+                    whereLabel = whereLabel,
+                    whenLabel = whenLabel,
+                    whatLabel = whatLabel,
+                    gatheringId = null
+                )
             }
         )
         loginNavGraph(
@@ -125,7 +137,16 @@ fun TukNavHost(
                 navController.popBackStack()
             },
             navigateToSelectGatheringScreen = {
-                navController.navigateToSelectGathering(it)
+        //        navController.navigateToSelectGathering(it)
+            },
+            navigateToCompleteProposeScreen = {
+                navController.navigateToCompleteProposal(it,
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = false
+                        }
+                    }
+                )
             }
         )
         onboardingNameNavGraph(
@@ -145,11 +166,14 @@ fun TukNavHost(
             onBack = {
                 navController.popBackStack()
             },
-            backToCreateProposal = {
-                navController.previousBackStackEntry
-                    ?.savedStateHandle
-                    ?.set(KEY_SELECTED_GATHERING, it)
-                navController.popBackStack()
+            navigateToCreateProposalWithGathering = {
+                navController.navigateToCreateProposal(
+                    gatheringId = it.id,
+                    gatheringName = it.name,
+                    whenLabel = it.whenLabel,
+                    whereLabel = it.whereLabel,
+                    whatLabel = it.whatLabel
+                )
             }
         )
         inviteGatheringNavGraph(
@@ -160,6 +184,18 @@ fun TukNavHost(
         createGatheringProposalNavGraph(
             onBack = {
                 navController.popBackStack()
+            }
+        )
+        completeProposalNavGraph(
+            navigateToHome = {
+                navController.navigateToHome (
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
             }
         )
     }

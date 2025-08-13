@@ -43,6 +43,11 @@ sealed class HomeSideEffect {
     ) : HomeSideEffect()
     data object ShowNoGatheringsPopup: HomeSideEffect()
     data object RequestNotificationPermission: HomeSideEffect()
+    data class NavigateToSelectGatheringScreen(
+        val whereLabel: String,
+        val whenLabel: String,
+        val whatLabel: String
+    ) : HomeSideEffect()
 }
 
 enum class LoginState {

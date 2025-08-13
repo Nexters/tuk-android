@@ -186,14 +186,13 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 18.dp + postCardPadding)
-                .padding(horizontal = 58.dp)
+                .padding(horizontal = 62.dp)
                 .aspectRatio(260f/334f)
         )
 
         StableImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp)
                 .padding(top = 62.dp)
                 .aspectRatio(260f/364f),
             drawableResId = R.drawable.image_post_cover,

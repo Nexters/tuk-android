@@ -13,20 +13,23 @@ import com.plottwist.feature.proposal_create.CreateProposalScreen
 
 
 fun NavController.navigateToCreateProposal(
+    gatheringId: Long?,
+    gatheringName: String?,
     whereLabel: String,
     whenLabel: String,
     whatLabel: String,
     navOptions: NavOptions? = null
 ) {
     this.navigate(
-        route = Route.CreateProposal(whereLabel, whenLabel, whatLabel),
+        route = Route.CreateProposal(gatheringId, gatheringName,whereLabel, whenLabel, whatLabel),
         navOptions = navOptions
     )
 }
 
 fun NavGraphBuilder.createProposalNavGraph(
     onBack: () -> Unit,
-    navigateToSelectGatheringScreen: (Long?) -> Unit
+    navigateToSelectGatheringScreen: (Long?) -> Unit,
+    navigateToCompleteProposeScreen: (String) -> Unit,
 ) {
     composable<Route.CreateProposal> (
         enterTransition = { slideInVertically() },
@@ -37,6 +40,7 @@ fun NavGraphBuilder.createProposalNavGraph(
         CreateProposalScreen(
             onBack = onBack,
             navigateToSelectGatheringScreen = navigateToSelectGatheringScreen,
+            navigateToCompleteProposeScreen = navigateToCompleteProposeScreen,
             backStackEntry = backStackEntry,
         )
     }
