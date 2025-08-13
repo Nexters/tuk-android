@@ -10,9 +10,12 @@ import com.plottwist.core.network.model.gathering.GatheringDetailResponse
 import com.plottwist.core.network.model.gathering.GatheringsResponse
 import com.plottwist.core.network.model.gathering.GetPurposesResponse
 import com.plottwist.core.network.model.gathering.GetTagsResponse
+import com.plottwist.core.network.model.gathering.UpdateGatheringRequest
+import com.plottwist.core.network.model.gathering.UpdateGatheringResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -46,10 +49,15 @@ interface TukApiService {
         @Path("gatheringId") gatheringId: Long
     ): GetGatheringNameResponse
 
-
     @POST("/api/v1/gatherings/{gatheringId}/proposals")
     suspend fun createPropose(
         @Path("gatheringId") gatheringId: Long?,
         @Body createProposeRequest : CreateProposeRequest
     ): CreateProposeResponse
+
+    @PATCH("/api/v1/gatherings/{gatheringId}")
+    suspend fun updateGathering(
+        @Path("gatheringId") gatheringId: Long?,
+        @Body updateGatheringRequest : UpdateGatheringRequest
+    ): UpdateGatheringResponse
 }

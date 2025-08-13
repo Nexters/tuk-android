@@ -8,6 +8,7 @@ import com.plottwist.core.domain.model.Proposal
 import com.plottwist.core.domain.model.Purposes
 import com.plottwist.core.network.model.gathering.CreateProposeData
 import com.plottwist.core.network.model.gathering.CreateProposeRequest
+import com.plottwist.core.network.model.gathering.UpdateGatheringRequest
 import com.plottwist.core.network.service.TukApiService
 import javax.inject.Inject
 
@@ -58,6 +59,28 @@ class GatheringRepositoryImpl @Inject constructor(
 
             return if(result.success) {
                 Result.success(result.toDomainModel())
+            }else {
+                Result.failure(Exception(result.meta?.errorMessage))
+            }
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    override suspend fun updateGathering(
+        gatheringId: Long,
+        intervalDays: Int
+    ) : Result<Unit> {
+        try {
+            val result = tukApiService.updateGathering(
+                gatheringId = gatheringId,
+                updateGatheringRequest = UpdateGatheringRequest(
+                    gatheringIntervalDays = intervalDays
+                )
+            )
+
+            return if(result.success) {
+                Result.success(Unit)
             }else {
                 Result.failure(Exception(result.meta?.errorMessage))
             }
