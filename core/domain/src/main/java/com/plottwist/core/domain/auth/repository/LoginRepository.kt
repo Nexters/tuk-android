@@ -6,4 +6,5 @@ interface LoginRepository {
     suspend fun googleLogin(accountId: String): Result<Boolean>
     fun checkLoginStatus(): Flow<Boolean>
     fun logout(): Flow<Unit>
+    fun getAccessToken() : Flow<String?>
 }

@@ -68,4 +68,8 @@ class LoginRepositoryImpl @Inject constructor(
     override fun logout(): Flow<Unit> {
         return authDataSource.clear()
     }
+
+    override fun getAccessToken(): Flow<String?> {
+        return authDataSource.getAccessToken()
+    }
 }
