@@ -3,16 +3,16 @@ package com.plottwist.feature.main.ui.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.plottwist.create_gathering.navigation.createGatheringNavGraph
 import com.plottwist.create_gathering.navigation.navigateToCreateGathering
-import com.plottwist.core.ui.navigation.NavigationConstants.KEY_SELECTED_GATHERING
 import com.plottwist.core.ui.navigation.Route
+import com.plottwist.feature.gathering_detail.navigation.gatheringDetailAlarmSettingNavGraph
 import com.plottwist.feature.gathering_detail.navigation.gatheringDetailNavGraph
 import com.plottwist.feature.gathering_detail.navigation.navigateToGatheringDetail
+import com.plottwist.feature.gathering_detail.navigation.navigateToGatheringDetailAlarmSetting
 import com.plottwist.feature.home.navigation.homeNavGraph
 import com.plottwist.feature.home.navigation.navigateToHome
 import com.plottwist.feature.login.navigation.loginNavGraph
@@ -141,6 +141,9 @@ fun TukNavHost(
             },
             navigateToCreateGatheringProposal = { id, name ->
                 navController.navigateToCreateGatheringProposal(id, name)
+            },
+            navigateToGatheringDetailAlarmSetting = { id, days ->
+                navController.navigateToGatheringDetailAlarmSetting(id, days)
             }
         )
         createProposalNavGraph(
@@ -148,10 +151,11 @@ fun TukNavHost(
                 navController.popBackStack()
             },
             navigateToSelectGatheringScreen = {
-        //        navController.navigateToSelectGathering(it)
+                //        navController.navigateToSelectGathering(it)
             },
             navigateToCompleteProposeScreen = {
-                navController.navigateToCompleteProposal(it,
+                navController.navigateToCompleteProposal(
+                    it,
                     navOptions = navOptions {
                         popUpTo(Route.Home) {
                             inclusive = false
@@ -214,12 +218,27 @@ fun TukNavHost(
         )
         completeProposalNavGraph(
             navigateToHome = {
-                navController.navigateToHome (
+                navController.navigateToHome(
                     navOptions = navOptions {
                         popUpTo(Route.Home) {
                             inclusive = true
                         }
                         launchSingleTop = true
+                    }
+                )
+            }
+        )
+        gatheringDetailAlarmSettingNavGraph(
+            onBack = {
+                navController.popBackStack()
+            },
+            onNavigateGatheringDetail = { id ->
+                navController.navigateToGatheringDetail(
+                    gatheringId = id,
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = false
+                        }
                     }
                 )
             }

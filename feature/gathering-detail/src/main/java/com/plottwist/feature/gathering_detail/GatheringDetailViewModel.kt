@@ -46,6 +46,10 @@ class GatheringDetailViewModel @Inject constructor(
             GatheringDetailAction.ClickProposal -> {
                 handleCreateGatheringProposalClick()
             }
+
+            GatheringDetailAction.ClickAlarmSetting -> {
+                handleAlarmSettingClick()
+            }
         }
     }
 
@@ -86,6 +90,15 @@ class GatheringDetailViewModel @Inject constructor(
             GatheringDetailSideEffect.NavigateToCreateGatheringProposal(
                 gatheringId = state.gatheringDetail.gatheringId,
                 gatheringName = state.gatheringDetail.gatheringName
+            )
+        )
+    }
+
+    private fun handleAlarmSettingClick() = intent {
+        postSideEffect(
+            GatheringDetailSideEffect.NavigateToGatheringDetailAlarmSetting(
+                gatheringId = state.gatheringDetail.gatheringId,
+                selectedIntervalDays = state.gatheringDetail.gatheringIntervalDays
             )
         )
     }
