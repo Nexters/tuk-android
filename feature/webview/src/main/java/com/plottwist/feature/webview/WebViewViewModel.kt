@@ -31,6 +31,10 @@ class WebViewViewModel @Inject constructor(
             is WebViewAction.OnPageFinished -> {
                 handlePageFinished(action.webView)
             }
+
+            is WebViewAction.OnRequestTokenRefresh -> {
+                // TODO 토큰 재발급 후 액세스 토큰 웹뷰에 보내기 로직
+            }
         }
     }
 

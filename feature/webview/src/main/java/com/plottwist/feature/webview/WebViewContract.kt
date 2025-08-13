@@ -9,6 +9,7 @@ data class WebViewState(
 sealed class WebViewAction {
     data object ClickBack : WebViewAction()
     data class OnPageFinished(val webView: WebView) : WebViewAction()
+    data class OnRequestTokenRefresh(val webView: WebView) : WebViewAction()
 }
 
 sealed class WebViewSideEffect {

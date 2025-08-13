@@ -47,6 +47,9 @@ fun WebViewScreen(
         onPageFinished = {
             viewModel.handleAction(WebViewAction.OnPageFinished(it))
         },
+        onRequestTokenRefresh = {
+            webView?.reload()
+        },
         url = state.url
     )
 }
@@ -57,6 +60,7 @@ private fun WebViewScreen(
     url: String,
     onWebViewCreated : (WebView) -> Unit,
     onPageFinished: (webView: WebView) -> Unit,
+    onRequestTokenRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TukWebView(
@@ -67,7 +71,8 @@ private fun WebViewScreen(
         addBridge = {
             it.addJavascriptInterface(
                 DefaultBridge(
-                    onNavigateHome = onBackClick
+                    onNavigateHome = onBackClick,
+                    onRequestTokenRefresh = onRequestTokenRefresh
                 ),
                 BRIDGE_NAME
             )
@@ -89,10 +94,18 @@ fun WebViewAppBar(
 
 internal const val BRIDGE_NAME = "AndroidBridge"
 
-private class DefaultBridge(val onNavigateHome: () -> Unit) {
+private class DefaultBridge(
+    val onNavigateHome: () -> Unit,
+    val onRequestTokenRefresh: () -> Unit
+) {
     @JavascriptInterface
     fun navigateHome() {
         onNavigateHome()
+    }
+
+    @JavascriptInterface
+    fun requestTokenRefresh() {
+        onRequestTokenRefresh()
     }
 }
 
@@ -103,6 +116,7 @@ private fun WebViewScreenPreview() {
         onBackClick = {},
         url = "https://www.google.com",
         onWebViewCreated = {},
-        onPageFinished = {}
+        onPageFinished = {},
+        onRequestTokenRefresh = {}
     )
 }
