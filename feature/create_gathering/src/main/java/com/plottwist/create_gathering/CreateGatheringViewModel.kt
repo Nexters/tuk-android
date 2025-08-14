@@ -42,8 +42,6 @@ class CreateGatheringViewModel @Inject constructor(
             is CreateGatheringAction.ClickNext -> {
                 if (state.currentPage < MAX_PAGE) {
                     reduce { state.copy(currentPage = state.currentPage + 1) }
-                } else {
-                    postSideEffect(CreateGatheringSideEffect.NavigateToHomeScreen)
                 }
             }
 

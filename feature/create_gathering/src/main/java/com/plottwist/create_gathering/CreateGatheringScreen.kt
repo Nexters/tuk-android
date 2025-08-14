@@ -1,5 +1,6 @@
 package com.plottwist.create_gathering
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.create_gathering.page.CreateGatheringNameInput
 import com.plottwist.create_gathering.page.CreateGatheringSelectIntervalDays
@@ -28,10 +30,10 @@ fun CreateGatheringScreen(
 ) {
 
     val state by viewModel.container.stateFlow.collectAsState()
-
+    val context = LocalContext.current
     val pagerState = rememberPagerState(
         initialPage = state.currentPage,
-        pageCount = { 3 }
+        pageCount = { 2 }
     )
 
     BackHandler {
@@ -50,6 +52,11 @@ fun CreateGatheringScreen(
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
                 CreateGatheringSideEffect.NavigateToHomeScreen -> {
+                    Toast.makeText(
+                        context,
+                        "모임이 생성되었어요!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     navigateToHomeScreen()
                 }
 
@@ -96,17 +103,8 @@ fun CreateGatheringScreen(
                         viewModel.onAction(CreateGatheringAction.UpdateIntervalDays(it))
                     },
                     onNext = {
-                        viewModel.onAction(CreateGatheringAction.ClickNext)
+                        viewModel.onAction(CreateGatheringAction.SubmitGathering)
                     }
-                )
-
-                2 -> CreateGatheringSelectTags(
-                    categories = state.tagCategories,
-                    selectedTags = state.tags,
-                    onToggle = { viewModel.onAction(CreateGatheringAction.ToggleTag(it)) },
-                    onClickPrev = { viewModel.onAction(CreateGatheringAction.ClickPrev) },
-                    onClickNext = { viewModel.onAction(CreateGatheringAction.SubmitGathering) },
-                    onClickSkip = { viewModel.onAction(CreateGatheringAction.ClickSkip) }
                 )
             }
         }
