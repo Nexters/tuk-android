@@ -1,11 +1,9 @@
 package com.plottwist.core.network.model.auth
 
-data class LogoutResponse(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class DeleteMemberResponse(
     val success: Boolean,
-    val meta: Meta
-) {
-    data class Meta(
-        val errorType: String,
-        val errorMessage: String
-    )
-}
+    val meta: Meta?
+)

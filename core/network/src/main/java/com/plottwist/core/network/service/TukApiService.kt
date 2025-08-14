@@ -1,5 +1,6 @@
 package com.plottwist.core.network.service
 
+import com.plottwist.core.network.model.auth.DeleteMemberResponse
 import com.plottwist.core.network.model.auth.GetGatheringNameResponse
 import com.plottwist.core.network.model.auth.JoinGatheringResponse
 import com.plottwist.core.network.model.gathering.CreateGatheringRequest
@@ -14,6 +15,7 @@ import com.plottwist.core.network.model.gathering.UpdateGatheringRequest
 import com.plottwist.core.network.model.gathering.UpdateGatheringResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -60,4 +62,7 @@ interface TukApiService {
         @Path("gatheringId") gatheringId: Long?,
         @Body updateGatheringRequest : UpdateGatheringRequest
     ): UpdateGatheringResponse
+
+    @DELETE("/api/v1/members")
+    suspend fun deleteMember(): DeleteMemberResponse
 }

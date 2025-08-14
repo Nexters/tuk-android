@@ -6,6 +6,7 @@ import com.plottwist.core.domain.push.repository.PushRepository
 import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.service.AuthApiService
+import com.plottwist.core.network.service.TukApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -18,7 +19,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val authApiService: AuthApiService,
     private val authDataSource: AuthDataSource,
     private val deviceInfoProvider: DeviceInfoProvider,
-    private val pushRepository: PushRepository
+    private val pushRepository: PushRepository,
+    private val tukApiService: TukApiService
 ) : AuthRepository {
 
     override suspend fun googleLogin(accountId: String): Result<Boolean> {
@@ -75,10 +77,10 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAccount(): Result<Boolean> {
         return try {
-            val response = authApiService.deleteMember()
+            val response = tukApiService.deleteMember()
 
             if (response.success) {
-                authDataSource.clear()
+                authDataSource.clear().collect()
                 Result.success(true)
             } else {
                 Result.failure(Exception("Fail Delete member"))
