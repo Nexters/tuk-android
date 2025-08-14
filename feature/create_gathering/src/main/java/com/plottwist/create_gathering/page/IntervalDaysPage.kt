@@ -43,7 +43,7 @@ fun CreateGatheringSelectIntervalDays(
 
                 TukSolidButton(
                     modifier = Modifier.weight(1f),
-                    text = "다음",
+                    text = "생성하기",
                     buttonType = TukSolidButtonType.from(selectedOption != 0),
                     onClick = onNext
                 )
