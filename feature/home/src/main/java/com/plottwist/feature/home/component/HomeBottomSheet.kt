@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.extension.borderExceptBottom
 import com.plottwist.core.ui.extension.dropShadow
@@ -141,9 +142,28 @@ fun DraggableBottomSheet(
     }
 
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().background(
+            color = Gray800.copy(
+                alpha = 0.7f * ( sheetFullPx - sheetPeekPx - offsetY.value) / (sheetFullPx - sheetPeekPx)
+            )
+        ),
         contentAlignment = Alignment.BottomCenter
     ) {
+        Spacer(
+            modifier = Modifier.fillMaxSize()
+                .then(
+                    if(offsetY.value == 0f) Modifier.clickable(
+                        interactionSource = null,
+                        indication = null
+                    ) {
+                        coroutineScope.launch {
+                            offsetY.animateTo(sheetFullPx - sheetPeekPx)
+                        }
+                    } else {
+                        Modifier
+                    }
+                )
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()
