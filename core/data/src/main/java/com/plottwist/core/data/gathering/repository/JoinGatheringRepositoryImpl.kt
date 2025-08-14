@@ -21,4 +21,19 @@ class JoinGatheringRepositoryImpl @Inject constructor(
             return Result.failure(e)
         }
     }
+
+    override suspend fun getGatheringName(gatheringId: Long): Result<String> {
+        try {
+            val response = dataSource.getGatheringName(gatheringId)
+            return if (response.success) {
+                val name = response.data?.gatheringName
+                if (name != null) Result.success(name)
+                else Result.failure(Exception("이름 없음"))
+            } else {
+                Result.failure(Exception(response.meta?.errorMessage ?: "알 수 없는 에러"))
+            }
+        }catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
 }

@@ -70,20 +70,6 @@ fun GatheringInfoHeader(
         verticalAlignment = Alignment.Bottom
     ) {
         LastAlarmInfo(lastAlarm)
-
-        TukRoundSolidButton(
-            modifier = Modifier,
-            text = stringResource(R.string.home_bottom_sheet_nudging_text),
-            containerColor = Color(0xFFFF3838),
-            contentColor = Color(0xFFFFFFFF),
-            onClick = onProposalClick
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.ic_add_circle),
-                contentDescription = stringResource(R.string.home_bottom_create_gathering_button_text),
-                tint = Color(0xFFFFFFFF)
-            )
-        }
     }
 }
 

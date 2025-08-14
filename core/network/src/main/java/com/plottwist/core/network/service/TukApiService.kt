@@ -1,5 +1,7 @@
 package com.plottwist.core.network.service
 
+import com.plottwist.core.network.model.auth.GetGatheringNameResponse
+import com.plottwist.core.network.model.auth.JoinGatheringResponse
 import com.plottwist.core.network.model.gathering.CreateGatheringRequest
 import com.plottwist.core.network.model.gathering.CreateGatheringResponse
 import com.plottwist.core.network.model.gathering.CreateProposeRequest
@@ -18,6 +20,11 @@ interface TukApiService {
     @GET("/api/v1/gatherings")
     suspend fun getGatherings(): GatheringsResponse
 
+    @POST("/api/v1/gatherings/{gatheringId}/members")
+    suspend fun joinGathering(
+        @Path("gatheringId") gatheringId: Long
+    ): JoinGatheringResponse
+
     @POST("/api/v1/gatherings")
     suspend fun createGathering(
         @Body body:CreateGatheringRequest
@@ -33,6 +40,12 @@ interface TukApiService {
 
     @GET("/api/v1/purposes")
     suspend fun getPurposes(): GetPurposesResponse
+
+    @GET("/api/v1/gatherings/{gatheringId}/name")
+    suspend fun getGatheringName(
+        @Path("gatheringId") gatheringId: Long
+    ): GetGatheringNameResponse
+
 
     @POST("/api/v1/gatherings/{gatheringId}/proposals")
     suspend fun createPropose(

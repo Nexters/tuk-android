@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class JoinGatheringUseCase @Inject constructor(
+class GetGatheringNameUseCase @Inject constructor(
     private val repository: JoinGatheringRepository
 ) {
-    operator fun invoke(gatheringId: Long): Flow<Result<Long>> = flow {
-        emit(repository.joinGathering(gatheringId))
+    operator fun invoke(gatheringId: Long): Flow<Result<String>> = flow {
+        emit(repository.getGatheringName(gatheringId))
     }
 }

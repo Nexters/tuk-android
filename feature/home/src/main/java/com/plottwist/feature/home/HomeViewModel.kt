@@ -103,6 +103,7 @@ class HomeViewModel @Inject constructor(
         }.distinctUntilChanged().collectLatest { loginState ->
             when (loginState) {
                 LoginState.LoggedIn -> {
+                    getMemberInfo()
                     fetchGatherings(loginState)
                     updateDeviceTokenUseCase()
                     postSideEffect(HomeSideEffect.RequestNotificationPermission)

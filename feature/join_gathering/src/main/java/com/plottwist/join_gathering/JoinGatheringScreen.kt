@@ -16,10 +16,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,22 +38,38 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plottwist.core.designsystem.component.TukTopAppBar
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray300
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray500
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray700
+import com.plottwist.core.designsystem.foundation.TukPrimitivesColor
+import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
+import com.plottwist.core.ui.component.TukScaffold
+import kotlinx.coroutines.launch
 
 @Composable
-@Preview(showBackground = true)
 fun JoinGatheringScreen(
     onCloseClicked: () -> Unit = {},
+    onNavigateToGatheringDetail: (Long) -> Unit,
     viewModel: JoinGatheringViewModel = hiltViewModel()
 ) {
-
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
-            when(sideEffect) {
-                is JoinGatheringSideEffect.NavigateToGatheringDetail ->{
+            when (sideEffect) {
+                is JoinGatheringSideEffect.NavigateToGatheringDetail -> {
+                    onNavigateToGatheringDetail(sideEffect.gatheringId)
+                }
 
+                is JoinGatheringSideEffect.ShowSnackbar -> {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = sideEffect.message, duration = SnackbarDuration.Short
+                        )
+                    }
                 }
             }
 
@@ -66,36 +87,43 @@ fun JoinGatheringScreen(
             contentScale = ContentScale.FillWidth
         )
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        TukScaffold (
+            containerColor = Color.Transparent,
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackbarHostState
+                )
+            },
+            topBar = {
+                JoinGatheringAppBar(
+                    onCloseClicked = onCloseClicked
+                )
+            },
+            title = "모임에\n참여하시겠어요?",
+            bottomBar = {
+                JoinGatheringButton(
+                    onClick = {
+                        viewModel.handleAction(JoinGatheringAction.ClickJoin)
+                    }
+                )
+            }
         ) {
-            JoinGatheringAppBar(
-                onCloseClicked = onCloseClicked
-            )
-
-            StableImage(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                drawableResId = R.drawable.image_join_gathering_title
-            )
-            JoinGatheringContent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 60.dp)
-                    .weight(1f)
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-            JoinGatheringButton(
-                onClick = {}
-            )
-
+            item {
+                JoinGatheringContent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 60.dp),
+                    gatheringName = state.gatheringName
+                )
+            }
         }
+
     }
 }
 
 @Composable
 fun JoinGatheringContent(
+    gatheringName: String,
     modifier: Modifier
 ) {
     Box(
@@ -134,14 +162,9 @@ fun JoinGatheringContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "다음 만남은\n계획대로 되지 않아",
+                        text = gatheringName,
                         textAlign = TextAlign.Center,
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color(0xFF1F1F1F),
-                            lineHeight = 26.sp
-                        )
+                        style = TukSerifTypography.title22M
                     )
                 }
 
@@ -153,17 +176,13 @@ fun JoinGatheringContent(
                 ) {
                     Text(
                         text = "연락이",
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            color = Color(0xFF6E6E6E)
-                        )
+                        style = TukSerifTypography.body14R,
+                        color = Gray700
                     )
                     Text(
                         text = "뜸해진 우리",
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            color = Color(0xFF6E6E6E)
-                        )
+                        style = TukSerifTypography.body14R,
+                        color = Gray700
                     )
                 }
             }
@@ -182,7 +201,7 @@ fun JoinGatheringButton(
             .padding(start = 20.dp, end = 20.dp, bottom = 17.dp)
             .height(52.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF4B0000)
+            containerColor = TukPrimitivesColor.Primary500
         ),
         shape = RoundedCornerShape(15.dp),
         contentPadding = PaddingValues(0.dp)
