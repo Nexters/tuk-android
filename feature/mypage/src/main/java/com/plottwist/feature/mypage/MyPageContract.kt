@@ -13,6 +13,7 @@ sealed class MyPageAction {
     data object ClickTerms : MyPageAction()
     data object ClickPrivacyPolicy : MyPageAction()
     data object ClickLogout : MyPageAction()
+    data object ClickDeleteAccount : MyPageAction()
 }
 
 sealed class MyPageSideEffect {

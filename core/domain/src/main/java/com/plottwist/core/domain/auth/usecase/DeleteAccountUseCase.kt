@@ -4,11 +4,11 @@ import com.plottwist.core.domain.auth.repository.AuthRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class LogoutUseCase @Inject constructor(
-    private val loginRepository: AuthRepository
+class DeleteAccountUseCase @Inject constructor(
+    private val authRepository: AuthRepository
 ) {
 
-    suspend fun logoutWithGoogle() {
-        loginRepository.logout().first()
+    suspend fun deleteAccount() {
+        authRepository.deleteAccount()
     }
 }

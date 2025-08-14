@@ -1,7 +1,7 @@
 package com.plottwist.core.data.auth.repository
 
 import com.plottwist.core.data.common.DeviceInfoProvider
-import com.plottwist.core.domain.auth.repository.LoginRepository
+import com.plottwist.core.domain.auth.repository.AuthRepository
 import com.plottwist.core.domain.push.repository.PushRepository
 import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
@@ -14,12 +14,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 
-class LoginRepositoryImpl @Inject constructor(
-    private val loginService: AuthApiService,
+class AuthRepositoryImpl @Inject constructor(
+    private val authApiService: AuthApiService,
     private val authDataSource: AuthDataSource,
     private val deviceInfoProvider: DeviceInfoProvider,
     private val pushRepository: PushRepository
-) : LoginRepository {
+) : AuthRepository {
 
     override suspend fun googleLogin(accountId: String): Result<Boolean> {
         return try {
@@ -37,7 +37,7 @@ class LoginRepositoryImpl @Inject constructor(
                 deviceInfo = deviceInfo
             )
 
-            val response = loginService.googleLogin(request)
+            val response = authApiService.googleLogin(request)
 
             if (response.success) {
                 val result = response.data
@@ -71,5 +71,20 @@ class LoginRepositoryImpl @Inject constructor(
 
     override fun getAccessToken(): Flow<String?> {
         return authDataSource.getAccessToken()
+    }
+
+    override suspend fun deleteAccount(): Result<Boolean> {
+        return try {
+            val response = authApiService.deleteMember()
+
+            if (response.success) {
+                authDataSource.clear()
+                Result.success(true)
+            } else {
+                Result.failure(Exception("Fail Delete member"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
