@@ -42,6 +42,7 @@ fun GatheringDetailScreen(
     navigateToWebViewScreen: (String) -> Unit,
     navigateToInviteGathering: (String) -> Unit,
     navigateToCreateGatheringProposal: (Long, String) -> Unit,
+    navigateToGatheringDetailAlarmSetting: (Long, Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GatheringDetailViewModel = hiltViewModel()
 ) {
@@ -64,6 +65,13 @@ fun GatheringDetailScreen(
             is GatheringDetailSideEffect.NavigateToCreateGatheringProposal -> {
                 navigateToCreateGatheringProposal(sideEffect.gatheringId, sideEffect.gatheringName)
             }
+
+            is GatheringDetailSideEffect.NavigateToGatheringDetailAlarmSetting -> {
+                navigateToGatheringDetailAlarmSetting(
+                    sideEffect.gatheringId,
+                    sideEffect.selectedIntervalDays
+                )
+            }
         }
     }
 
@@ -74,7 +82,9 @@ fun GatheringDetailScreen(
         lastAlarm = state.gatheringDetail.lastPushRelativeTime,
         sentProposalCount = state.gatheringDetail.sentProposalCount,
         receivedProposalCount = state.gatheringDetail.receivedProposalCount,
-        onAlarmSettingClick = {},
+        onAlarmSettingClick = {
+            viewModel.handleAction(GatheringDetailAction.ClickAlarmSetting)
+        },
         onProposalClick = {
             viewModel.handleAction(GatheringDetailAction.ClickProposal)
         },

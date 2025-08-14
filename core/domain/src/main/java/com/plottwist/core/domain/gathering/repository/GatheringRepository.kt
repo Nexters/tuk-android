@@ -15,4 +15,8 @@ interface GatheringRepository {
         whenTag: String,
         whatTag: String
     ): Result<Proposal>
+    suspend fun updateGathering(
+        gatheringId: Long,
+        intervalDays: Int
+    ) : Result<Unit>
 }

@@ -12,6 +12,7 @@ sealed class GatheringDetailAction {
     data object ClickReceivedProposal: GatheringDetailAction()
     data object ClickInviteMember: GatheringDetailAction()
     data object ClickProposal: GatheringDetailAction()
+    data object ClickAlarmSetting: GatheringDetailAction()
 }
 
 sealed class GatheringDetailSideEffect {
@@ -21,5 +22,9 @@ sealed class GatheringDetailSideEffect {
     data class NavigateToCreateGatheringProposal(
         val gatheringId: Long,
         val gatheringName: String
+    ): GatheringDetailSideEffect()
+    data class NavigateToGatheringDetailAlarmSetting(
+        val gatheringId: Long,
+        val selectedIntervalDays: Long
     ): GatheringDetailSideEffect()
 }
