@@ -8,6 +8,7 @@ import com.plottwist.core.domain.gathering.usecase.GetPurposesUseCase
 import com.plottwist.core.domain.model.Purposes
 import com.plottwist.core.domain.onboarding.usecase.GetMemberInfoUseCase
 import com.plottwist.core.domain.onboarding.usecase.UpdateDeviceTokenUseCase
+import com.plottwist.core.ui.UiState
 import com.plottwist.core.weburl.WebUrlConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -34,26 +35,44 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getPurposes() = intent {
-        val result = getPurposesUseCase().getOrNull() ?: Purposes()
-
-        reduce {
-            state.copy(
-                whenTags = result.whenTags,
-                whereTags = result.whereTags,
-                whatTags = result.whatTags,
-                whatLabel = result.whatTags.firstOrNull() ?: "",
-                whereLabel = result.whereTags.firstOrNull() ?: "",
-                whenLabel = result.whenTags.firstOrNull() ?: ""
-            )
+        getPurposesUseCase().onSuccess { result ->
+            reduce {
+                state.copy(
+                    proposalTags = UiState.Success(
+                        ProposalTags(
+                            whenTags = result.whenTags,
+                            whereTags = result.whereTags,
+                            whatTags = result.whatTags
+                        )
+                    ),
+                    whatLabel = result.whatTags.firstOrNull() ?: "",
+                    whereLabel = result.whereTags.firstOrNull() ?: "",
+                    whenLabel = result.whenTags.firstOrNull() ?: ""
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    proposalTags = UiState.Error,
+                )
+            }
         }
+
     }
 
     private fun getMemberInfo() = intent {
-        val result = getMemberInfoUseCase()
-        reduce {
-            state.copy(
-                userName = result.getOrNull()?.name ?: ""
-            )
+        getMemberInfoUseCase().onSuccess { result ->
+            reduce {
+                state.copy(
+                    userName = UiState.Success(result.name)
+                )
+            }
+        }.onFailure {
+            reduce {
+                state.copy(
+                    userName = UiState.Error
+                )
+            }
         }
     }
 
@@ -110,7 +129,12 @@ class HomeViewModel @Inject constructor(
                 }
 
                 else -> {
-                    reduce { state.copy(loginState = loginState) }
+                    reduce {
+                        state.copy(
+                            loginState = loginState,
+                            gatherings = UiState.Error
+                        )
+                    }
                 }
             }
         }
@@ -123,7 +147,7 @@ class HomeViewModel @Inject constructor(
             reduce {
                 state.copy(
                     loginState = loginState,
-                    gatherings = result.getOrNull() ?: return@reduce state
+                    gatherings = UiState.Success(result.getOrNull() ?: return@reduce state)
                 )
             }
         } else {
@@ -159,23 +183,26 @@ class HomeViewModel @Inject constructor(
         postSideEffect(HomeSideEffect.NavigateToGatheringDetailScreen(gatheringId))
     }
 
-    private fun handleProposeClick(index : Int) = intent {
+    private fun handleProposeClick(index: Int) = intent {
         when (state.loginState) {
             LoginState.LoggedIn -> {
-                if(state.gatherings.gatheringOverviews.isNotEmpty()) {
+                if (state.gatherings !is UiState.Success && state.proposalTags !is UiState.Success) return@intent
+                val gatherings = state.gatherings as UiState.Success
+                val proposalTags = state.proposalTags as UiState.Success
+                if (gatherings.value.gatheringOverviews.isNotEmpty()) {
                     postSideEffect(
                         HomeSideEffect.NavigateToSelectGatheringScreen(
-                            whereLabel = state.whereTags[index],
-                            whenLabel = state.whenTags[index],
-                            whatLabel = state.whatTags[index]
+                            whereLabel = proposalTags.value.whereTags[index],
+                            whenLabel = proposalTags.value.whenTags[index],
+                            whatLabel = proposalTags.value.whatTags[index]
                         )
                     )
                 } else {
                     postSideEffect(
                         HomeSideEffect.NavigateToCreateProposalScreen(
-                            whereLabel = state.whereTags[index],
-                            whenLabel = state.whenTags[index],
-                            whatLabel = state.whatTags[index]
+                            whereLabel = proposalTags.value.whereTags[index],
+                            whenLabel = proposalTags.value.whenTags[index],
+                            whatLabel = proposalTags.value.whatTags[index]
                         )
                     )
                 }
@@ -188,9 +215,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleRefreshWhenClick() = intent {
+        if (state.proposalTags !is UiState.Success) return@intent
+        val proposalTags = state.proposalTags as UiState.Success
         reduce {
             state.copy(
-                whenLabel = state.whenTags.filterNot {
+                whenLabel = proposalTags.value.whenTags.filterNot {
                     state.whenLabel == it
                 }.random()
             )
@@ -198,9 +227,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleRefreshWhereClick() = intent {
+        if (state.proposalTags !is UiState.Success) return@intent
+        val proposalTags = state.proposalTags as UiState.Success
         reduce {
             state.copy(
-                whereLabel = state.whereTags.filterNot {
+                whereLabel = proposalTags.value.whereTags.filterNot {
                     state.whereLabel == it
                 }.random()
             )
@@ -208,9 +239,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleRefreshWhatClick() = intent {
+        if (state.proposalTags !is UiState.Success) return@intent
+        val proposalTags = state.proposalTags as UiState.Success
         reduce {
             state.copy(
-                whatLabel = state.whatTags.filterNot {
+                whatLabel = proposalTags.value.whatTags.filterNot {
                     state.whatLabel == it
                 }.random()
             )
@@ -218,7 +251,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleProposalsClick() = intent {
-        val encodedUrl = URLEncoder.encode(webViewConfig.proposalsUrl,"UTF-8")
+        val encodedUrl = URLEncoder.encode(webViewConfig.proposalsUrl, "UTF-8")
         postSideEffect(HomeSideEffect.NavigateToWebViewScreen(encodedUrl))
     }
 

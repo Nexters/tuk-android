@@ -1,6 +1,7 @@
 package com.plottwist.feature.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.domain.model.Gatherings
 
@@ -45,6 +47,11 @@ fun GatheringsCard(
             )
             .background(
                 color = Color(0x35FFFFFF),
+                shape = RoundedCornerShape(20.dp)
+            )
+            .border(
+                width = 0.5.dp,
+                color = Gray000.copy(alpha = 0.4f),
                 shape = RoundedCornerShape(20.dp)
             )
             .padding(horizontal = 20.dp, vertical = 12.dp),
