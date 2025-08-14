@@ -93,7 +93,16 @@ fun TukNavHost(
         )
         myPageNavGraph(
             onBack = { navController.popBackStack() },
-            navigateToHome = { navController.navigateToHome() },
+            navigateToHome = {
+                navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo(Route.Home) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
             navigateToNotificationSetting = { navController.navigateToNotificationSetting() },
             navigateToTerms = {
                 navController.navigateToPolicyWebView(
