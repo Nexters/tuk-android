@@ -6,11 +6,11 @@ import javax.inject.Inject
 
 class WebUrlConfigImpl @Inject constructor() : WebUrlConfig {
     override val sentProposalsUrl: String
-        get() = BuildConfig.TUK_SENT_PROPOSAL_URL
+        get() = "https://www.tuk.kr/gathering/{gatheringId}/invites"
     override val proposalsUrl: String
-        get() = BuildConfig.TUK_PROPOSALS_URL
+        get() = "https://www.tuk.kr/gathering/{gatheringId}/invites"
     override val inviteGatheringUrl: String
-        get() = BuildConfig.TUK_INVITE_GATHERING_URL
+        get() = "https://www.tuk.kr/invite/gathering/{gatheringId}"
     override val completeProposalUrl: String
-        get() = BuildConfig.TUK_COMPLETE_PROPOSAL_URL
+        get() = "https://www.tuk.kr/invite/meet/{meetId}"
 }
