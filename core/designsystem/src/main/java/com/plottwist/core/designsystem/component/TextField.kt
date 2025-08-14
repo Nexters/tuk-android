@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,6 +63,7 @@ fun TukTextField(
         textStyle = TukPretendardTypography.body16R.copy(
             color = Gray900
         ),
+        inputTransformation = InputTransformation.Companion.maxLength(maxLength),
         decorator = { innerTextField ->
             Column() {
                 Row(

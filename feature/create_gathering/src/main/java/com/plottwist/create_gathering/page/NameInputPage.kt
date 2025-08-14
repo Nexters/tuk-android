@@ -50,7 +50,8 @@ fun CreateGatheringNameInput(
                 onFocus = {
                     isFocused = it
                 },
-                onClear = onClear
+                onClear = onClear,
+                maxLength = 10
             )
         }
     }
