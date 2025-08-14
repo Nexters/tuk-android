@@ -25,7 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RadialGradient
+import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -84,7 +88,8 @@ fun RandomProposal(
         Text(
             text = stringResource(R.string.home_random_proposal_description_prefix),
             style = TukSerifTypography.title18M,
-            color = Gray800
+            color = Gray900,
+            textAlign = TextAlign.Center
         )
 
         RandomProposalItem(
@@ -108,7 +113,7 @@ fun RandomProposal(
         Text(
             text = stringResource(R.string.home_random_proposal_description_suffix),
             style = TukSerifTypography.title18M,
-            color = Gray800
+            color = Gray900,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -171,7 +176,10 @@ fun RandomProposalItem(
             .width(284.dp)
             .height(52.dp)
             .background(
-                color = CoralRed100,
+                brush = Brush.radialGradient(
+                    colors = gradientColors,
+                    radius = 240f
+                ),
                 shape = CircleShape
             )
             .clip(CircleShape)
@@ -235,3 +243,8 @@ fun StopButton(
 
 private const val DURATION_SHOW_ITEM = 30L
 private const val DURATION_ANIMATION = 30
+
+private val gradientColors = listOf(
+    Color(0xFFFFA7A7),
+    Color(0xFFFFDBDB),
+)

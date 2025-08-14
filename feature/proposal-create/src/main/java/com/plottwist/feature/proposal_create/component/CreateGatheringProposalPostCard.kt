@@ -162,7 +162,8 @@ fun RandomProposal(
             style = TukSerifTypography.body14R.copy(
                 fontWeight = FontWeight.Medium
             ),
-            color = Gray800
+            color = Gray900,
+            textAlign = TextAlign.Center
         )
 
         RandomProposalItem(
@@ -192,7 +193,7 @@ fun RandomProposal(
             style = TukSerifTypography.body14R.copy(
                 fontWeight = FontWeight.Medium
             ),
-            color = Gray800
+            color = Gray900,
         )
     }
 }
