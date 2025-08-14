@@ -3,6 +3,7 @@ package com.plottwist.feature.home
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -98,6 +99,11 @@ fun HomeScreen(
         mutableStateOf(HomeBottomSheetAction.IDLE)
     }
     var hasBottomSheetShook by remember { mutableStateOf(false) }
+    var bottomSheetState by remember { mutableStateOf<HomeBottomSheetState>(HomeBottomSheetState.COLLAPSED) }
+
+    BackHandler(bottomSheetState == HomeBottomSheetState.EXPANDED) {
+        homeBottomSheetAction = HomeBottomSheetAction.COLLAPSE
+    }
 
     LaunchedEffect(homeBottomSheetAction) {
         delay(200)
@@ -177,7 +183,7 @@ fun HomeScreen(
             viewModel.handleAction(HomeAction.ClickGathering(id))
         },
         onChangedState = {
-            // 바텀 시트 펼쳐지거나 접혔을때 감지
+            bottomSheetState = it
         },
         onWhenRefreshClick = {
             viewModel.handleAction(HomeAction.ClickRefreshWhen)

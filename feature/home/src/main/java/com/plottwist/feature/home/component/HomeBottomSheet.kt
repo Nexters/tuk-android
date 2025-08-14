@@ -185,7 +185,7 @@ fun DraggableBottomSheet(
                     shape = shape
                 )
                 .clickable(
-                    enabled = offsetY.value == (sheetFullPx - sheetPeekPx),
+                    enabled = offsetY.value >= (sheetFullPx - sheetPeekPx) / 2,
                     interactionSource = null,
                     indication = null
                 ) {
