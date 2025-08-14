@@ -26,9 +26,15 @@ fun WebViewScreen(
     val state by viewModel.collectAsState()
     var webView : WebView? by remember { mutableStateOf(null) }
 
-    viewModel.collectSideEffect {
-        when (it) {
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
             WebViewSideEffect.NavigateBack -> onBack()
+            is WebViewSideEffect.UpdateSessionStorage -> {
+                sideEffect.webView.evaluateJavascript(
+                    "window.sessionStorage.setItem('accessToken', '${sideEffect.accessToken}')",
+                    null
+                )
+            }
         }
     }
 
@@ -37,6 +43,12 @@ fun WebViewScreen(
         onBackClick = { viewModel.handleAction(WebViewAction.ClickBack) },
         onWebViewCreated = {
             webView = it
+        },
+        onPageFinished = {
+            viewModel.handleAction(WebViewAction.OnPageFinished(it))
+        },
+        onRequestTokenRefresh = {
+            webView?.reload()
         },
         url = state.url
     )
@@ -47,16 +59,20 @@ private fun WebViewScreen(
     onBackClick: () -> Unit,
     url: String,
     onWebViewCreated : (WebView) -> Unit,
+    onPageFinished: (webView: WebView) -> Unit,
+    onRequestTokenRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TukWebView(
         modifier = modifier.statusBarsPadding(),
         url = url,
         onWebViewCreated = onWebViewCreated,
+        onPageFinished = onPageFinished,
         addBridge = {
             it.addJavascriptInterface(
                 DefaultBridge(
-                    onNavigateHome = onBackClick
+                    onNavigateHome = onBackClick,
+                    onRequestTokenRefresh = onRequestTokenRefresh
                 ),
                 BRIDGE_NAME
             )
@@ -78,10 +94,18 @@ fun WebViewAppBar(
 
 internal const val BRIDGE_NAME = "AndroidBridge"
 
-private class DefaultBridge(val onNavigateHome: () -> Unit) {
+private class DefaultBridge(
+    val onNavigateHome: () -> Unit,
+    val onRequestTokenRefresh: () -> Unit
+) {
     @JavascriptInterface
     fun navigateHome() {
         onNavigateHome()
+    }
+
+    @JavascriptInterface
+    fun requestTokenRefresh() {
+        onRequestTokenRefresh()
     }
 }
 
@@ -92,5 +116,7 @@ private fun WebViewScreenPreview() {
         onBackClick = {},
         url = "https://www.google.com",
         onWebViewCreated = {},
+        onPageFinished = {},
+        onRequestTokenRefresh = {}
     )
 }

@@ -6,12 +6,14 @@ import android.webkit.WebView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import com.plottwist.feature.webview.client.TukWebViewClient
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun TukWebView(
     url: String,
     onWebViewCreated: (webView: WebView) -> Unit,
+    onPageFinished: (webView: WebView) -> Unit,
     modifier: Modifier = Modifier,
     addBridge: (webView: WebView)-> Unit = {}
 ) {
@@ -34,6 +36,10 @@ fun TukWebView(
                     setSupportZoom(true)
                     setInitialScale(1)
                 }
+
+                webViewClient = TukWebViewClient(
+                    onPageFinished = onPageFinished
+                )
 
                 addBridge(this)
 
