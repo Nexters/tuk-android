@@ -448,7 +448,7 @@ fun RequestPermission(onPermissionsGranted: () -> Unit, onShowRationalDialog: ()
 private const val HOME_TITLE_HEIGHT = 108
 private const val BOTTOM_SHEET_PEEK_HEIGHT = 120
 private const val BOTTOM_SHEET_FULL_HEIGHT = 570
-private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 2
+private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 3f
 
 @Preview
 @Composable
