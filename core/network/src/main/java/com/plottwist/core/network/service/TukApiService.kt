@@ -51,9 +51,8 @@ interface TukApiService {
         @Path("gatheringId") gatheringId: Long
     ): GetGatheringNameResponse
 
-    @POST("/api/v1/gatherings/{gatheringId}/proposals")
+    @POST("/api/v1/proposals")
     suspend fun createPropose(
-        @Path("gatheringId") gatheringId: Long?,
         @Body createProposeRequest : CreateProposeRequest
     ): CreateProposeResponse
 

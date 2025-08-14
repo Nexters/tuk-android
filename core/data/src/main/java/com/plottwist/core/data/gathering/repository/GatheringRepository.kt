@@ -47,8 +47,8 @@ class GatheringRepositoryImpl @Inject constructor(
     ): Result<Proposal> {
         try {
             val result = tukApiService.createPropose(
-                gatheringId = gatheringId,
                 CreateProposeRequest(
+                    gatheringId = gatheringId,
                     purpose = CreateProposeData(
                         whereTag = whereTag,
                         whenTag = whenTag,

@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateProposeRequest(
+    val gatheringId: Long?,
     val purpose : CreateProposeData
 )
 
