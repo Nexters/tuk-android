@@ -183,9 +183,6 @@ fun RandomProposalItem(
                 shape = CircleShape
             )
             .clip(CircleShape)
-//            .clickable {
-//                onRefreshClick()
-//            }
             .padding(
                 horizontal = 20.dp,
                 vertical = 15.dp

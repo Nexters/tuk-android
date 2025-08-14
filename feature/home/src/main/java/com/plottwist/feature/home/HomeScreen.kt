@@ -5,17 +5,14 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +25,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -59,11 +57,12 @@ import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TOP_APP_BAR_HEIGHT
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.foundation.TukColorTokens.CoralRed500
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray500
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray100
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.domain.model.Gatherings
+import com.plottwist.core.ui.UiState
 import com.plottwist.core.ui.component.StableImage
 import com.plottwist.feature.home.component.HomeBottomSheet
 import com.plottwist.feature.home.component.HomeBottomSheetAction
@@ -167,9 +166,7 @@ fun HomeScreen(
         screenHeight = configuration.screenHeightDp.dp,
         statusBarHeight = statusBarHeight,
         userName = state.userName,
-        whenLabels = state.whenTags,
-        whereLabels = state.whereTags,
-        whatLabels = state.whatTags,
+        proposalTags = state.proposalTags,
         loginState = state.loginState,
         gatherings = state.gatherings,
         homeBottomSheetAction = homeBottomSheetAction,
@@ -246,12 +243,10 @@ fun HomeScreen(
 private fun HomeScreen(
     screenHeight: Dp,
     statusBarHeight: Dp,
-    userName: String,
+    userName: UiState<String>,
     loginState: LoginState,
-    gatherings: Gatherings,
-    whenLabels: List<String>,
-    whereLabels: List<String>,
-    whatLabels: List<String>,
+    gatherings: UiState<Gatherings>,
+    proposalTags: UiState<ProposalTags>,
     homeBottomSheetAction: HomeBottomSheetAction,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
@@ -286,6 +281,20 @@ private fun HomeScreen(
         HomeGradientBackgroundImage(
             modifier = Modifier.align(Alignment.Center)
         )
+        if(userName is UiState.Loading || gatherings is UiState.Loading || proposalTags is UiState.Loading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(30.dp),
+                    color = Gray100,
+                    strokeWidth = 4.dp
+                )
+            }
+            return
+        }
+
         Column (
             modifier = Modifier.fillMaxSize()
         ) {
@@ -298,7 +307,7 @@ private fun HomeScreen(
             ) {
                 HomeTitle(
                     modifier = Modifier.height(HOME_TITLE_HEIGHT.dp),
-                    name = userName
+                    name = if(userName is UiState.Success) userName.value else ""
                 )
 
                 HomeContent(
@@ -307,28 +316,30 @@ private fun HomeScreen(
                             top = homeContentTopPadding - HOME_TITLE_HEIGHT.dp - 40.dp,
                             bottom = 40.dp
                         ),
-                    gatherings = gatherings,
+                    gatherings = if(gatherings is UiState.Success) gatherings.value else Gatherings(),
                     onAddGatheringClick = onAddGatheringClick,
                     onGatheringClick = onGatheringClick
                 )
             }
         }
+        if(proposalTags is UiState.Success) {
+            HomeBottomSheet(
+                modifier = Modifier
+                    .offset { IntOffset(x= 0, y = shake.value.roundToInt()) }  ,
+                whenLabels = proposalTags.value.whenTags,
+                whereLabels = proposalTags.value.whereTags,
+                whatLabels =  proposalTags.value.whatTags,
+                sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
+                sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
+                homeBottomSheetAction = homeBottomSheetAction,
+                onWhenRefreshClick = onWhenRefreshClick,
+                onWhereRefreshClick = onWhereRefreshClick,
+                onWhatRefreshClick = onWhatRefreshClick,
+                onChangedState = onChangedState,
+                onProposeClick = onProposeClick
+            )
+        }
 
-        HomeBottomSheet(
-            modifier = Modifier
-                .offset { IntOffset(x= 0, y = shake.value.roundToInt()) }  ,
-            whenLabels = whenLabels,
-            whereLabels = whereLabels,
-            whatLabels = whatLabels,
-            sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
-            sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
-            homeBottomSheetAction = homeBottomSheetAction,
-            onWhenRefreshClick = onWhenRefreshClick,
-            onWhereRefreshClick = onWhereRefreshClick,
-            onWhatRefreshClick = onWhatRefreshClick,
-            onChangedState = onChangedState,
-            onProposeClick = onProposeClick
-        )
     }
 }
 
@@ -466,15 +477,13 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
     HomeScreen(
         modifier = Modifier.fillMaxSize(),
         loginState = LoginState.LoggedIn,
-        gatherings = Gatherings(),
-        userName = "",
+        gatherings = UiState.Success(Gatherings()),
+        userName = UiState.Success(""),
         onMyPageClick = {},
         onAddGatheringClick = {},
         onGatheringClick = {},
         onChangedState = {},
-        whenLabels = emptyList(),
-        whereLabels = emptyList(),
-        whatLabels = emptyList(),
+        proposalTags = UiState.Success(ProposalTags()),
         homeBottomSheetAction = HomeBottomSheetAction.IDLE,
         onWhenRefreshClick = { },
         onWhereRefreshClick = { },

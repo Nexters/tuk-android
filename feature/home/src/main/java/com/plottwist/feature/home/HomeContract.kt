@@ -1,17 +1,22 @@
 package com.plottwist.feature.home
 
 import com.plottwist.core.domain.model.Gatherings
+import com.plottwist.core.ui.UiState
 
-data class HomeState(
-    val loginState: LoginState = LoginState.Loading,
-    val userName: String = "",
-    val gatherings: Gatherings = Gatherings(),
-    val whenLabel: String = "",
-    val whereLabel: String = "",
-    val whatLabel: String = "",
+data class ProposalTags(
     val whenTags: List<String> = emptyList(),
     val whereTags: List<String> = emptyList(),
     val whatTags: List<String> = emptyList()
+)
+
+data class HomeState(
+    val loginState: LoginState = LoginState.Loading,
+    val userName: UiState<String> = UiState.Loading,
+    val gatherings: UiState<Gatherings> = UiState.Loading,
+    val whenLabel: String = "",
+    val whereLabel: String = "",
+    val whatLabel: String = "",
+    val proposalTags: UiState<ProposalTags> = UiState.Loading
 )
 
 sealed class HomeAction {
