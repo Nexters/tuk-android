@@ -171,4 +171,5 @@ google-services.json
 /.idea/other.xml
 /.idea/kotlinc.xml
 
-.b64
+*.b64
+*.jks

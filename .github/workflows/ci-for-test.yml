@@ -26,10 +26,6 @@ jobs:
         run: |
           echo "TUK_BASE_URL=KEY" >> local.properties
           echo "GOOGLE_CLIENT_ID=KEY" >> local.properties
-          echo "TUK_SENT_PROPOSAL_URL=KEY" >> local.properties
-          echo "TUK_PROPOSALS_URL" >> local.properties
-          echo "TUK_INVITE_GATHERING_URL" >> local.properties
-          echo "TUK_COMPLETE_PROPOSAL_URL" >> local.properties
 
       - name: Set up JDK 21
         uses: actions/setup-java@v3
