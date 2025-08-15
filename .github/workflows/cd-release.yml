@@ -1,4 +1,4 @@
-name: android-cd
+name: Release Build
 on:
   push:
     tags:
