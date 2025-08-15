@@ -20,12 +20,9 @@ jobs:
           base64 -d -i google-services.json.b64 > ./app/google-services.json
 
       - name: Create LocalProperites
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          TUK_BASE_URL: ${{ secrets.TUK_BASE_URL }}
         run: |
-          echo GOOGLE_CLIENT_ID=\"GOOGLE_CLIENT_ID\" > ./local.properties
-          echo TUK_BASE_URL=\"TUK_BASE_URL\" >> ./local.properties
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> ./local.properties
+          echo TUK_BASE_URL=${{ secrets.TUK_BASE_URL }} >> ./local.properties
               
 
       - name: Grant execute permission for gradlew
