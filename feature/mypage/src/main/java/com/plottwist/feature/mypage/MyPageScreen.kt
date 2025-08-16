@@ -1,5 +1,6 @@
 package com.plottwist.feature.mypage
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -82,6 +83,7 @@ fun MyPageScreen(
     }
 
     MyPageContent(
+        appVersion = state.appVersionName,
         onEditNameClick = { viewModel.onAction(MyPageAction.ClickEditName) },
         onNotificationClick = { viewModel.onAction(MyPageAction.ClickNotificationSetting) },
         onUpdateClick = { viewModel.onAction(MyPageAction.ClickUpdateApp) },
@@ -159,6 +161,7 @@ fun MyPageScreen(
 
 @Composable
 fun MyPageContent(
+    appVersion: String,
     onEditNameClick: () -> Unit,
     onNotificationClick: () -> Unit,
     onUpdateClick: () -> Unit,
@@ -203,7 +206,7 @@ fun MyPageContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable(onClick = onUpdateClick)
+                            .clickable(enabled = false, onClick = onUpdateClick)
                             .padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -211,18 +214,11 @@ fun MyPageContent(
                         Text(text = "앱 버전", style = TukPretendardTypography.body16R)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "1.2.0",
+                                text = appVersion,
                                 color = Color(0xFFCCCCCC),
                                 style = TukPretendardTypography.body16R
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "업데이트하기",
-                                color = Color(0xFF888888),
-                                style = TukPretendardTypography.body14R
-                            )
                         }
-
                     }
                     MyPageItem("서비스 이용약관", onTermsClick)
                     MyPageItem("개인정보 처리방침", onPrivacyPolicyClick)
@@ -274,12 +270,13 @@ fun SectionTitle(text: String) {
 @Composable
 fun MyPageItem(
     title: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isClickable: Boolean = true
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(enabled = isClickable, onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -302,6 +299,6 @@ fun MyPageItem(
 @Preview(showBackground = true)
 fun PreviewMyPage(
 ) {
-    MyPageContent({}, {}, {}, {}, {}, {}, {},{})
+    MyPageContent("",{}, {}, {}, {}, {}, {}, {},{})
 }
 

@@ -3,6 +3,7 @@ package com.plottwist.feature.mypage
 import androidx.lifecycle.ViewModel
 import com.plottwist.core.domain.auth.usecase.DeleteAccountUseCase
 import com.plottwist.core.domain.auth.usecase.LogoutUseCase
+import com.plottwist.core.domain.onboarding.usecase.GetVersionNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
@@ -11,11 +12,13 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
-    private val deleteAccountUseCase: DeleteAccountUseCase
+    private val deleteAccountUseCase: DeleteAccountUseCase,
+    getVersionNameUseCase: GetVersionNameUseCase
 ) :ContainerHost<MyPageState, MyPageSideEffect>,ViewModel(){
-
     override val container = container<MyPageState, MyPageSideEffect>(
-        MyPageState()
+        MyPageState(
+            appVersionName = getVersionNameUseCase()
+        )
     )
 
     fun onAction(action: MyPageAction) = intent {
