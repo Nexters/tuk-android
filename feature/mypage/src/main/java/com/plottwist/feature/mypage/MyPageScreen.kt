@@ -209,16 +209,14 @@ fun MyPageContent(
                             .clickable(enabled = false, onClick = onUpdateClick)
                             .padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "앱 버전", style = TukPretendardTypography.body16R)
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = appVersion,
-                                color = Color(0xFFCCCCCC),
-                                style = TukPretendardTypography.body16R
-                            )
-                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = appVersion,
+                            color = Color(0xFFCCCCCC),
+                            style = TukPretendardTypography.body16R
+                        )
                     }
                     MyPageItem("서비스 이용약관", onTermsClick)
                     MyPageItem("개인정보 처리방침", onPrivacyPolicyClick)
