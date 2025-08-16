@@ -95,7 +95,7 @@ fun TukScaffoldTitle(
     Text(
         modifier = modifier,
         text = title,
-        style = TukSerifTypography.title24M,
+        style = TukSerifTypography.title22M,
         color = Gray900
     )
 }

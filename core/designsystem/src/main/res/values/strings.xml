@@ -26,7 +26,7 @@
     
     <string name="create_proposal_title">이렇게 전해질 거예요,\n한번 볼까요?</string>
     <string name="create_proposal_select_gathering">모임 선택</string>
-    <string name="create_proposal_propose">툭, 찔러보기</string>
+    <string name="create_proposal_propose">다음</string>
     <string name="create_proposal_selected_gathering_name">%s 친구들에게</string>
 
     <string name="onboarding_name_title">어떤 이름으로 친구들에게\n인사할까요?</string>
