@@ -367,10 +367,12 @@ fun HomeTitle(
         modifier = modifier.padding(start = 20.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = if(name.isNotEmpty()) stringResource(R.string.home_subtitle, name) else "",
-            style = TukSerifTypography.title22M
-        )
+        if(name.isNotBlank()) {
+            Text(
+                text = stringResource(R.string.home_subtitle, name),
+                style = TukSerifTypography.title22M
+            )
+        }
 
         Text(
             text = stringResource(R.string.home_title),
