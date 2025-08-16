@@ -44,7 +44,8 @@ fun MyPageScreen(
     navigateToHome: () -> Unit,
     navigateToNotificationSetting: () -> Unit,
     navigateToTerms: () -> Unit,
-    navigateToPrivacyPolicy: () -> Unit
+    navigateToPrivacyPolicy: () -> Unit,
+    navigateToEditName: () -> Unit
 ) {
 
     val state by viewModel.container.stateFlow.collectAsState()
@@ -55,7 +56,7 @@ fun MyPageScreen(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             MyPageSideEffect.NavigateToEditName -> {
-
+                navigateToEditName()
             }
 
             MyPageSideEffect.NavigateToNotificationSetting -> {

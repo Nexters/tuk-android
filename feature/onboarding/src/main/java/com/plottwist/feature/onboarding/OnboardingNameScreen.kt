@@ -87,6 +87,7 @@ private fun OnboardingNameScreen(
                 label = stringResource(R.string.onboarding_name_text_field_label),
                 hint = stringResource(R.string.onboarding_name_text_field_hint),
                 isFocus = isNameFocused,
+                maxLength = 10,
                 onFocus = {
                     isNameFocused = it
                 },

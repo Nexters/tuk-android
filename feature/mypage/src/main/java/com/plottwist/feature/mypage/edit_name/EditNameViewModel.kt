@@ -1,23 +1,38 @@
 package com.plottwist.feature.mypage.edit_name
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
+import com.plottwist.core.domain.onboarding.usecase.GetMemberInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class EditNameViewModel @Inject constructor() : ContainerHost<EditNameState, EditNameSideEffect>, ViewModel() {
+class EditNameViewModel @Inject constructor(
+    private val getMemberInfoUseCase: GetMemberInfoUseCase
+) : ContainerHost<EditNameState, EditNameSideEffect>, ViewModel() {
+    override val container = container<EditNameState, EditNameSideEffect>(EditNameState()) {
+        getMemberInfo()
+    }
 
-    override val container = container<EditNameState, EditNameSideEffect>(EditNameState())
+    private fun getMemberInfo() = intent {
+        getMemberInfoUseCase().onSuccess { result ->
+            reduce {
+                state.copy(
+                    name = TextFieldState(result.name),
+                    originalName = result.name
+                )
+            }
+        }.onFailure {
+
+        }
+    }
 
     fun handleAction(action: EditNameAction) {
         when (action) {
             EditNameAction.ClickBack -> {
                 navigateBack()
-            }
-            is EditNameAction.OnNameChanged -> {
-                onNameChanged(action.name)
             }
             EditNameAction.ClickSave -> {
                 saveName()
@@ -29,9 +44,6 @@ class EditNameViewModel @Inject constructor() : ContainerHost<EditNameState, Edi
         postSideEffect(EditNameSideEffect.NavigateBack)
     }
 
-    private fun onNameChanged(name: String) = intent {
-        reduce { state.copy(name = name) }
-    }
 
     private fun saveName() = intent {
         // TODO: Implement actual save logic

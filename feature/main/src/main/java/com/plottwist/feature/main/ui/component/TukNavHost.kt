@@ -17,7 +17,9 @@ import com.plottwist.feature.home.navigation.homeNavGraph
 import com.plottwist.feature.home.navigation.navigateToHome
 import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
+import com.plottwist.feature.mypage.navigation.editNameNavGraph
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
+import com.plottwist.feature.mypage.navigation.navigateToEditName
 import com.plottwist.feature.mypage.navigation.navigateToMyPage
 import com.plottwist.feature.mypage.navigation.navigateToNotificationSetting
 import com.plottwist.feature.mypage.navigation.navigateToPolicyWebView
@@ -115,6 +117,9 @@ fun TukNavHost(
                     "개인정보 처리방침",
                     "https://www.tuk.kr/privacy-policy"
                 )
+            },
+            navigateToEditName = {
+                navController.navigateToEditName()
             }
         )
         notificationSettingNavGraph(
@@ -250,6 +255,12 @@ fun TukNavHost(
                         }
                     }
                 )
+            }
+        )
+
+        editNameNavGraph(
+            onBack = {
+                navController.popBackStack()
             }
         )
     }
