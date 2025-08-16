@@ -2,6 +2,7 @@ package com.plottwist.feature.mypage.edit_name
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
+import com.plottwist.core.domain.auth.usecase.UpdateMemberNameUseCase
 import com.plottwist.core.domain.onboarding.usecase.GetMemberInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditNameViewModel @Inject constructor(
-    private val getMemberInfoUseCase: GetMemberInfoUseCase
+    private val getMemberInfoUseCase: GetMemberInfoUseCase,
+    private val updateMemberNameUseCase : UpdateMemberNameUseCase
 ) : ContainerHost<EditNameState, EditNameSideEffect>, ViewModel() {
     override val container = container<EditNameState, EditNameSideEffect>(EditNameState()) {
         getMemberInfo()
@@ -46,8 +48,11 @@ class EditNameViewModel @Inject constructor(
 
 
     private fun saveName() = intent {
-        // TODO: Implement actual save logic
-        postSideEffect(EditNameSideEffect.SaveSuccess)
-        postSideEffect(EditNameSideEffect.ShowToast("이름이 저장되었습니다."))
+        updateMemberNameUseCase(state.name.text.toString())
+            .onSuccess {
+                postSideEffect(EditNameSideEffect.SaveSuccess)
+            }.onFailure {
+
+            }
     }
 }

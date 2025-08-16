@@ -1,5 +1,6 @@
 package com.plottwist.feature.mypage.edit_name
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,7 @@ fun EditNameScreen(
     viewModel: EditNameViewModel = hiltViewModel(),
 ) {
     val state by viewModel.collectAsState()
+    val context = LocalContext.current
 
     viewModel.collectSideEffect {
         when (it) {
@@ -40,7 +43,12 @@ fun EditNameScreen(
                 onBack()
             }
             EditNameSideEffect.SaveSuccess -> {
-
+                Toast.makeText(
+                    context,
+                    "이름이 변경되었어요!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                onBack()
             }
 
             is EditNameSideEffect.ShowToast -> {

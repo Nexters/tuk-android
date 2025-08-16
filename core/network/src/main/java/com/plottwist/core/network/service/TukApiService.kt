@@ -13,6 +13,8 @@ import com.plottwist.core.network.model.gathering.GetPurposesResponse
 import com.plottwist.core.network.model.gathering.GetTagsResponse
 import com.plottwist.core.network.model.gathering.UpdateGatheringRequest
 import com.plottwist.core.network.model.gathering.UpdateGatheringResponse
+import com.plottwist.core.network.model.onboarding.MemberInfoResponse
+import com.plottwist.core.network.model.onboarding.MemberNameRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -64,4 +66,9 @@ interface TukApiService {
 
     @DELETE("/api/v1/members")
     suspend fun deleteMember(): DeleteMemberResponse
+
+    @PATCH("/api/v1/members")
+    suspend fun updateMemberName(
+        @Body memberNameRequest : MemberNameRequest
+    ): MemberInfoResponse
 }
