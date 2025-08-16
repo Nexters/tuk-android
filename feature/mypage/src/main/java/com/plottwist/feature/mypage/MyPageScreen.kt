@@ -196,6 +196,7 @@ fun MyPageContent(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(top = 23.dp)
                             .height(8.dp)
                             .background(Color(0xFFFaFaFa))
                     )
@@ -227,6 +228,7 @@ fun MyPageContent(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(top = 23.dp)
                             .height(8.dp)
                             .background(Color(0xFFFaFaFa))
                     )
