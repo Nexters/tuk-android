@@ -4,7 +4,6 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,8 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleStartEffect
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray500
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.feature.mypage.R
@@ -40,6 +42,11 @@ fun NotificationSettingScreen(
 
     val state by viewModel.container.stateFlow.collectAsState()
     val context = LocalContext.current
+
+    LifecycleStartEffect(Unit) {
+        viewModel.checkNotificationStatus()
+        onStopOrDispose { }
+    }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -69,7 +76,6 @@ fun NotificationSettingScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = if (state.areNotificationsEnabled) "기기 알림이\n켜져있어요" else "기기 알림이\n꺼져있어요",
@@ -86,24 +92,33 @@ fun NotificationSettingScreen(
                 color = Color(0xFF888888),
                 lineHeight = 20.sp
             )
-            if (!state.areNotificationsEnabled) {
-                Spacer(modifier = Modifier.height(24.dp))
-                Button(
-                    onClick = { viewModel.onClickNotificationButton() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE74C3C)
-                    )
-                ) {
-                    Text("기기 알림 켜기",
-                        color = Color.White)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.icon_next),
-                        contentDescription = "화살표 아이콘",
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
+            Spacer(modifier = Modifier.height(24.dp))
+            Button(
+                onClick = { viewModel.onClickNotificationButton() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                        if(!state.areNotificationsEnabled) {
+                            Color(0xFFE74C3C)
+                        } else {
+                            Gray500
+                        }
+                )
+            ) {
+                Text(
+                    text = if(!state.areNotificationsEnabled) {
+                        "기기 알림 켜기"
+                    } else {
+                        "기기 알림 끄기"
+                    },
+                    color = Color.White)
+                Spacer(modifier = Modifier.width(4.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.icon_next),
+                    contentDescription = "화살표 아이콘",
+                    modifier = Modifier.size(16.dp)
+                )
             }
+
         }
     }
 }

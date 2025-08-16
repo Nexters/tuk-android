@@ -15,11 +15,7 @@ class NotificationSettingViewModel @Inject constructor(
 
     override val container = container<NotificationSettingState, NotificationSettingSideEffect>(NotificationSettingState())
 
-    init {
-        checkNotificationStatus()
-    }
-
-    private fun checkNotificationStatus() {
+    fun checkNotificationStatus() {
         val enabled = NotificationManagerCompat
             .from(application)
             .areNotificationsEnabled()
