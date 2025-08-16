@@ -29,6 +29,9 @@ fun NavGraphBuilder.selectGatheringNavGraph(
 ) {
     composable<Route.SelectGathering> (
         enterTransition = { slideIn() },
+        popEnterTransition = {
+            null
+        },
         popExitTransition = { slideOut() }
     ) {
         SelectGatheringScreen(

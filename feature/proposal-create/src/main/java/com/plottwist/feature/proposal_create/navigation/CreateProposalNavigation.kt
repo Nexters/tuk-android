@@ -6,7 +6,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.plottwist.core.ui.extension.popSlideInVertically
 import com.plottwist.core.ui.extension.popSlideOutVertically
+import com.plottwist.core.ui.extension.slideIn
 import com.plottwist.core.ui.extension.slideInVertically
+import com.plottwist.core.ui.extension.slideOut
 import com.plottwist.core.ui.extension.slideOutVertically
 import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.proposal_create.CreateProposalScreen
@@ -32,10 +34,12 @@ fun NavGraphBuilder.createProposalNavGraph(
     navigateToCompleteProposeScreen: (String) -> Unit,
 ) {
     composable<Route.CreateProposal> (
-        enterTransition = { slideInVertically() },
-        exitTransition = { null },
-        popEnterTransition = { null },
-        popExitTransition = { popSlideOutVertically() }
+        enterTransition = {
+            slideIn()
+        },
+        exitTransition = {
+            slideOut()
+        }
     ) { backStackEntry ->
         CreateProposalScreen(
             onBack = onBack,
