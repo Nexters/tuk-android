@@ -26,6 +26,10 @@ fun TukWebView(
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
 
+                webViewClient = TukWebViewClient(
+                    onPageFinished = onPageFinished
+                )
+
                 settings.run {
                     javaScriptEnabled = true
                     domStorageEnabled = true
@@ -36,10 +40,6 @@ fun TukWebView(
                     setSupportZoom(true)
                     setInitialScale(1)
                 }
-
-                webViewClient = TukWebViewClient(
-                    onPageFinished = onPageFinished
-                )
 
                 addBridge(this)
 
