@@ -3,6 +3,7 @@ package com.plottwist.feature.home
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import com.plottwist.core.domain.auth.usecase.CheckLoginStatusUseCase
+import com.plottwist.core.domain.auth.usecase.GetMemberNameUseCase
 import com.plottwist.core.domain.gathering.usecase.GetGatheringsUseCase
 import com.plottwist.core.domain.gathering.usecase.GetPurposesUseCase
 import com.plottwist.core.domain.model.Purposes
@@ -11,6 +12,7 @@ import com.plottwist.core.domain.onboarding.usecase.UpdateDeviceTokenUseCase
 import com.plottwist.core.ui.UiState
 import com.plottwist.core.weburl.WebUrlConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -26,12 +28,13 @@ class HomeViewModel @Inject constructor(
     private val getPurposesUseCase: GetPurposesUseCase,
     private val webViewConfig: WebUrlConfig,
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
-    private val getMemberInfoUseCase: GetMemberInfoUseCase
+    private val getMemberInfoUseCase: GetMemberInfoUseCase,
+    private val getMemberNameUseCase: GetMemberNameUseCase
 ) : ContainerHost<HomeState, HomeSideEffect>, ViewModel() {
     override val container = container<HomeState, HomeSideEffect>(HomeState()) {
         observeLoginState()
+        observeMemberName()
         getPurposes()
-        getMemberInfo()
     }
 
     private fun getPurposes() = intent {
@@ -122,7 +125,6 @@ class HomeViewModel @Inject constructor(
         }.distinctUntilChanged().collectLatest { loginState ->
             when (loginState) {
                 LoginState.LoggedIn -> {
-                    getMemberInfo()
                     fetchGatherings(loginState)
                     updateDeviceTokenUseCase()
                     postSideEffect(HomeSideEffect.RequestNotificationPermission)
@@ -135,6 +137,30 @@ class HomeViewModel @Inject constructor(
                             gatherings = UiState.Error
                         )
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeMemberName() = intent {
+        getMemberNameUseCase().catch {
+            reduce {
+                state.copy(
+                    userName = UiState.Error
+                )
+            }
+        }.collectLatest { name ->
+            if(name.isNullOrEmpty()){
+                reduce {
+                    state.copy(
+                        userName = UiState.Error
+                    )
+                }
+            } else {
+                reduce {
+                    state.copy(
+                        userName = UiState.Success(name)
+                    )
                 }
             }
         }

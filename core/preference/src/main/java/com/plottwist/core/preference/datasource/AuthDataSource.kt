@@ -6,11 +6,11 @@ interface AuthDataSource {
 
     fun getAccessToken(): Flow<String?>
     fun getRefreshToken(): Flow<String?>
-    fun getOnboardingCompleted(): Flow<Boolean?>
+    fun getMemberName(): Flow<String?>
 
     fun setAccessToken(accessToken: String): Flow<Unit>
     fun setRefreshToken(refreshToken: String): Flow<Unit>
-    fun setOnboardingCompleted(completed: Boolean): Flow<Unit>
+    fun setMemberName(name: String): Flow<Unit>
 
     fun clear(): Flow<Unit>
 }

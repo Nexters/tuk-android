@@ -20,7 +20,7 @@ class OnboardingRepositoryImpl @Inject constructor(
             val  result = onboardingService.updateOnboardingInfo(UpdateOnboardingInfoRequest(name))
 
             if (result.success) {
-                authDataSource.setOnboardingCompleted(true).collect()
+                authDataSource.setMemberName(name).collect()
                 return Result.success(Unit)
             }
 
@@ -35,6 +35,7 @@ class OnboardingRepositoryImpl @Inject constructor(
             val result = onboardingService.getMemberInfo()
 
             if (result.success) {
+                authDataSource.setMemberName(result.data.name).collect()
                 return Result.success(result.data.toDomainModel())
             }
 
