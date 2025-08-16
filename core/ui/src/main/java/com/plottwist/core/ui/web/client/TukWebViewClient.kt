@@ -1,4 +1,4 @@
-package com.plottwist.feature.webview.client
+package com.plottwist.core.ui.web.client
 
 import android.webkit.WebView
 import android.webkit.WebViewClient

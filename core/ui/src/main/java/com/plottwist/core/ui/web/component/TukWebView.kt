@@ -1,4 +1,4 @@
-package com.plottwist.feature.webview.component
+package com.plottwist.core.ui.web.component
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import android.webkit.WebView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.plottwist.feature.webview.client.TukWebViewClient
+import com.plottwist.core.ui.web.client.TukWebViewClient
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable

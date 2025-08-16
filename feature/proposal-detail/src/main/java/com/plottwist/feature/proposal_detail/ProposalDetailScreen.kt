@@ -1,14 +1,21 @@
 package com.plottwist.feature.proposal_detail
 
+import android.webkit.WebView
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
+import com.plottwist.core.ui.component.TopAppBarCloseButton
+import com.plottwist.core.ui.component.TukScaffold
+import com.plottwist.core.ui.web.component.TukWebView
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -19,6 +26,7 @@ fun ProposalDetailScreen(
     viewModel: ProposalDetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.collectAsState()
+    var webView by remember { mutableStateOf<WebView?>(null) }
 
     viewModel.collectSideEffect {
         when (it) {
@@ -35,8 +43,12 @@ fun ProposalDetailScreen(
         modifier = modifier,
         proposalId = state.proposalId,
         onBackClick = { viewModel.handleAction(ProposalDetailAction.ClickBack) },
-        onAcceptClick = { viewModel.handleAction(ProposalDetailAction.ClickAccept) },
-        onRejectClick = { viewModel.handleAction(ProposalDetailAction.ClickReject) }
+        onPageFinished = {
+
+        },
+        onWebViewCreated = {
+            webView = it
+        }
     )
 }
 
@@ -44,15 +56,21 @@ fun ProposalDetailScreen(
 private fun ProposalDetailScreen(
     proposalId: Long?,
     onBackClick: () -> Unit,
-    onAcceptClick: () -> Unit,
-    onRejectClick: () -> Unit,
+    onWebViewCreated : (WebView) -> Unit,
+    onPageFinished: (webView: WebView) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        ProposalDetailAppBar(onBackClick = onBackClick)
-        // TODO: Add content for proposal detail
+        ProposalDetailAppBar(
+            onBackClick = onBackClick,
+        )
+        TukWebView(
+            url = "https://www.tuk.kr/proposal/${proposalId}/detail",
+            onWebViewCreated = onWebViewCreated,
+            onPageFinished = onPageFinished,
+        )
     }
 }
 
@@ -63,9 +81,11 @@ fun ProposalDetailAppBar(
 ) {
     TukTopAppBar(
         modifier = modifier,
-        type = TukTopAppBarType.DEPTH,
-        title = "제안 상세",
-        onBack = onBackClick
+        actionButtons = {
+            TopAppBarCloseButton(
+                onCloseClicked = onBackClick
+            )
+        }
     )
 }
 
@@ -75,7 +95,7 @@ private fun ProposalDetailScreenPreview() {
     ProposalDetailScreen(
         proposalId = 123L,
         onBackClick = {},
-        onAcceptClick = {},
-        onRejectClick = {}
+        onWebViewCreated = {},
+        onPageFinished = {},
     )
 }
