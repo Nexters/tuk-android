@@ -12,9 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.ui.component.TopAppBarCloseButton
-import com.plottwist.core.ui.component.TukScaffold
 import com.plottwist.core.ui.web.component.TukWebView
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -63,9 +61,6 @@ private fun ProposalDetailScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        ProposalDetailAppBar(
-            onBackClick = onBackClick,
-        )
         TukWebView(
             url = "https://www.tuk.kr/proposal/${proposalId}/detail",
             onWebViewCreated = onWebViewCreated,
