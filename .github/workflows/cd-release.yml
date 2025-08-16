@@ -29,14 +29,14 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build apk
-        run: ./gradlew assembleProductionRelease
+        run: ./gradlew bundleProductionRelease
 
-      - name: Sign app APK
+      - name: Sign App Bundle
         uses: r0adkll/sign-android-release@v1
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/production/release
+          releaseDirectory: app/build/outputs/bundle/productionRelease/
           signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
           alias: ${{ secrets.KEYSTORE_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
