@@ -8,4 +8,6 @@ interface OnboardingRepository {
     ): Result<Unit>
 
     suspend fun getMemberInfo(): Result<MemberInfo>
+
+    fun getVersionName() : String
 }

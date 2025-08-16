@@ -23,9 +23,9 @@ class DeviceInfoProvider @Inject constructor(
     fun getAppVersion(): String {
         return try {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            packageInfo.versionName ?: "unknown_version"
+            packageInfo.versionName ?: "UNKNOWN"
         } catch (e: PackageManager.NameNotFoundException) {
-            "unknown_version"
+            "UNKNOWN"
         }
     }
 

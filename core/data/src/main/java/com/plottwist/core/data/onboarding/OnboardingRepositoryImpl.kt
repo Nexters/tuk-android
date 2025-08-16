@@ -1,5 +1,6 @@
 package com.plottwist.core.data.onboarding
 
+import com.plottwist.core.data.common.DeviceInfoProvider
 import com.plottwist.core.data.mapper.toDomainModel
 import com.plottwist.core.domain.model.MemberInfo
 import com.plottwist.core.domain.onboarding.OnboardingRepository
@@ -12,6 +13,7 @@ import javax.inject.Inject
 class OnboardingRepositoryImpl @Inject constructor(
     private val onboardingService: OnboardingService,
     private val authDataSource: AuthDataSource,
+    private val deviceInfoProvider: DeviceInfoProvider
 ) : OnboardingRepository {
     override suspend fun updateOnboardingInfo(
         name: String
@@ -43,5 +45,9 @@ class OnboardingRepositoryImpl @Inject constructor(
         } catch (e:Exception) {
             return Result.failure(Exception(e))
         }
+    }
+
+    override fun getVersionName(): String {
+        return deviceInfoProvider.getAppVersion()
     }
 }

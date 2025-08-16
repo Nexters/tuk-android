@@ -3,7 +3,8 @@ package com.plottwist.feature.mypage
 import com.plottwist.core.domain.model.GatheringMember
 
 data class MyPageState(
-    val gatheringUser: GatheringMember = GatheringMember()
+    val gatheringUser: GatheringMember = GatheringMember(),
+    val appVersionName: String = ""
 )
 
 sealed class MyPageAction {
