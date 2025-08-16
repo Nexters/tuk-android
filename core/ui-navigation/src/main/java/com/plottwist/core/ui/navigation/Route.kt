@@ -86,4 +86,9 @@ sealed interface Route {
 
     @Serializable
     data object EditName : Route
+
+    @Serializable
+    data class ProposalDetail(
+        val proposalId: Long
+    ) : Route
 }

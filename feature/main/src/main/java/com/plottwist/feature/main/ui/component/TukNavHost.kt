@@ -35,6 +35,7 @@ import com.plottwist.feature.proposal_create.navigation.navigateToCreateGatherin
 import com.plottwist.feature.proposal_create.navigation.navigateToCreateProposal
 import com.plottwist.feature.proposal_create.navigation.navigateToSelectGathering
 import com.plottwist.feature.proposal_create.navigation.selectGatheringNavGraph
+import com.plottwist.feature.proposal_detail.navigation.proposalDetailNavGraph
 import com.plottwist.feature.webview.navigation.navigateToWebView
 import com.plottwist.feature.webview.navigation.webViewNavGraph
 import com.plottwist.invite_gathering.navigation.inviteGatheringNavGraph
@@ -259,6 +260,11 @@ fun TukNavHost(
         )
 
         editNameNavGraph(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
+        proposalDetailNavGraph(
             onBack = {
                 navController.popBackStack()
             }
