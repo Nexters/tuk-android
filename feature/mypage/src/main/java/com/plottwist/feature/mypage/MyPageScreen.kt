@@ -196,7 +196,7 @@ fun MyPageContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(8.dp)
-                            .background(Color(0xFFF5F5F5))
+                            .background(Color(0xFFFaFaFa))
                     )
                 }
 
@@ -229,7 +229,7 @@ fun MyPageContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(8.dp)
-                            .background(Color(0xFFF5F5F5))
+                            .background(Color(0xFFFaFaFa))
                     )
                 }
 
