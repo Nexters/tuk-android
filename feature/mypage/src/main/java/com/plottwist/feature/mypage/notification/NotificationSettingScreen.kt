@@ -5,6 +5,7 @@ import android.provider.Settings
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,6 +62,19 @@ fun NotificationSettingScreen(
     }
 
 
+    NotificationSettingContent(
+        areNotificationsEnabled = state.areNotificationsEnabled,
+        onBack = onBack,
+        onClickNotificationButton = { viewModel.onClickNotificationButton() }
+    )
+}
+
+@Composable
+fun NotificationSettingContent(
+    areNotificationsEnabled: Boolean,
+    onBack: () -> Unit,
+    onClickNotificationButton: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -78,13 +93,13 @@ fun NotificationSettingScreen(
                 .padding(horizontal = 24.dp),
         ) {
             Text(
-                text = if (state.areNotificationsEnabled) "기기 알림이\n켜져있어요" else "기기 알림이\n꺼져있어요",
+                text = if (areNotificationsEnabled) "기기 알림이\n켜져있어요" else "기기 알림이\n꺼져있어요",
                 style = TukSerifTypography.title22M,
                 color = Color(0xFF1F1F1F)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = if (state.areNotificationsEnabled)
+                text = if (areNotificationsEnabled)
                     "친구들의 만남 제안을 놓치지 않도록\n알림을 보내드릴게요."
                 else
                     "친구들의 만남 제안을 놓치지 않기 위해\n알림 허용이 필요해요",
@@ -92,12 +107,13 @@ fun NotificationSettingScreen(
                 color = Color(0xFF888888),
                 lineHeight = 20.sp
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(48.dp))
             Button(
-                onClick = { viewModel.onClickNotificationButton() },
+                onClick = onClickNotificationButton,
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor =
-                        if(!state.areNotificationsEnabled) {
+                        if(!areNotificationsEnabled) {
                             Color(0xFFE74C3C)
                         } else {
                             Gray500
@@ -105,12 +121,14 @@ fun NotificationSettingScreen(
                 )
             ) {
                 Text(
-                    text = if(!state.areNotificationsEnabled) {
+                    text = if(!areNotificationsEnabled) {
                         "기기 알림 켜기"
                     } else {
                         "기기 알림 끄기"
                     },
-                    color = Color.White)
+                    color = Color.White,
+                    style = TukPretendardTypography.body14M
+                )
                 Spacer(modifier = Modifier.width(4.dp))
                 Image(
                     painter = painterResource(id = R.drawable.icon_next),
@@ -118,7 +136,16 @@ fun NotificationSettingScreen(
                     modifier = Modifier.size(16.dp)
                 )
             }
-
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NotificationSettingPreview_Enabled() {
+    NotificationSettingContent(
+        areNotificationsEnabled = true,
+        onBack = {},
+        onClickNotificationButton = {}
+    )
 }
