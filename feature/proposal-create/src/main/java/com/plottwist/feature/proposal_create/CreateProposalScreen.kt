@@ -207,7 +207,7 @@ private fun CreateProposalScreen(
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .offset(y=  animatedOffset2.value + animatedOffset.value)
+                        .offset(y= (10f * screenHeight / 812f).dp + animatedOffset2.value + animatedOffset.value)
                 ) {
                     StableImage(
                         modifier = Modifier
