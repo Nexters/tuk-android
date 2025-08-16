@@ -1,4 +1,4 @@
-package com.plottwist.feature.webview.component
+package com.plottwist.core.ui.web.component
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import android.webkit.WebView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.plottwist.feature.webview.client.TukWebViewClient
+import com.plottwist.core.ui.web.client.TukWebViewClient
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
@@ -26,6 +26,10 @@ fun TukWebView(
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
 
+                webViewClient = TukWebViewClient(
+                    onPageFinished = onPageFinished
+                )
+
                 settings.run {
                     javaScriptEnabled = true
                     domStorageEnabled = true
@@ -36,10 +40,6 @@ fun TukWebView(
                     setSupportZoom(true)
                     setInitialScale(1)
                 }
-
-                webViewClient = TukWebViewClient(
-                    onPageFinished = onPageFinished
-                )
 
                 addBridge(this)
 

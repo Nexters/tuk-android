@@ -2,6 +2,7 @@ package com.plottwist.feature.webview
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
-import com.plottwist.feature.webview.component.TukWebView
+import com.plottwist.core.ui.web.component.TukWebView
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -28,13 +29,23 @@ fun WebViewScreen(
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            WebViewSideEffect.NavigateBack -> onBack()
+            WebViewSideEffect.NavigateBack -> {
+                onBack()
+            }
             is WebViewSideEffect.UpdateSessionStorage -> {
                 sideEffect.webView.evaluateJavascript(
                     "window.sessionStorage.setItem('accessToken', '${sideEffect.accessToken}')",
                     null
                 )
             }
+        }
+    }
+
+    BackHandler {
+        if (webView?.canGoBack() == true) {
+            webView?.goBack()
+        } else {
+            onBack()
         }
     }
 
@@ -71,7 +82,7 @@ private fun WebViewScreen(
         addBridge = {
             it.addJavascriptInterface(
                 DefaultBridge(
-                    onNavigateHome = onBackClick,
+                    onNavigateBack = onBackClick,
                     onRequestTokenRefresh = onRequestTokenRefresh
                 ),
                 BRIDGE_NAME
@@ -95,12 +106,12 @@ fun WebViewAppBar(
 internal const val BRIDGE_NAME = "AndroidBridge"
 
 private class DefaultBridge(
-    val onNavigateHome: () -> Unit,
+    val onNavigateBack: () -> Unit,
     val onRequestTokenRefresh: () -> Unit
 ) {
     @JavascriptInterface
-    fun navigateHome() {
-        onNavigateHome()
+    fun navigateBack() {
+        onNavigateBack()
     }
 
     @JavascriptInterface
