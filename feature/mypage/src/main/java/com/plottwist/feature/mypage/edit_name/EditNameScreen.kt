@@ -1,5 +1,8 @@
-package com.plottwist.feature.onboarding
+package com.plottwist.feature.mypage.edit_name
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
@@ -10,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,49 +23,55 @@ import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTextField
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.ui.component.TopAppBarCloseButton
+import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.ui.component.TukScaffold
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun OnboardingNameScreen(
+fun EditNameScreen(
     onBack: () -> Unit,
-    navigateToHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OnboardingNameViewModel = hiltViewModel(),
+    viewModel: EditNameViewModel = hiltViewModel(),
 ) {
     val state by viewModel.collectAsState()
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
 
+    viewModel.collectSideEffect {
+        when (it) {
+            EditNameSideEffect.NavigateBack -> {
+                onBack()
+            }
+            EditNameSideEffect.SaveSuccess -> {
+                Toast.makeText(
+                    context,
+                    "이름이 변경되었어요!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                onBack()
+            }
 
-    viewModel.collectSideEffect { sideEffect ->
-        when (sideEffect) {
-            OnboardingNameSideEffect.NavigateToHomeScreen -> {
-                keyboardController?.hide()
-                navigateToHomeScreen()
+            is EditNameSideEffect.ShowToast -> {
+
             }
         }
-
     }
 
-    OnboardingNameScreen(
+    EditNameScreen(
         modifier = modifier,
         name = state.name,
-        onCloseClick = {
-            viewModel.handleAction(OnboardingNameAction.ClickClose)
-        },
-        onSubmitClick = {
-            viewModel.handleAction(OnboardingNameAction.ClickSubmit)
-        }
+        originalName = state.originalName,
+        onBackClick = { viewModel.handleAction(EditNameAction.ClickBack) },
+        onSaveClick = { viewModel.handleAction(EditNameAction.ClickSave) }
     )
 }
 
 @Composable
-private fun OnboardingNameScreen(
+private fun EditNameScreen(
     name: TextFieldState,
-    onCloseClick: () -> Unit,
-    onSubmitClick: () -> Unit,
+    originalName: String,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isNameFocused by remember { mutableStateOf(false) }
@@ -70,12 +79,12 @@ private fun OnboardingNameScreen(
     TukScaffold (
         modifier = modifier,
         topBar = {
-            OnboardingNameAppBar(onCloseClick = onCloseClick)
+            EditNameAppBar(onBackClick = onBackClick)
         },
         bottomBar = {
-            OnboardingSubmitButton(
-                isEnabled = name.text.isNotBlank(),
-                onClick = onSubmitClick
+            EditNameSubmitButton(
+                isEnabled = name.text.toString() != originalName && name.text.isNotBlank(),
+                onClick = onSaveClick
             )
         },
         title = stringResource(R.string.onboarding_name_title),
@@ -96,31 +105,31 @@ private fun OnboardingNameScreen(
                 }
             )
         }
-
     }
-
 }
 
 @Composable
-fun OnboardingNameAppBar(
-    onCloseClick: () -> Unit,
+fun EditNameAppBar(
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TukTopAppBar(
         modifier = modifier,
-        actionButtons = { }
+        type = TukTopAppBarType.DEPTH,
+        title = "이름 설정",
+        onBack = onBackClick
     )
 }
 
 @Composable
-fun OnboardingSubmitButton(
+fun EditNameSubmitButton(
     isEnabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TukSolidButton(
         modifier = modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),
-        text = "시작하기",
+        text = "저장하기",
         onClick = onClick,
         buttonType = TukSolidButtonType.from(isEnabled)
     )
@@ -128,10 +137,11 @@ fun OnboardingSubmitButton(
 
 @Preview
 @Composable
-private fun OnboardingNameScreenPreview() {
-    OnboardingNameScreen(
+private fun EditNameScreenPreview() {
+    EditNameScreen(
         name = TextFieldState(),
-        onCloseClick = {},
-        onSubmitClick = {}
+        originalName = "",
+        onBackClick = {},
+        onSaveClick = {}
     )
 }

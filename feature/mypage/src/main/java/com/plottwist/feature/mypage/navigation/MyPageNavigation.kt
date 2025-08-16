@@ -33,14 +33,17 @@ fun NavGraphBuilder.myPageNavGraph(
     navigateToHome: () -> Unit,
     navigateToNotificationSetting: ()->Unit,
     navigateToTerms: () -> Unit,
-    navigateToPrivacyPolicy: () -> Unit
+    navigateToPrivacyPolicy: () -> Unit,
+    navigateToEditName: () -> Unit
 ) {
     composable<Route.MyPage> {
         MyPageScreen(onBackClick = onBack,
             navigateToHome = navigateToHome,
             navigateToNotificationSetting = navigateToNotificationSetting,
             navigateToTerms = navigateToTerms,
-            navigateToPrivacyPolicy = navigateToPrivacyPolicy)
+            navigateToPrivacyPolicy = navigateToPrivacyPolicy,
+            navigateToEditName = navigateToEditName
+        )
     }
 }
 

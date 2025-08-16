@@ -2,7 +2,6 @@ package com.plottwist.core.preference.datasource
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
@@ -24,9 +23,9 @@ class AuthDataSourceImpl @Inject constructor(
             preferences[REFRESH_TOKEN]
         }
 
-    override fun getOnboardingCompleted(): Flow<Boolean?> =
+    override fun getMemberName(): Flow<String?> =
         dataStore.data.map { preferences ->
-            preferences[ONBOARDING_COMPLETED]
+            preferences[MEMBER_NAME]
         }
 
 
@@ -42,9 +41,9 @@ class AuthDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun setOnboardingCompleted(completed: Boolean): Flow<Unit> = flow {
+    override fun setMemberName(name: String): Flow<Unit> = flow {
         dataStore.edit { preferences ->
-            preferences[ONBOARDING_COMPLETED] = completed
+            preferences[MEMBER_NAME] = name
         }
     }
 
@@ -52,6 +51,7 @@ class AuthDataSourceImpl @Inject constructor(
         dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = ""
             preferences[REFRESH_TOKEN] = ""
+            preferences[MEMBER_NAME] = ""
         }
     }
 
@@ -59,6 +59,6 @@ class AuthDataSourceImpl @Inject constructor(
         const val TOKEN_PREFERENCES_NAME = "token_preferences"
         private val ACCESS_TOKEN = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
-        private val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
+        private val MEMBER_NAME = stringPreferencesKey("member_name")
     }
 }

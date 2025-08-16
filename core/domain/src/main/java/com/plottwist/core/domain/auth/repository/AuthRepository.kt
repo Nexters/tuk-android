@@ -8,4 +8,7 @@ interface AuthRepository {
     fun logout(): Flow<Unit>
     fun getAccessToken() : Flow<String?>
     suspend fun deleteAccount(): Result<Boolean>
+    suspend fun updateMemberName(name: String): Result<Unit>
+    fun getMemberName(): Flow<String?>
+    fun setMemberName(name: String): Flow<Unit>
 }

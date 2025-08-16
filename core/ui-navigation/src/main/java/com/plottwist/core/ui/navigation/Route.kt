@@ -83,4 +83,7 @@ sealed interface Route {
         val gatheringId: Long,
         val selectedIntervalDays : Long
     ): Route
+
+    @Serializable
+    data object EditName : Route
 }
