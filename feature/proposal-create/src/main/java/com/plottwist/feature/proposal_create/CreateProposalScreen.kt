@@ -27,11 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -154,8 +156,9 @@ private fun CreateProposalScreen(
         postCardAnimated2 = true
     }
     Box(
-        modifier = modifier.fillMaxSize().background(color = Gray000)
+        modifier = modifier.fillMaxSize().background(color = Gray000).clipToBounds()
     ) {
+        CreateProposalGradientBackgroundImage()
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -201,19 +204,40 @@ private fun CreateProposalScreen(
                     onCloseSelectedGatheringClick = onCloseSelectedGatheringClick
                 )
 
-
-                StableImage(
-                    modifier = Modifier
+                Box(
+                    Modifier
                         .fillMaxWidth()
                         .offset(y=  animatedOffset2.value + animatedOffset.value)
-                        .aspectRatio(260f/364f),
-                    drawableResId = R.drawable.image_post_cover,
-                    contentScale = ContentScale.FillWidth
-                )
+                ) {
+                    StableImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(260f/364f),
+                        drawableResId = R.drawable.image_post_cover,
+                        contentScale = ContentScale.FillWidth
+                    )
+
+                    Text(
+                        modifier = Modifier.align(Alignment.BottomCenter).padding(
+                            bottom = (140f * screenHeight / 812f).dp
+                        ),
+                        text = selectedGatheringName + "\n친구들에게",
+                        style = TukSerifTypography.body16M,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
             }
 
             Column (
-                modifier = Modifier.fillMaxWidth().background(Gray000)
+                modifier = Modifier.fillMaxWidth()
+                    .then(
+                        if(postCardAnimated2) {
+                            Modifier.background(Gray000)
+                        } else {
+                            Modifier
+                        }
+                    )
             ){
                 AnimatedVisibility(postCardAnimated2) {
                     HorizontalDivider(
@@ -256,7 +280,7 @@ fun CreateProposalGradientBackgroundImage(
                 localConfiguration.screenWidthDp.dp * GRADIENT_BACKGROUND_IMAGE_SCALE
             ),
         contentScale = ContentScale.Crop,
-        drawableResId = R.drawable.image_proposal_gradient
+        drawableResId = R.drawable.image_home_gradient
     )
 }
 
@@ -285,6 +309,8 @@ fun CreateProposalTitle(
 }
 
 
+
+
 private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 3
 
 @Preview
@@ -296,7 +322,7 @@ private fun CreateProposalScreenPreview() {
         whereLabel = "where",
         whenLabel = "when",
         whatLabel = "what",
-        selectedGatheringName = "",
+        selectedGatheringName = "다음 만남은 계획대로 되지 않아",
         isGatheringSelected = false,
         onBackClicked = {},
         onSelectGatheringClick = {},
