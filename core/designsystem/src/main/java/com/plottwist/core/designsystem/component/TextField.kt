@@ -110,7 +110,7 @@ fun TukTextField(
                             innerTextField()
                         }
                     }
-                    if (state.text.isNotEmpty()) {
+                    if (state.text.isNotEmpty() && isFocus) {
                         ClearButton(
                             modifier = Modifier.padding(end = 10.dp),
                             onClick = onClear
