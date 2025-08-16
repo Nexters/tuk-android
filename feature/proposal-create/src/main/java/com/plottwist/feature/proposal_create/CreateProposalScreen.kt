@@ -280,7 +280,7 @@ fun CreateProposalTitle(
     Text(
         modifier = modifier.padding(start = 20.dp),
         text = stringResource(R.string.create_proposal_title),
-        style = TukSerifTypography.title24M
+        style = TukSerifTypography.title22M
     )
 }
 
