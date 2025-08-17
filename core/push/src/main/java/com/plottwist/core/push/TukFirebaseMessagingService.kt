@@ -26,14 +26,16 @@ class TukFirebaseMessagingService : FirebaseMessagingService() {
         message.notification?.let { notificationMessage ->
             val title = notificationMessage.title ?: TukNotificationManager.DEFAULT_TITLE
             val description = notificationMessage.body ?: TukNotificationManager.DEFAULT_DESCRIPTION
-
-            sendNotification(title, description)
+            val deeplink = message.data.get("deepLink") ?: ""
+            sendNotification(title, description, deeplink)
         }
     }
 
-    private fun sendNotification(title: String, description: String) {
+    private fun sendNotification(title: String, description: String, deeplink: String) {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.apply {
+            putExtra("deepLink", deeplink)
         }
         val pendingIntent = PendingIntent.getActivity(
             this,
