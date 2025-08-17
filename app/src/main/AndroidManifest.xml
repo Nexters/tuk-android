@@ -18,6 +18,7 @@
             android:name="com.plottwist.feature.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.Tuk"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
