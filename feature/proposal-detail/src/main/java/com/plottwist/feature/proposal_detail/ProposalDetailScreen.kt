@@ -3,6 +3,7 @@ package com.plottwist.feature.proposal_detail
 import android.webkit.WebView
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,7 +60,7 @@ private fun ProposalDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize().statusBarsPadding()
     ) {
         TukWebView(
             url = "https://www.tuk.kr/proposal/${proposalId}/detail",
