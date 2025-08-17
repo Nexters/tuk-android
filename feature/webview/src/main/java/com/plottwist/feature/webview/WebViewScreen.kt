@@ -14,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.plottwist.core.designsystem.component.TukTopAppBar
 import com.plottwist.core.designsystem.component.TukTopAppBarType
+import com.plottwist.core.ui.web.component.BRIDGE_NAME
+import com.plottwist.core.ui.web.component.DefaultBridge
 import com.plottwist.core.ui.web.component.TukWebView
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -38,6 +40,10 @@ fun WebViewScreen(
                     null
                 )
             }
+
+            is WebViewSideEffect.ReloadWebView -> {
+                webView?.reload()
+            }
         }
     }
 
@@ -59,7 +65,9 @@ fun WebViewScreen(
             viewModel.handleAction(WebViewAction.OnPageFinished(it))
         },
         onRequestTokenRefresh = {
-            webView?.reload()
+            webView?.let {
+                viewModel.handleAction(WebViewAction.OnRequestTokenRefresh(it))
+            }
         },
         url = state.url
     )
@@ -103,22 +111,6 @@ fun WebViewAppBar(
     )
 }
 
-internal const val BRIDGE_NAME = "AndroidBridge"
-
-private class DefaultBridge(
-    val onNavigateBack: () -> Unit,
-    val onRequestTokenRefresh: () -> Unit
-) {
-    @JavascriptInterface
-    fun navigateBack() {
-        onNavigateBack()
-    }
-
-    @JavascriptInterface
-    fun requestTokenRefresh() {
-        onRequestTokenRefresh()
-    }
-}
 
 @Preview
 @Composable

@@ -18,4 +18,5 @@ sealed class WebViewSideEffect {
         val webView: WebView,
         val accessToken: String
     ) : WebViewSideEffect()
+    data class ReloadWebView(val webView: WebView) : WebViewSideEffect()
 }
