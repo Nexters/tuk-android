@@ -1,3 +1,4 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
         google {
@@ -10,6 +11,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
+    includeBuild("build-logic")
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -19,5 +21,32 @@ dependencyResolutionManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version("1.0.0")
+}
+
 rootProject.name = "tuk"
 include(":app")
+include(":core:network")
+include(":core:preference")
+include(":core:data")
+include(":core:domain")
+include(":core:designsystem")
+include(":core:ui")
+include(":feature:home")
+include(":feature:login")
+include(":feature:main")
+include(":core:ui-navigation")
+include(":core:auth-provider")
+include(":feature:mypage")
+include(":feature:create_gathering")
+include(":feature:invite_gathering")
+include(":feature:gathering-detail")
+include(":feature:join_gathering")
+include(":feature:proposal-create")
+include(":feature:onboarding")
+include(":feature:webview")
+include(":core:weburl")
+include(":core:push")
+include(":core:notification")
+include(":feature:proposal-detail")

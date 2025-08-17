@@ -1,0 +1,15 @@
+package com.plottwist.join_gathering
+
+data class JoinGatheringState (
+    val gatheringId : Long = 0,
+    val gatheringName: String = ""
+)
+
+sealed class JoinGatheringAction  {
+    data object ClickJoin : JoinGatheringAction()
+}
+
+sealed class JoinGatheringSideEffect {
+    data class NavigateToGatheringDetail(val gatheringId: Long) : JoinGatheringSideEffect()
+    data class ShowSnackbar(val message: String) : JoinGatheringSideEffect()
+}

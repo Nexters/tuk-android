@@ -1,0 +1,23 @@
+package com.plottwist.invite_gathering.navigation
+
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.plottwist.invite_gathering.InviteGatheringScreen
+import com.plottwist.core.ui.navigation.Route
+
+fun NavGraphBuilder.inviteGatheringNavGraph(
+    onCloseClicked: () -> Unit
+) {
+    composable<Route.InviteGathering>{
+        InviteGatheringScreen(
+            onBackClicked = onCloseClicked
+        )
+    }
+}
+
+fun NavController.navigateToInviteGathering(
+    encodedUrl: String
+) {
+    this.navigate(Route.InviteGathering(encodedUrl))
+}

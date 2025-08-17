@@ -1,0 +1,28 @@
+package com.plottwist.core.network.model.auth
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class GoogleLoginRequest(
+    val idToken: String,
+    val deviceInfo: DeviceInfo
+)
+
+@Serializable
+data class DeviceInfo(
+    val deviceId: String,
+    val deviceType: String,
+    val appVersion: String = "",
+    val osVersion: String = "",
+    val deviceToken: String? = null
+)
+
+@Serializable
+data class DeviceInfoRequest(
+    val deviceInfo : DeviceInfo
+)
+
+@Serializable
+data class TokenRequest(
+    val refreshToken: String,
+)

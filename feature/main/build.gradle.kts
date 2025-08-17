@@ -1,0 +1,25 @@
+plugins {
+    alias(libs.plugins.tuk.android.library)
+    alias(libs.plugins.tuk.feature)
+}
+
+android {
+    namespace = "com.plottwist.feature.main"
+}
+
+dependencies {
+    implementation(project(":feature:home"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:mypage"))
+    implementation(project(":feature:create_gathering"))
+    implementation(project(":feature:gathering-detail"))
+    implementation(project(":feature:proposal-create"))
+    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:webview"))
+    implementation(project(":feature:invite_gathering"))
+    implementation(project(":feature:join_gathering"))
+    implementation(project(":feature:proposal-detail"))
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+}
