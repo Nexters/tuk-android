@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -195,8 +196,9 @@ fun MyPageContent(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(top = 23.dp)
                             .height(8.dp)
-                            .background(Color(0xFFF5F5F5))
+                            .background(Color(0xFFFaFaFa))
                     )
                 }
 
@@ -209,16 +211,14 @@ fun MyPageContent(
                             .clickable(enabled = false, onClick = onUpdateClick)
                             .padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "앱 버전", style = TukPretendardTypography.body16R)
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = appVersion,
-                                color = Color(0xFFCCCCCC),
-                                style = TukPretendardTypography.body16R
-                            )
-                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = appVersion,
+                            color = Color(0xFFCCCCCC),
+                            style = TukPretendardTypography.body16R
+                        )
                     }
                     MyPageItem("서비스 이용약관", onTermsClick)
                     MyPageItem("개인정보 처리방침", onPrivacyPolicyClick)
@@ -228,8 +228,9 @@ fun MyPageContent(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(top = 23.dp)
                             .height(8.dp)
-                            .background(Color(0xFFF5F5F5))
+                            .background(Color(0xFFFaFaFa))
                     )
                 }
 
@@ -246,6 +247,7 @@ fun MyPageContent(
             text = "탈퇴하기",
             color = Color(0xFF888888),
             style = TukPretendardTypography.body14R,
+            textDecoration = TextDecoration.Underline,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)

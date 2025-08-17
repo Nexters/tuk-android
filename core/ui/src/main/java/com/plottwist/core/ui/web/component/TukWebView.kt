@@ -2,6 +2,7 @@ package com.plottwist.core.ui.web.component
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -51,4 +52,21 @@ fun TukWebView(
             webView.loadUrl(url)
         }
     )
+}
+
+const val BRIDGE_NAME = "AndroidBridge"
+
+class DefaultBridge(
+    val onNavigateBack: () -> Unit,
+    val onRequestTokenRefresh: () -> Unit
+) {
+    @JavascriptInterface
+    fun navigateBack() {
+        onNavigateBack()
+    }
+
+    @JavascriptInterface
+    fun requestTokenRefresh() {
+        onRequestTokenRefresh()
+    }
 }

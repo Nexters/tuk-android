@@ -11,7 +11,7 @@ fun ApplicationExtension.configureDefaultConfig() {
     defaultConfig {
         applicationId = "com.plottwist.tuk"
         targetSdk = 36
-        versionCode = 4
+        versionCode = 5
         versionName = "1.0.0"
 
         vectorDrawables {

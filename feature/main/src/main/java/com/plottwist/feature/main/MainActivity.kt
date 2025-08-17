@@ -32,9 +32,17 @@ class MainActivity : ComponentActivity() {
     ) {
         val deepLink = intent.extras?.getString("deepLink") ?: return
 
-        startActivity(Intent(Intent.ACTION_VIEW).apply {
-            data = deepLink.toUri()
-        })
+        startActivity(
+            Intent(Intent.ACTION_VIEW).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                data = deepLink.toUri()
+            }
+        )
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleDeepLink(intent)
     }
 
     companion object {

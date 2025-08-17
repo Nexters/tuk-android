@@ -21,3 +21,8 @@ data class DeviceInfo(
 data class DeviceInfoRequest(
     val deviceInfo : DeviceInfo
 )
+
+@Serializable
+data class TokenRequest(
+    val refreshToken: String,
+)

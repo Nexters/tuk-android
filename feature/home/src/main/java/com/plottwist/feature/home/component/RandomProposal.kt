@@ -83,9 +83,10 @@ fun RandomProposal(
     Column (
         modifier = modifier.padding(bottom = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(
+            modifier = Modifier.padding(bottom = 6.dp),
             text = stringResource(R.string.home_random_proposal_description_prefix),
             style = TukSerifTypography.title18M,
             color = Gray900,
@@ -111,6 +112,7 @@ fun RandomProposal(
         )
 
         Text(
+            modifier = Modifier.padding(top = 6.dp),
             text = stringResource(R.string.home_random_proposal_description_suffix),
             style = TukSerifTypography.title18M,
             color = Gray900,

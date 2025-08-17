@@ -6,6 +6,7 @@ import com.plottwist.core.domain.onboarding.OnboardingRepository
 import com.plottwist.core.domain.push.repository.PushRepository
 import com.plottwist.core.network.model.auth.DeviceInfo
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
+import com.plottwist.core.network.model.auth.TokenRequest
 import com.plottwist.core.network.model.onboarding.MemberNameRequest
 import com.plottwist.core.network.service.AuthApiService
 import com.plottwist.core.network.service.TukApiService
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 
@@ -125,5 +125,26 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun setMemberName(name: String): Flow<Unit> {
         return authDataSource.setMemberName(name)
+    }
+
+    override suspend fun reissueTokens(): Result<Unit> {
+        try {
+            val refreshToken = authDataSource.getRefreshToken().firstOrNull()
+            if(refreshToken.isNullOrEmpty()){
+                authDataSource.clear()
+                return Result.failure(Exception("Fail Reissue Tokens"))
+            }
+            val result = authApiService.refreshToken(TokenRequest(refreshToken))
+
+            return if (result.success) {
+                authDataSource.setAccessToken(result.data.accessToken).collect()
+                authDataSource.setRefreshToken(result.data.refreshToken).collect()
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Fail Delete member"))
+            }
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 }

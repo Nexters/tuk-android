@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
 import com.plottwist.core.domain.auth.usecase.GetAccessTokenUseCase
+import com.plottwist.core.domain.auth.usecase.ReissueTokensUseCase
 import com.plottwist.core.ui.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WebViewViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
+    private val reissueTokensUseCase: ReissueTokensUseCase,
     savedStateHandle: SavedStateHandle
 ) : ContainerHost<WebViewState, WebViewSideEffect>, ViewModel() {
     override val container = container<WebViewState, WebViewSideEffect>(WebViewState(
@@ -33,7 +35,7 @@ class WebViewViewModel @Inject constructor(
             }
 
             is WebViewAction.OnRequestTokenRefresh -> {
-                // TODO 토큰 재발급 후 액세스 토큰 웹뷰에 보내기 로직
+                handleRequestTokenRefresh(action.webView)
             }
         }
     }
@@ -47,6 +49,14 @@ class WebViewViewModel @Inject constructor(
             accessToken?.let {
                 postSideEffect(WebViewSideEffect.UpdateSessionStorage(webView, it))
             }
+        }
+    }
+
+    private fun handleRequestTokenRefresh(webView: WebView) = intent {
+        reissueTokensUseCase().onSuccess {
+            postSideEffect(WebViewSideEffect.ReloadWebView(webView))
+        }.onFailure {
+            // TODO
         }
     }
 }

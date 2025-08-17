@@ -1,6 +1,8 @@
 package com.plottwist.core.network.interceptor
 
 import com.plottwist.core.network.TokenProvider
+import com.plottwist.core.network.model.auth.TokenRequest
+import com.plottwist.core.network.service.AuthApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,6 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TokenInterceptor @Inject constructor(
+    private val authApiService: AuthApiService,
     private val tokenProvider: TokenProvider
 ) : Interceptor {
 
@@ -37,6 +40,26 @@ class TokenInterceptor @Inject constructor(
                         tokenProvider.setAccessToken(newAccessToken)
                     }
                 }
+            }
+            HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                val retryRequest = chain.request().newBuilder().apply {
+                    runBlocking {
+                        tokenProvider.getRefreshToken()?.let {
+                            val newToken = authApiService.refreshToken(TokenRequest(it))
+                            if (newToken.success) {
+                                newToken.data.let { token ->
+                                    addHeader("Authorization", "Bearer ${token.accessToken}")
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        tokenProvider.setAccessToken(token.accessToken)
+                                        tokenProvider.setRefreshToken(token.refreshToken)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                response.close()
+                return chain.proceed(retryRequest.build())
             }
         }
         return response

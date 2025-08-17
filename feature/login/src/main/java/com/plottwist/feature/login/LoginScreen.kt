@@ -122,14 +122,6 @@ private fun LoginScreen(
     Box(
         modifier = modifier
     ) {
-        StableImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterEnd),
-            drawableResId = R.drawable.image_login_gradient,
-            contentScale = ContentScale.FillWidth
-        )
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -137,17 +129,27 @@ private fun LoginScreen(
             LoginAppBar(
                 onCloseClicked = onCloseClicked
             )
-            StableImage(
-                drawableResId = R.drawable.image_app_title
+
+            Text(
+                modifier = Modifier.padding(top = 48.dp, bottom = 20.dp),
+                text = "누군가 나를 떠올리며 \n" +
+                        "툭, 건넸어요",
+                textAlign = TextAlign.Center,
+                style = TukSerifTypography.body16M
             )
 
-            LoginContent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 60.dp)
-                    .weight(1f),
-                postCardPadding = postCardPadding
-            )
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                StableImage(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    drawableResId = R.drawable.img_login_card,
+                    contentScale = ContentScale.FillWidth
+                )
+            }
+
 
             GoogleLoginButtonColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -187,14 +189,14 @@ fun LoginContent(
                 .fillMaxWidth()
                 .padding(bottom = 18.dp + postCardPadding)
                 .padding(horizontal = 62.dp)
-                .aspectRatio(260f/334f)
+                .aspectRatio(260f / 334f)
         )
 
         StableImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 62.dp)
-                .aspectRatio(260f/364f),
+                .aspectRatio(260f / 364f),
             drawableResId = R.drawable.image_post_cover,
             contentScale = ContentScale.FillWidth
         )

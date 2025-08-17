@@ -22,3 +22,17 @@ data class Meta(
     val errorType: String,
     val errorMessage: String?
 )
+
+
+@Serializable
+data class TokenResponse(
+    val success: Boolean,
+    val data: TokenData,
+    val meta: Meta?
+)
+
+@Serializable
+data class TokenData(
+    val accessToken: String,
+    val refreshToken: String
+)
