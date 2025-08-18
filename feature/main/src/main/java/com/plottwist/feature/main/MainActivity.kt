@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.core.net.toUri
 import com.plottwist.feature.main.ui.theme.TukTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,9 +23,14 @@ class MainActivity : ComponentActivity() {
 
     private fun setComposeContent() {
         setContent {
-            TukTheme {
-                TukApp()
+            CompositionLocalProvider(
+                LocalActivity provides this
+            ) {
+                TukTheme {
+                    TukApp()
+                }
             }
+
         }
     }
 
@@ -40,12 +47,12 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        handleDeepLink(intent)
-    }
 
     companion object {
         const val NOTIFICATION_REQUEST_CODE = 0
     }
+}
+
+val LocalActivity = compositionLocalOf<ComponentActivity> {
+    error("CompositionLocal LocalActivity not present")
 }
