@@ -12,4 +12,5 @@ interface AuthRepository {
     fun getMemberName(): Flow<String?>
     fun setMemberName(name: String): Flow<Unit>
     suspend fun reissueTokens(): Result<Unit>
+    suspend fun resetServerFcmToken() : Result<Unit>
 }

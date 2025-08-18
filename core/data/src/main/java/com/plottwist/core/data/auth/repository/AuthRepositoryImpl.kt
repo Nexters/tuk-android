@@ -5,10 +5,12 @@ import com.plottwist.core.domain.auth.repository.AuthRepository
 import com.plottwist.core.domain.onboarding.OnboardingRepository
 import com.plottwist.core.domain.push.repository.PushRepository
 import com.plottwist.core.network.model.auth.DeviceInfo
+import com.plottwist.core.network.model.auth.DeviceInfoRequest
 import com.plottwist.core.network.model.auth.GoogleLoginRequest
 import com.plottwist.core.network.model.auth.TokenRequest
 import com.plottwist.core.network.model.onboarding.MemberNameRequest
 import com.plottwist.core.network.service.AuthApiService
+import com.plottwist.core.network.service.OnboardingService
 import com.plottwist.core.network.service.TukApiService
 import com.plottwist.core.preference.datasource.AuthDataSource
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +26,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val deviceInfoProvider: DeviceInfoProvider,
     private val pushRepository: PushRepository,
     private val tukApiService: TukApiService,
-    private val onboardingRepository: OnboardingRepository
+    private val onboardingRepository: OnboardingRepository,
+    private val onboardingService: OnboardingService
 ) : AuthRepository {
 
     override suspend fun googleLogin(accountId: String): Result<Boolean> {
@@ -131,7 +134,7 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             val refreshToken = authDataSource.getRefreshToken().firstOrNull()
             if(refreshToken.isNullOrEmpty()){
-                authDataSource.clear()
+                authDataSource.clear().collect()
                 return Result.failure(Exception("Fail Reissue Tokens"))
             }
             val result = authApiService.refreshToken(TokenRequest(refreshToken))
@@ -145,6 +148,29 @@ class AuthRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             return Result.failure(e)
+        }
+    }
+
+     override suspend fun resetServerFcmToken() : Result<Unit> {
+        return try {
+            val deviceInfo =
+                DeviceInfoRequest(
+                    DeviceInfo(
+                        deviceId = deviceInfoProvider.getDeviceSSAID(),
+                        deviceType = deviceInfoProvider.getDeviceType(),
+                        appVersion = deviceInfoProvider.getAppVersion(),
+                        osVersion = deviceInfoProvider.getOsVersion(),
+                        deviceToken = "EXPIRED_TOKEN"
+                    )
+                )
+
+
+            val result = onboardingService.updateDeviceToken(deviceInfo)
+
+            return if(result.success) Result.success(Unit)
+            else Result.failure(Exception("Fail Update FCM Token"))
+        } catch (e: Exception){
+            Result.failure(e)
         }
     }
 }
