@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,7 @@ import com.plottwist.core.ui.component.TopAppBarCloseButton
 import com.plottwist.core.ui.web.component.BRIDGE_NAME
 import com.plottwist.core.ui.web.component.DefaultBridge
 import com.plottwist.core.ui.web.component.TukWebView
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -28,6 +30,7 @@ fun ProposalDetailScreen(
 ) {
     val state by viewModel.collectAsState()
     var webView by remember { mutableStateOf<WebView?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect {
         when (it) {
@@ -43,7 +46,15 @@ fun ProposalDetailScreen(
     ProposalDetailScreen(
         modifier = modifier,
         proposalId = state.proposalId,
-        onBackClick = { viewModel.handleAction(ProposalDetailAction.ClickBack) },
+        onBackClick = {
+            coroutineScope.launch {
+                if (webView?.canGoBack() == true) {
+                    webView?.goBack()
+                } else {
+                    viewModel.handleAction(ProposalDetailAction.ClickBack)
+                }
+            }
+        },
         onPageFinished = {
 
         },

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,7 @@ import com.plottwist.core.designsystem.component.TukTopAppBarType
 import com.plottwist.core.ui.web.component.BRIDGE_NAME
 import com.plottwist.core.ui.web.component.DefaultBridge
 import com.plottwist.core.ui.web.component.TukWebView
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -28,6 +30,7 @@ fun WebViewScreen(
 ) {
     val state by viewModel.collectAsState()
     var webView : WebView? by remember { mutableStateOf(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -57,7 +60,15 @@ fun WebViewScreen(
 
     WebViewScreen(
         modifier = modifier,
-        onBackClick = { viewModel.handleAction(WebViewAction.ClickBack) },
+        onBackClick = {
+            coroutineScope.launch {
+                if (webView?.canGoBack() == true) {
+                    webView?.goBack()
+                } else {
+                    viewModel.handleAction(WebViewAction.ClickBack)
+                }
+            }
+        },
         onWebViewCreated = {
             webView = it
         },
