@@ -221,7 +221,8 @@ private fun CreateProposalScreen(
                         modifier = Modifier.align(Alignment.BottomCenter).padding(
                             bottom = (140f * screenHeight / 812f).dp
                         ),
-                        text = selectedGatheringName + "\n친구들에게",
+                        text = if(selectedGatheringName.isBlank()) "연락이 뜸해진\n친구들에게"
+                            else "$selectedGatheringName\n친구들에게",
                         style = TukSerifTypography.body16M,
                         textAlign = TextAlign.Center
                     )
