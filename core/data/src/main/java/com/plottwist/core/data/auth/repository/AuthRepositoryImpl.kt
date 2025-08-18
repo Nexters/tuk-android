@@ -131,7 +131,7 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             val refreshToken = authDataSource.getRefreshToken().firstOrNull()
             if(refreshToken.isNullOrEmpty()){
-                authDataSource.clear()
+                authDataSource.clear().collect()
                 return Result.failure(Exception("Fail Reissue Tokens"))
             }
             val result = authApiService.refreshToken(TokenRequest(refreshToken))
