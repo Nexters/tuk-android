@@ -1,14 +1,17 @@
 package com.plottwist.feature.main.ui.component
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.core.util.Consumer
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.plottwist.core.ui.navigation.Route
 import com.plottwist.create_gathering.navigation.createGatheringNavGraph
 import com.plottwist.create_gathering.navigation.navigateToCreateGathering
-import com.plottwist.core.ui.navigation.Route
 import com.plottwist.feature.gathering_detail.navigation.gatheringDetailAlarmSettingNavGraph
 import com.plottwist.feature.gathering_detail.navigation.gatheringDetailNavGraph
 import com.plottwist.feature.gathering_detail.navigation.navigateToGatheringDetail
@@ -17,6 +20,7 @@ import com.plottwist.feature.home.navigation.homeNavGraph
 import com.plottwist.feature.home.navigation.navigateToHome
 import com.plottwist.feature.login.navigation.loginNavGraph
 import com.plottwist.feature.login.navigation.navigateToLogin
+import com.plottwist.feature.main.LocalActivity
 import com.plottwist.feature.mypage.navigation.editNameNavGraph
 import com.plottwist.feature.mypage.navigation.myPageNavGraph
 import com.plottwist.feature.mypage.navigation.navigateToEditName
@@ -47,6 +51,19 @@ fun TukNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
+    val activity = LocalActivity.current
+
+    DisposableEffect(activity, navController) {
+        val onNewIntentConsumer = Consumer<Intent> {
+            navController.handleDeepLink(it)
+        }
+
+        activity.addOnNewIntentListener(onNewIntentConsumer)
+
+        onDispose { activity.removeOnNewIntentListener(onNewIntentConsumer) }
+    }
+
+
     NavHost(
         modifier = modifier,
         navController = navController,

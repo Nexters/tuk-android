@@ -9,6 +9,10 @@ class LogoutUseCase @Inject constructor(
 ) {
 
     suspend fun logoutWithGoogle() {
-        loginRepository.logout().collect()
+        loginRepository.resetServerFcmToken().onSuccess {
+            loginRepository.logout().collect()
+        }.onFailure {
+            loginRepository.logout().collect()
+        }
     }
 }

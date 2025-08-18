@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":feature:invite_gathering"))
     implementation(project(":feature:join_gathering"))
     implementation(project(":feature:proposal-detail"))
+    implementation(libs.androidx.core.splashscreen)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
