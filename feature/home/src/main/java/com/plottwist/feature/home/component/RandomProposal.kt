@@ -53,6 +53,7 @@ import kotlinx.coroutines.isActive
 @Composable
 fun RandomProposal(
     isPlayed: Boolean,
+    selectedCurrentIndex: Int,
     whenLabels: List<String>,
     whereLabels: List<String>,
     whatLabels: List<String>,
@@ -64,7 +65,7 @@ fun RandomProposal(
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var currentIndex by remember { mutableIntStateOf(0) }
+    var currentIndex by remember { mutableIntStateOf(selectedCurrentIndex) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val minSize = arrayOf(whatLabels.size, whereLabels.size, whenLabels.size).min()
