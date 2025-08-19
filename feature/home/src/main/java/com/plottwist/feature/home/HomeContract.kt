@@ -16,7 +16,9 @@ data class HomeState(
     val whenLabel: String = "",
     val whereLabel: String = "",
     val whatLabel: String = "",
-    val proposalTags: UiState<ProposalTags> = UiState.Loading
+    val proposalTags: UiState<ProposalTags> = UiState.Loading,
+    val isRandomPlaying: Boolean = true,
+    val currentIndex : Int = 0
 )
 
 sealed class HomeAction {
@@ -29,6 +31,8 @@ sealed class HomeAction {
     data class ClickPropose(val index : Int): HomeAction()
     data object ClickProposals: HomeAction()
     data object OnPermissionGranted: HomeAction()
+    data object ClickPlay: HomeAction()
+    data object ClickStop: HomeAction()
 }
 
 sealed class HomeSideEffect {
