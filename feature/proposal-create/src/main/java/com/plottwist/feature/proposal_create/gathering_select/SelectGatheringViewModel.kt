@@ -76,13 +76,13 @@ class SelectGatheringViewModel @Inject constructor(
     }
 
     private fun handleProposeClick() = intent {
-        val selectedGathering = state.gatherings.find { it.selected } ?: return@intent
+        val selectedGathering = state.gatherings.find { it.selected }
 
         postSideEffect(
             SelectGatheringSideEffect.NavigateToCreateProposal(
                 SelectedGatheringParam(
-                    id = selectedGathering.id,
-                    name = selectedGathering.name,
+                    id = selectedGathering?.id,
+                    name = selectedGathering?.name,
                     whenLabel = state.whenLabel,
                     whereLabel = state.whereLabel,
                     whatLabel = state.whatLabel

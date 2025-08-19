@@ -86,7 +86,7 @@ fun CreateProposalScreen(
     }
 
     LaunchedEffect(selectedGatheringParam) {
-        if(selectedGatheringParam != null) {
+        if(selectedGatheringParam?.id != null && selectedGatheringParam.name != null) {
             viewModel.handleAction(
                 CreateProposalAction.SelectedGathering(
                     gatheringId = selectedGatheringParam.id,
