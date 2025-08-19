@@ -178,6 +178,9 @@ fun HomeScreen(
         },
         onChangedState = {
             bottomSheetState = it
+            if(it == HomeBottomSheetState.COLLAPSED) {
+                viewModel.handleAction(HomeAction.ClickPlay)
+            }
         },
         onWhenRefreshClick = {
             viewModel.handleAction(HomeAction.ClickRefreshWhen)
