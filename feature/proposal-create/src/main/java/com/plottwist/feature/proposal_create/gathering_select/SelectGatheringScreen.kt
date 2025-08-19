@@ -76,7 +76,6 @@ private fun SelectGatheringScreen(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 text = stringResource(R.string.create_proposal_propose),
-                buttonType = TukSolidButtonType.from(gatherings.any { it.selected }),
                 onClick = onProposalClick
             )
         }
