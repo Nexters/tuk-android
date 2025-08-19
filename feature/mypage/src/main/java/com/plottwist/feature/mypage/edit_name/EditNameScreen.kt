@@ -45,7 +45,7 @@ fun EditNameScreen(
             EditNameSideEffect.SaveSuccess -> {
                 Toast.makeText(
                     context,
-                    "이름이 변경되었어요!",
+                    "닉네임이 변경되었어요!",
                     Toast.LENGTH_SHORT
                 ).show()
                 onBack()
@@ -116,7 +116,7 @@ fun EditNameAppBar(
     TukTopAppBar(
         modifier = modifier,
         type = TukTopAppBarType.DEPTH,
-        title = "이름 설정",
+        title = "닉네임 설정",
         onBack = onBackClick
     )
 }

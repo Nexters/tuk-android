@@ -28,7 +28,7 @@ class JoinGatheringRepositoryImpl @Inject constructor(
             return if (response.success) {
                 val name = response.data?.gatheringName
                 if (name != null) Result.success(name)
-                else Result.failure(Exception("이름 없음"))
+                else Result.failure(Exception("닉네임 없음"))
             } else {
                 Result.failure(Exception(response.meta?.errorMessage ?: "알 수 없는 에러"))
             }
