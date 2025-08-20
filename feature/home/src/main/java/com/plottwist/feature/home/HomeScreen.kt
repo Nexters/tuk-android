@@ -331,7 +331,7 @@ private fun HomeScreen(
                 if(gatherings is UiState.Success && gatherings.value.gatheringOverviews.size >= 2) {
                     HomeContent(
                         modifier = Modifier
-                            .padding(top = 80.dp),
+                            .padding(top = 80.dp, bottom = 80.dp),
                         gatherings =  gatherings.value,
                     onAddGatheringClick = onAddGatheringClick,
                     onGatheringClick = onGatheringClick
