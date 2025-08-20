@@ -2,6 +2,7 @@ package com.plottwist.core.push
 
 import android.app.PendingIntent
 import android.content.Intent
+import com.google.firebase.messaging.Constants
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.plottwist.core.notification.TukNotificationManager
@@ -15,20 +16,16 @@ class TukFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var tukNotificationManager: TukNotificationManager
 
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-
-        message.notification?.let { notificationMessage ->
-            val title = notificationMessage.title ?: TukNotificationManager.DEFAULT_TITLE
-            val description = notificationMessage.body ?: TukNotificationManager.DEFAULT_DESCRIPTION
-            val deeplink = message.data.get("deepLink") ?: ""
-            sendNotification(title, description, deeplink)
-        }
+        val title = message.data.get("title") ?: ""
+        val description = message.data.get("body") ?: ""
+        val deeplink = message.data.get("deepLink") ?: ""
+        sendNotification(title, description, deeplink)
     }
 
     private fun sendNotification(title: String, description: String, deeplink: String) {
@@ -51,5 +48,18 @@ class TukFirebaseMessagingService : FirebaseMessagingService() {
                 description = description
             )
         )
+    }
+
+
+    override fun handleIntent(intent: Intent?) {
+        val newIntent = intent?.apply {
+            val newExtras = extras?.apply {
+                remove(Constants.MessageNotificationKeys.ENABLE_NOTIFICATION)
+                remove("gcm.notification.e")
+            }
+            replaceExtras(newExtras)
+        }
+        super.handleIntent(newIntent)
+
     }
 }
