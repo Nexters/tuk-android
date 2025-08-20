@@ -48,7 +48,7 @@ fun GatheringsCard(
                 blur = 6.dp
             )
             .background(
-                color = Color(0x49FFFFFF),
+                color = Color(0x88FFFFFF),
                 shape = RoundedCornerShape(20.dp)
             )
             .border(
@@ -125,7 +125,7 @@ fun GatheringItem(
         modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .padding(vertical = 12.dp)
+            .padding(vertical = 6.dp)
             .clickable(
                 interactionSource = null,
                 indication = null
