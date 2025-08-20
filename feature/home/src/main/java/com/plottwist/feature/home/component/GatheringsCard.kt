@@ -46,7 +46,7 @@ fun GatheringsCard(
                 blur = 6.dp
             )
             .background(
-                color = Color(0x35FFFFFF),
+                color = Color(0x49FFFFFF),
                 shape = RoundedCornerShape(20.dp)
             )
             .border(
@@ -63,7 +63,7 @@ fun GatheringsCard(
         )
         if(gatherings.gatheringOverviews.isNotEmpty()) {
             HorizontalDivider(
-                color = Color(0xFFEFEFEF)
+                color = Color(0xFFEAEAEA)
             )
 
             gatherings.gatheringOverviews.forEach { gathering ->
