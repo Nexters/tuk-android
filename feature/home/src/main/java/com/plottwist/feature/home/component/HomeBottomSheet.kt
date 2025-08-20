@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -48,23 +49,28 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeBottomSheet(
+    selectedCurrentIndex: Int,
     whenLabels: List<String>,
     whereLabels: List<String>,
     whatLabels: List<String>,
     sheetPeekHeight: Dp,
     sheetFullHeight: Dp,
     homeBottomSheetAction: HomeBottomSheetAction,
+    isPlayed: Boolean,
     onChangedState: (HomeBottomSheetState) -> Unit,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
     onProposeClick: (Int) -> Unit,
+    onStopClick: () -> Unit,
+    onPlayClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-   var isPlayed by remember { mutableStateOf(true) }
+
 
     DraggableBottomSheet(
         modifier = modifier,
+        selectedCurrentIndex = selectedCurrentIndex,
         isPlayed = isPlayed,
         whenLabels = whenLabels,
         whereLabels = whereLabels,
@@ -77,8 +83,8 @@ fun HomeBottomSheet(
         sheetFullHeight = sheetFullHeight,
         onChangedState = onChangedState,
         onProposeClick = onProposeClick,
-        onStopClick = { isPlayed = !isPlayed },
-        onPlayClick = { isPlayed = !isPlayed }
+        onStopClick = onStopClick,
+        onPlayClick = onPlayClick,
     )
 }
 
@@ -86,6 +92,7 @@ fun HomeBottomSheet(
 fun DraggableBottomSheet(
     modifier: Modifier = Modifier,
     isPlayed: Boolean,
+    selectedCurrentIndex: Int,
     whenLabels: List<String>,
     whereLabels: List<String>,
     whatLabels: List<String>,
@@ -111,7 +118,14 @@ fun DraggableBottomSheet(
     val sheetFullPx = with(density) { sheetFullHeight.toPx() }
     val thresholdPx = with(density) { thresholdHeight.toPx() }
 
-    val offsetY = remember { Animatable(sheetFullPx - sheetPeekPx) }
+    val savedOffset = rememberSaveable { mutableStateOf(sheetFullPx - sheetPeekPx) }
+    val offsetY = remember {
+        Animatable(savedOffset.value)
+    }
+
+    LaunchedEffect(offsetY.value) {
+        savedOffset.value = offsetY.value
+    }
 
     var dragDelta by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(Unit) {
@@ -263,6 +277,7 @@ fun DraggableBottomSheet(
                     RandomProposal(
                         modifier = Modifier.padding(top = 4.dp),
                         isPlayed = isPlayed,
+                        selectedCurrentIndex = selectedCurrentIndex,
                         whenLabels = whenLabels,
                         whereLabels = whereLabels,
                         whatLabels = whatLabels,
@@ -271,7 +286,7 @@ fun DraggableBottomSheet(
                         onWhatRefreshClick = onWhatRefreshClick,
                         onProposeClick = onProposeClick,
                         onStopClick = onStopClick,
-                        onPlayClick = onPlayClick
+                        onPlayClick = onPlayClick,
                     )
                 }
             }

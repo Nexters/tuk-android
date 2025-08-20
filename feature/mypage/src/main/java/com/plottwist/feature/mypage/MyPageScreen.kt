@@ -188,7 +188,7 @@ fun MyPageContent(
             ) {
                 item {
                     SectionTitle("내 정보관리")
-                    MyPageItem("이름 설정", onEditNameClick)
+                    MyPageItem("닉네임 설정", onEditNameClick)
                     MyPageItem("알림 설정", onNotificationClick)
                 }
 

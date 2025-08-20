@@ -116,6 +116,13 @@ class HomeViewModel @Inject constructor(
             HomeAction.OnPermissionGranted -> {
                 handleOnPermissionGranted()
             }
+
+            HomeAction.ClickPlay -> {
+                handleRandomClick(isStop = false)
+            }
+            HomeAction.ClickStop -> {
+                handleRandomClick(isStop = true)
+            }
         }
     }
 
@@ -216,6 +223,7 @@ class HomeViewModel @Inject constructor(
                 val gatherings = state.gatherings as UiState.Success
                 val proposalTags = state.proposalTags as UiState.Success
                 if (gatherings.value.gatheringOverviews.isNotEmpty()) {
+                    reduce { state.copy(currentIndex = index) }
                     postSideEffect(
                         HomeSideEffect.NavigateToSelectGatheringScreen(
                             whereLabel = proposalTags.value.whereTags[index],
@@ -224,6 +232,7 @@ class HomeViewModel @Inject constructor(
                         )
                     )
                 } else {
+                    reduce { state.copy(currentIndex = index) }
                     postSideEffect(
                         HomeSideEffect.NavigateToCreateProposalScreen(
                             whereLabel = proposalTags.value.whereTags[index],
@@ -235,6 +244,7 @@ class HomeViewModel @Inject constructor(
             }
 
             else -> {
+                reduce { state.copy(currentIndex = index) }
                 postSideEffect(HomeSideEffect.NavigateToLoginScreen)
             }
         }
@@ -283,5 +293,13 @@ class HomeViewModel @Inject constructor(
 
     private fun handleOnPermissionGranted() = intent {
         updateDeviceTokenUseCase()
+    }
+
+    private fun handleRandomClick(isStop: Boolean) = intent {
+        reduce {
+            state.copy(
+                isRandomPlaying = !isStop
+            )
+        }
     }
 }

@@ -97,7 +97,6 @@ fun HomeScreen(
     var homeBottomSheetAction: HomeBottomSheetAction by remember {
         mutableStateOf(HomeBottomSheetAction.IDLE)
     }
-    var hasBottomSheetShook by remember { mutableStateOf(false) }
     var bottomSheetState by remember { mutableStateOf<HomeBottomSheetState>(HomeBottomSheetState.COLLAPSED) }
 
     BackHandler(bottomSheetState == HomeBottomSheetState.EXPANDED) {
@@ -109,10 +108,6 @@ fun HomeScreen(
         homeBottomSheetAction = HomeBottomSheetAction.IDLE
     }
 
-    LaunchedEffect(Unit) {
-        delay(800)
-        hasBottomSheetShook = true
-    }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -170,6 +165,8 @@ fun HomeScreen(
         loginState = state.loginState,
         gatherings = state.gatherings,
         homeBottomSheetAction = homeBottomSheetAction,
+        isPlayed = state.isRandomPlaying,
+        selectedCurrentIndex = state.currentIndex,
         onMyPageClick = {
             viewModel.handleAction(HomeAction.ClickMyPage)
         },
@@ -181,6 +178,9 @@ fun HomeScreen(
         },
         onChangedState = {
             bottomSheetState = it
+            if(it == HomeBottomSheetState.COLLAPSED) {
+                viewModel.handleAction(HomeAction.ClickPlay)
+            }
         },
         onWhenRefreshClick = {
             viewModel.handleAction(HomeAction.ClickRefreshWhen)
@@ -196,7 +196,13 @@ fun HomeScreen(
         },
         onProposalsClick = {
             viewModel.handleAction(HomeAction.ClickProposals)
-        }
+        },
+        onStopClick = {
+            viewModel.handleAction(HomeAction.ClickStop)
+        },
+        onPlayClick = {
+            viewModel.handleAction(HomeAction.ClickPlay)
+        },
     )
 
     if(isShownNoGatheringsPopup) {
@@ -245,9 +251,11 @@ private fun HomeScreen(
     statusBarHeight: Dp,
     userName: UiState<String>,
     loginState: LoginState,
+    selectedCurrentIndex: Int,
     gatherings: UiState<Gatherings>,
     proposalTags: UiState<ProposalTags>,
     homeBottomSheetAction: HomeBottomSheetAction,
+    isPlayed: Boolean,
     onWhenRefreshClick: () -> Unit,
     onWhereRefreshClick: () -> Unit,
     onWhatRefreshClick: () -> Unit,
@@ -257,21 +265,29 @@ private fun HomeScreen(
     onChangedState: (HomeBottomSheetState) -> Unit,
     onProposeClick: (Int) -> Unit,
     onProposalsClick: () -> Unit,
+    onStopClick: () -> Unit,
+    onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
     verticalScrollState : ScrollState = rememberScrollState()
 ) {
     val homeContentTopPadding = screenHeight / 2 - statusBarHeight -  TOP_APP_BAR_HEIGHT.dp
     val shake = remember { Animatable(0f) }
+    var isShook by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        delay(200)
-        for (i in 0..10) {
-            when (i % 2) {
-                0 -> shake.animateTo(3f, spring(stiffness = 50_000f))
-                else -> shake.animateTo(-3f, spring(stiffness = 50_000f))
+
+    LaunchedEffect(isShook) {
+        if(!isShook) {
+            delay(1200)
+            for (i in 0..10) {
+                when (i % 2) {
+                    0 -> shake.animateTo(3f, spring(stiffness = 50_000f))
+                    else -> shake.animateTo(-3f, spring(stiffness = 50_000f))
+                }
             }
+            shake.animateTo(0f)
+            isShook = true
         }
-        shake.animateTo(0f)
+
     }
 
 
@@ -331,12 +347,16 @@ private fun HomeScreen(
                 whatLabels =  proposalTags.value.whatTags,
                 sheetPeekHeight = BOTTOM_SHEET_PEEK_HEIGHT.dp,
                 sheetFullHeight = BOTTOM_SHEET_FULL_HEIGHT.dp,
+                isPlayed = isPlayed,
+                selectedCurrentIndex = selectedCurrentIndex,
                 homeBottomSheetAction = homeBottomSheetAction,
                 onWhenRefreshClick = onWhenRefreshClick,
                 onWhereRefreshClick = onWhereRefreshClick,
                 onWhatRefreshClick = onWhatRefreshClick,
                 onChangedState = onChangedState,
-                onProposeClick = onProposeClick
+                onProposeClick = onProposeClick,
+                onStopClick = onStopClick,
+                onPlayClick = onPlayClick,
             )
         }
 
@@ -481,6 +501,7 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         loginState = LoginState.LoggedIn,
         gatherings = UiState.Success(Gatherings()),
         userName = UiState.Success(""),
+        isPlayed = false,
         onMyPageClick = {},
         onAddGatheringClick = {},
         onGatheringClick = {},
@@ -494,5 +515,8 @@ fun HomeScreenPreview(modifier: Modifier = Modifier) {
         onProposalsClick = {},
         screenHeight = 720.dp,
         statusBarHeight = 28.dp,
+        onStopClick = {},
+        onPlayClick = {},
+        selectedCurrentIndex = 0
     )
 }
