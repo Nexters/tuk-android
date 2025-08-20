@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray000
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.domain.model.Gatherings
 
@@ -107,7 +109,7 @@ fun CreateGatheringText(
         Text(
             text = "모임 생성",
             style = TukPretendardTypography.body14R,
-            color = Color(0xFF1F1F1F)
+            color = Gray900
         )
     }
 }
@@ -142,7 +144,7 @@ fun GatheringItem(
                 style = TukPretendardTypography.body14M,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = Color(0xFF1f1f1f)
+                color = Gray900
             )
 
             Row (
@@ -151,13 +153,13 @@ fun GatheringItem(
                 Text(
                     text = stringResource(R.string.home_last_alarm),
                     style = TukPretendardTypography.body14R,
-                    color = Color(0xFF888888)
+                    color = Gray800
                 )
 
                 Text(
                     text = lastAlarm,
                     style = TukPretendardTypography.body14R,
-                    color = Color(0xFF888888)
+                    color = Gray800
                 )
             }
         }

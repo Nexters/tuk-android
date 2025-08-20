@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray800
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray900
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.extension.borderExceptBottom
 import com.plottwist.core.ui.extension.dropShadow
@@ -264,7 +265,8 @@ fun DraggableBottomSheet(
                     ) {
                         Text(
                             text = stringResource(R.string.home_bottom_sheet_nudging_text),
-                            style = TukSerifTypography.body14R
+                            style = TukSerifTypography.body14R,
+                            color = Gray900
                         )
                     }
                 }
