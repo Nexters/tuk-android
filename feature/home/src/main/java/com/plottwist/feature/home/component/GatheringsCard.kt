@@ -152,13 +152,13 @@ fun GatheringItem(
             ) {
                 Text(
                     text = stringResource(R.string.home_last_alarm),
-                    style = TukPretendardTypography.body14R,
+                    style = TukPretendardTypography.body12R,
                     color = Gray800
                 )
 
                 Text(
                     text = lastAlarm,
-                    style = TukPretendardTypography.body14R,
+                    style = TukPretendardTypography.body12R,
                     color = Gray800
                 )
             }
