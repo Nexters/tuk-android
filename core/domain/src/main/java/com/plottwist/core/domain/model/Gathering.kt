@@ -18,12 +18,15 @@ data class GatheringDetail(
     val gatheringIntervalDays: Long = 0,
     val sentProposalCount: Int = 0,
     val receivedProposalCount: Int = 0,
-    val members: List<GatheringMember> = emptyList()
+    val members: List<GatheringMember> = emptyList(),
+    val isHost: Boolean = false
 )
 
 data class GatheringMember(
     val memberId: Long = 0,
-    val memberName: String = ""
+    val memberName: String = "",
+    val isHost: Boolean = false,
+    val isMe: Boolean = false
 )
 
 data class Purposes(
