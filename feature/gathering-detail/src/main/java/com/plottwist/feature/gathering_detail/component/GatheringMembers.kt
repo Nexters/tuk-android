@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -22,7 +23,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.plottwist.core.designsystem.R
+import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray300
 import com.plottwist.core.designsystem.foundation.type.TukPretendardTypography
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.domain.model.GatheringMember
@@ -59,15 +62,37 @@ fun GatheringMembers(
         )
 
         members.forEach { member ->
-            Text(
-                text = member.memberName,
-                style = TukPretendardTypography.body16R,
-                color = Color(0xFF1f1f1f)
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
+            ){
+                Text(
+                    text = member.memberName,
+                    style = TukPretendardTypography.body16R,
+                    color = Color(0xFF1f1f1f)
+                )
+                if(member.isMe){
+                    MemberMarkAsMe()
+                }
+            }
+
         }
     }
 }
 
+@Composable
+fun MemberMarkAsMe(modifier: Modifier = Modifier) {
+    Text(
+        modifier = modifier.background(
+            color = Gray300,
+            shape = CircleShape
+        ).padding(horizontal = 5.dp),
+        text = "나",
+        style = TukPretendardTypography.body12M.copy(
+            fontSize = 10.sp
+        )
+    )
+}
 
 @Composable
 fun InvitationMemberText(
