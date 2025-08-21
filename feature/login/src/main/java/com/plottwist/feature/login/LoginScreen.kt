@@ -1,7 +1,19 @@
 package com.plottwist.feature.login
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import androidx.compose.animation.core.EaseInCubic
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,12 +40,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,16 +81,24 @@ fun LoginScreen(
         ).googleAuthProvider()
     }
 
-    var postCardAnimated by remember { mutableStateOf(false) }
-    val postCardPadding by animateDpAsState(
-        targetValue = if(postCardAnimated) 56.dp else 0.dp,
-        animationSpec = tween(700)
-    )
+    val infiniteTransition = rememberInfiniteTransition()
+    val postCardPadding by infiniteTransition.animateFloat(
+        initialValue = 40f,
+        targetValue = 40f, // 마지막 키프레임과 동일해야 함
+        animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1800
+                delayMillis = 1000
 
-    LaunchedEffect(Unit) {
-        delay(500)
-        postCardAnimated = true
-    }
+                40f at 100 using LinearOutSlowInEasing
+                380f at 420 using LinearOutSlowInEasing
+                330f at 800 using FastOutLinearInEasing
+                330f at 1200 using EaseInOut
+            },
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "piecewiseValue"
+    )
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -114,7 +138,7 @@ fun LoginScreen(
 
 @Composable
 private fun LoginScreen(
-    postCardPadding : Dp,
+    postCardPadding: Float,
     onCloseClicked: () -> Unit,
     onGoogleLoginButtonClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -131,7 +155,7 @@ private fun LoginScreen(
             )
 
             Text(
-                modifier = Modifier.padding(top = 48.dp, bottom = 20.dp),
+                modifier = Modifier.padding(top = 14.dp, bottom = 20.dp),
                 text = "누군가 나를 떠올리며 \n" +
                         "툭, 건넸어요",
                 textAlign = TextAlign.Center,
@@ -142,11 +166,8 @@ private fun LoginScreen(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                StableImage(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    drawableResId = R.drawable.img_login_card,
-                    contentScale = ContentScale.FillWidth
+                LoginContent(
+                    postCardPadding = postCardPadding
                 )
             }
 
@@ -175,31 +196,44 @@ fun LoginAppBar(
     )
 }
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun LoginContent(
-    postCardPadding : Dp,
+    postCardPadding: Float,
     modifier: Modifier = Modifier
 ) {
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        PostCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 18.dp + postCardPadding)
-                .padding(horizontal = 62.dp)
-                .aspectRatio(260f / 334f)
-        )
+        with(density) {
+            PostCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = postCardPadding.toDp()  )
+                    .padding(horizontal = 180f.toDp())
+                    .aspectRatio(260f / 304f)
+            )
+
+            StableImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4f.toDp())
+                    .aspectRatio(260f / 364f),
+                drawableResId = R.drawable.img_login_cover,
+                contentScale = ContentScale.FillWidth
+            )
+        }
+
 
         StableImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 62.dp)
-                .aspectRatio(260f / 364f),
-            drawableResId = R.drawable.image_post_cover,
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier.align(Alignment.Center),
+            drawableResId = R.drawable.img_app_name,
         )
+
     }
 }
 
@@ -208,7 +242,7 @@ private fun PostCard(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = RoundedCornerShape(10.dp)
 ) {
-    Column (
+    Column(
         modifier = modifier
             .clip(shape)
             .border(
@@ -217,7 +251,12 @@ private fun PostCard(
                 shape = shape
             )
             .background(
-                color = Color(0xFFFAFAFA),
+                brush = Brush.verticalGradient(
+                    listOf(
+                        Color(0xFFFF3838),
+                        Color(0xFFFFF9F9)
+                    )
+                ),
                 shape = shape
             )
             .padding(top = 25.dp, bottom = 12.dp),
@@ -225,31 +264,9 @@ private fun PostCard(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         StableImage(
-            drawableResId = R.drawable.image_double_quotation_marks
+            modifier = Modifier.size(20.dp),
+            drawableResId = R.drawable.image_double_quotation_marks_white,
         )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = stringResource(R.string.post_card_bottom_description_start),
-                style = TukSerifTypography.body14R.copy(
-                    fontSize = 12.sp
-                ),
-                color = Color(0xFF1F1F1F)
-            )
-
-            Text(
-                text = stringResource(R.string.post_card_bottom_description_end),
-                style = TukSerifTypography.body14R.copy(
-                    fontSize = 12.sp
-                ),
-                color = Color(0xFF1F1F1F)
-            )
-        }
     }
 }
 
@@ -317,4 +334,14 @@ fun GoogleLoginButton(
             color = Color(0xFFE3E3E3)
         )
     }
+}
+
+@Preview
+@Composable
+private fun LoginScreenPreview() {
+    LoginScreen(
+        postCardPadding = 0f,
+        onCloseClicked = {},
+        onGoogleLoginButtonClick = {}
+    )
 }
