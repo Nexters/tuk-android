@@ -19,11 +19,14 @@ data class GatheringDetailData(
     val gatheringIntervalDays: Long,
     val sentProposalCount: Int,
     val receivedProposalCount: Int,
-    val members: List<GatheringMemberData>
+    val members: List<GatheringMemberData>,
+    val isHost: Boolean
 )
 
 @Serializable
 data class GatheringMemberData(
     val memberId: Long,
-    val memberName: String
+    val memberName: String,
+    val isHost: Boolean,
+    val isMe: Boolean
 )

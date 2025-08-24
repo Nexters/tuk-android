@@ -38,14 +38,17 @@ fun GatheringDetailData.toDomainModel() : GatheringDetail {
         gatheringIntervalDays = this.gatheringIntervalDays,
         sentProposalCount = this.sentProposalCount,
         receivedProposalCount = this.receivedProposalCount,
-        members = this.members.map { it.toDomainModel() }
+        members = this.members.map { it.toDomainModel() },
+        isHost = this.isHost
     )
 }
 
 fun GatheringMemberData.toDomainModel() : GatheringMember {
     return GatheringMember(
         memberId = this.memberId,
-        memberName = this.memberName
+        memberName = this.memberName,
+        isHost = this.isHost,
+        isMe = this.isMe
     )
 }
 

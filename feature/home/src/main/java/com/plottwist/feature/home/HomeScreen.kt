@@ -317,27 +317,41 @@ private fun HomeScreen(
             HomeAppBar(onMyPageClick)
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(
-                    bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp
-                ).verticalScroll(verticalScrollState)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        bottom = BOTTOM_SHEET_PEEK_HEIGHT.dp
+                    )
+                    .verticalScroll(verticalScrollState)
             ) {
                 HomeTitle(
                     modifier = Modifier.height(HOME_TITLE_HEIGHT.dp),
                     name = if(userName is UiState.Success) userName.value else ""
                 )
-
-                HomeContent(
-                    modifier = Modifier
-                        .padding(
-                            top = homeContentTopPadding - HOME_TITLE_HEIGHT.dp - 40.dp,
-                            bottom = 40.dp
-                        ),
-                    gatherings = if(gatherings is UiState.Success) gatherings.value else Gatherings(),
+                if(gatherings is UiState.Success && gatherings.value.gatheringOverviews.size >= 2) {
+                    HomeContent(
+                        modifier = Modifier
+                            .padding(top = 80.dp, bottom = 80.dp),
+                        gatherings =  gatherings.value,
                     onAddGatheringClick = onAddGatheringClick,
                     onGatheringClick = onGatheringClick
-                )
+                    )
+                }
             }
         }
+        if(gatherings !is UiState.Success || gatherings.value.gatheringOverviews.size < 2){
+            HomeContent(
+                modifier = Modifier.align(Alignment.Center),
+                gatherings =  if(gatherings is UiState.Success && gatherings.value.gatheringOverviews.size <= 1) {
+                    gatherings.value
+                } else {
+                    Gatherings()
+                },
+                onAddGatheringClick = onAddGatheringClick,
+                onGatheringClick = onGatheringClick
+            )
+        }
+
         if(proposalTags is UiState.Success) {
             HomeBottomSheet(
                 modifier = Modifier

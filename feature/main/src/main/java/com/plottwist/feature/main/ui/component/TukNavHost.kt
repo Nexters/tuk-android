@@ -255,7 +255,8 @@ fun TukNavHost(
                         popUpTo(Route.Home) {
                             inclusive = true
                         }
-                        launchSingleTop = true
+                        launchSingleTop = false
+                        restoreState = false
                     }
                 )
             }

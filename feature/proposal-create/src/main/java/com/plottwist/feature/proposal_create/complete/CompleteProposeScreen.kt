@@ -2,6 +2,7 @@ package com.plottwist.feature.proposal_create.complete
 
 import android.content.Context
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +39,10 @@ fun CompleteProposeScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+
+    BackHandler {
+        navigateToHome()
+    }
 
     viewModel.collectSideEffect {
         when (it) {
