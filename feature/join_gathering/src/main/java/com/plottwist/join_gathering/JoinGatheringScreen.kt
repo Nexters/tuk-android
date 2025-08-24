@@ -1,21 +1,22 @@
 package com.plottwist.join_gathering
 
-import androidx.compose.foundation.layout.Arrangement
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -27,26 +28,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.plottwist.core.designsystem.R
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray300
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray500
-import com.plottwist.core.designsystem.foundation.TukColorTokens.Gray700
 import com.plottwist.core.designsystem.foundation.TukPrimitivesColor
 import com.plottwist.core.designsystem.foundation.type.TukSerifTypography
 import com.plottwist.core.ui.component.StableImage
-import com.plottwist.core.ui.component.TukScaffold
+import com.plottwist.core.ui.component.TukScaffoldTitle
 import kotlinx.coroutines.launch
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun JoinGatheringScreen(
     onCloseClicked: () -> Unit = {},
@@ -57,6 +59,7 @@ fun JoinGatheringScreen(
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val localConfiguration = LocalConfiguration.current
 
     LaunchedEffect(Unit) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
@@ -84,113 +87,89 @@ fun JoinGatheringScreen(
     Box(
         modifier = Modifier
     ) {
+
         StableImage(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomEnd),
-            drawableResId = R.drawable.image_join_gathering_gradient,
+                .fillMaxWidth() .requiredWidth(
+                    localConfiguration.screenWidthDp.dp * GRADIENT_BACKGROUND_IMAGE_SCALE
+                ),
+            drawableResId = R.drawable.image_home_gradient,
             contentScale = ContentScale.FillWidth
         )
 
-        TukScaffold (
-            containerColor = Color.Transparent,
-            snackbarHost = {
-                SnackbarHost(
-                    hostState = snackbarHostState
-                )
-            },
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding(),
             topBar = {
                 JoinGatheringAppBar(
                     onCloseClicked = onCloseClicked
                 )
             },
-            title = "모임에\n참여하시겠어요?",
             bottomBar = {
                 JoinGatheringButton(
                     onClick = {
                         viewModel.handleAction(JoinGatheringAction.ClickJoin)
                     }
                 )
-            }
-        ) {
-            item {
+            },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackbarHostState
+                )
+            },
+            containerColor = Color.Transparent
+        ) { innerPadding ->
+            Column (
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                TukScaffoldTitle(
+                    title = "모임에\n참여하시겠어요?",
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                )
                 JoinGatheringContent(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 60.dp),
-                    gatheringName = state.gatheringName
+                        .fillMaxWidth(),
+                    gatheringName = state.gatheringName,
+                    screenWidth = localConfiguration.screenWidthDp.toFloat(),
+                    screenHeight = localConfiguration.screenHeightDp.toFloat()
                 )
             }
         }
-
     }
 }
 
 @Composable
 fun JoinGatheringContent(
     gatheringName: String,
+    screenWidth : Float,
+    screenHeight: Float,
     modifier: Modifier
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(288f / 349f),
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        StableImage(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 10.dp),
-            drawableResId = R.drawable.image_join_gathering_card
-        )
-
         Box(
-            modifier = Modifier
+            Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
         ) {
             StableImage(
-                modifier = Modifier.fillMaxSize(),
-                drawableResId = R.drawable.image_join_gathering_card,
-                contentScale = ContentScale.FillBounds
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(260f/364f),
+                drawableResId = R.drawable.img_join_card,
+                contentScale = ContentScale.FillWidth
             )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp, vertical = 36.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 63.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = gatheringName,
-                        textAlign = TextAlign.Center,
-                        style = TukSerifTypography.title22M
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 38.dp, end = 38.dp, bottom = 33.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "연락이",
-                        style = TukSerifTypography.body14R,
-                        color = Gray700
-                    )
-                    Text(
-                        text = "뜸해진 우리",
-                        style = TukSerifTypography.body14R,
-                        color = Gray700
-                    )
-                }
-            }
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = "$gatheringName\n친구들에게",
+                style = TukSerifTypography.title18M,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -248,4 +227,15 @@ fun TopAppBarCloseButton(
             drawableResId = com.plottwist.join_gathering.R.drawable.ic_close_button
         )
     }
+}
+
+private const val GRADIENT_BACKGROUND_IMAGE_SCALE = 3
+
+@Preview
+@Composable
+private fun JoinGatheringScreenPreview() {
+    JoinGatheringScreen(
+        onNavigateToGatheringDetail = {},
+        onNavigateToLoginScreen = {}
+    )
 }
