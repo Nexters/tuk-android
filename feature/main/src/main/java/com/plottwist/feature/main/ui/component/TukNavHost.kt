@@ -108,6 +108,7 @@ fun TukNavHost(
                 navController.popBackStack()
             },
             navigateToOnboarding = {
+                navController.popBackStack()
                 navController.navigateToOnboardingName()
             }
         )
@@ -198,7 +199,7 @@ fun TukNavHost(
         )
         onboardingNameNavGraph(
             onBack = {
-
+                navController.popBackStack()
             },
             navigateToHomeScreen = {
                 navController.popBackStack(Route.Home, inclusive = false)
@@ -246,6 +247,9 @@ fun TukNavHost(
                         }
                     }
                 )
+            },
+            onNavigateToLoginScreen = {
+                navController.navigateToLogin()
             }
         )
         completeProposalNavGraph(

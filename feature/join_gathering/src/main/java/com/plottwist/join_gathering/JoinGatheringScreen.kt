@@ -51,6 +51,7 @@ import kotlinx.coroutines.launch
 fun JoinGatheringScreen(
     onCloseClicked: () -> Unit = {},
     onNavigateToGatheringDetail: (Long) -> Unit,
+    onNavigateToLoginScreen: () -> Unit,
     viewModel: JoinGatheringViewModel = hiltViewModel()
 ) {
     val state by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -70,6 +71,10 @@ fun JoinGatheringScreen(
                             message = sideEffect.message, duration = SnackbarDuration.Short
                         )
                     }
+                }
+
+                JoinGatheringSideEffect.NavigateToLoginScreen -> {
+                    onNavigateToLoginScreen()
                 }
             }
 

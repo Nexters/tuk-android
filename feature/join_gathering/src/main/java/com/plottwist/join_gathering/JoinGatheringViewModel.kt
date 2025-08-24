@@ -1,7 +1,5 @@
 package com.plottwist.join_gathering
 
-import android.net.http.HttpException
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
@@ -55,7 +53,11 @@ class JoinGatheringViewModel @Inject constructor(
                                 postSideEffect(JoinGatheringSideEffect.NavigateToGatheringDetail(state.gatheringId))
                             },
                             onFailure = {
-                                postSideEffect(JoinGatheringSideEffect.ShowSnackbar("모임에 입장할 수 없습니다."))
+                                if(it.message?.contains("401") == true){
+                                    postSideEffect(JoinGatheringSideEffect.NavigateToLoginScreen)
+                                }else {
+                                    postSideEffect(JoinGatheringSideEffect.ShowSnackbar("모임에 입장할 수 없습니다."))
+                                }
                             }
                         )
                     }
