@@ -20,7 +20,6 @@ import com.plottwist.core.designsystem.component.TukSolidButton
 import com.plottwist.core.designsystem.component.TukSolidButtonType
 import com.plottwist.core.designsystem.component.TukTextField
 import com.plottwist.core.designsystem.component.TukTopAppBar
-import com.plottwist.core.ui.component.TopAppBarCloseButton
 import com.plottwist.core.ui.component.TukScaffold
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -38,9 +37,9 @@ fun OnboardingNameScreen(
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            OnboardingNameSideEffect.NavigateToHomeScreen -> {
+            OnboardingNameSideEffect.NavigateToBack -> {
                 keyboardController?.hide()
-                navigateToHomeScreen()
+                onBack()
             }
         }
 

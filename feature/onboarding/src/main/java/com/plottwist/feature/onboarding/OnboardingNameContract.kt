@@ -12,5 +12,5 @@ sealed class OnboardingNameAction {
 }
 
 sealed class OnboardingNameSideEffect {
-    data object NavigateToHomeScreen : OnboardingNameSideEffect()
+    data object NavigateToBack : OnboardingNameSideEffect()
 }

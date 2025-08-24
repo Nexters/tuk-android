@@ -24,6 +24,7 @@ fun NavController.navigateToJoinGathering(
 fun NavGraphBuilder.createJoinGatheringNavGraph(
     onBack: () -> Unit,
     onNavigateToGatheringDetail : (Long) -> Unit,
+    onNavigateToLoginScreen: () -> Unit
 ) {
     composable<Route.JoinGathering> (
         deepLinks = listOf(
@@ -41,7 +42,8 @@ fun NavGraphBuilder.createJoinGatheringNavGraph(
     ) {
         JoinGatheringScreen(
             onCloseClicked = onBack,
-            onNavigateToGatheringDetail = onNavigateToGatheringDetail
+            onNavigateToGatheringDetail = onNavigateToGatheringDetail,
+            onNavigateToLoginScreen = onNavigateToLoginScreen
         )
     }
 }

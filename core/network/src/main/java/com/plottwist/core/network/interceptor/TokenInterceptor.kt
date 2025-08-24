@@ -44,16 +44,25 @@ class TokenInterceptor @Inject constructor(
             HttpURLConnection.HTTP_UNAUTHORIZED -> {
                 val retryRequest = chain.request().newBuilder().apply {
                     runBlocking {
-                        tokenProvider.getRefreshToken()?.let {
-                            val newToken = authApiService.refreshToken(TokenRequest(it))
-                            if (newToken.success) {
-                                newToken.data.let { token ->
-                                    addHeader("Authorization", "Bearer ${token.accessToken}")
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        tokenProvider.setAccessToken(token.accessToken)
-                                        tokenProvider.setRefreshToken(token.refreshToken)
+                        val accessToken = tokenProvider.getAccessToken()
+                        val refreshToken = tokenProvider.getRefreshToken()
+                        if(accessToken.isNullOrEmpty() && refreshToken.isNullOrEmpty()){
+                            return@runBlocking
+                        }
+                        refreshToken?.let {
+                            try {
+                                val newToken = authApiService.refreshToken(TokenRequest(it))
+                                if (newToken.success) {
+                                    newToken.data.let { token ->
+                                        addHeader("Authorization", "Bearer ${token.accessToken}")
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            tokenProvider.setAccessToken(token.accessToken)
+                                            tokenProvider.setRefreshToken(token.refreshToken)
+                                        }
                                     }
                                 }
+                            } catch (e: Exception) {
+                                return@let
                             }
                         }
                     }

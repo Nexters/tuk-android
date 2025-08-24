@@ -30,7 +30,7 @@ class OnboardingNameViewModel @Inject constructor(
         val result = updateOnboardingInfoUseCase(state.name.text.toString())
 
         if (result.isSuccess) {
-            postSideEffect(OnboardingNameSideEffect.NavigateToHomeScreen)
+            postSideEffect(OnboardingNameSideEffect.NavigateToBack)
         }
     }
 }
